@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Monopoly</title>
+</head>
+
+<body>
+    <div class="board">
+        <!-- CONTROL PANEL -->
+        <div id="control-panel">
+            <!-- CONSOLE -->
+            <div id="console">CONSOLE</div>
+            <!-- CONTROL BUTTONS -->
+            <div id="control-buttons">
+                <button onclick="button_rollDice()" class="button">Roll Dices</button>
+                <button onclick="button_move()"class="button">Move</button>
+                <button onclick="button_buy()"class="button">Buy</button>
+                <button onclick="button_endTurn()"class="button">End Turn</button>
+            </div>
+        </div>
+        <!-- SQUARES -->
+        <!-- CORNER -->
+        <div id="square-0" class="square square-corner">
+            <div>GO</div>
+            <img class="special-square-icon" src="media/go-icon.svg" alt="">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <!-- BOTTOM -->
+        <div id="square-1" class="square square-bottom">
+            <div class="square-color color-brown"></div>
+            <div class="square-title">MEDITERRANEAN AVENUE</div>
+            <div>$60</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-2" class="square square-special square-bottom">
+            <div class="square-title">COMMUNITY CHEST</div>
+            <img class="special-square-icon" src="media/treasure-chest-icon.svg" alt="">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-3" class="square square-bottom">
+            <div class="square-color color-brown"></div>
+            <div class="square-title">BALTIC AVENUE</div>
+            <div>$60</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-4" class="square square-bottom">
+            <div class="square-title">INCOME TAX</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-5" class="square square-special square-bottom">
+            <div class="square-title">READING RAILROAD</div>
+            <img class="special-square-icon" src="media/train-icon.svg" alt="">
+            <div>$200</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-6" class="square square-bottom">
+            <div class="square-color color-lightblue"></div>
+            <div class="square-title">ORIENTAL AVENUE</div>
+            <div>$100</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-7" class="square square-bottom">
+            <div class="square-title">CHANCE</div>
+            <img class="special-square-icon" src="media/chance-icon.svg" alt="">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-8" class="square square-bottom">
+            <div class="square-color color-lightblue"></div>
+            <div class="square-title">VERMONT AVENUE</div>
+            <div>$100</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-9" class="square square-bottom">
+            <div class="square-color color-lightblue"></div>
+            <div class="square-title">CONNECTICUT AVENUE</div>
+            <div>$120</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <!-- CORNER -->
+        <div id="square-10" class="square square-corner">
+            <div class="square-10-in-jail">
+                <div>IN JAIL</div>
+                <img class="special-square-icon" src="media/in-jail-icon.svg" alt="">
+                <div class="token-holder">
+                    <span class="token token-color-red"></span>
+                    <span class="token token-color-blue"></span>
+                    <span class="token token-color-skin"></span>
+                    <span class="token token-color-orange"></span>
+                </div>
+            </div>
+            <div class="square-10-just-visting">
+                <div> JUST VISITING</div>
+                <div class="token-holder">
+                    <span class="token token-color-red"></span>
+                    <span class="token token-color-blue"></span>
+                    <span class="token token-color-skin"></span>
+                    <span class="token token-color-orange"></span>
+                </div>
+            </div>
+        </div>
+        <!-- LEFT -->
+        <div id="square-11" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">ST. CHARLES PLACE</div>
+                <div>$140</div>
+            </div>
+            <div class="square-color color-fuchsia"></div>
+        </div>
+        <div id="square-12" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">ELECTRIC COMPANY</div>
+                <img class="special-square-icon" src="media/electric-company-icon.svg" alt="">
+                <div>$150</div>
+            </div>
+
+        </div>
+        <div id="square-13" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">STATES AVENUE</div>
+                <div>$140</div>
+            </div>
+            <div class="square-color color-fuchsia"></div>
+        </div>
+        <div id="square-14" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">VIRGINIA AVENUE</div>
+                <div>$160</div>
+            </div>
+            <div class="square-color color-fuchsia"></div>
+        </div>
+        <div id="square-15" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+
+                <div class="square-title">PENNSYLVANIA RAILROAD</div>
+                <img class="special-square-icon" src="media/train-icon.svg" alt="">
+                <div>$200</div>
+            </div>
+        </div>
+        <div id="square-16" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">ST. JAMES PLACE</div>
+            <div>$180</div>
+            <div class="square-color color-orange"></div>
+        </div>
+        <div id="square-17" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">COMMUNITY CHEST</div>
+                <img class="special-square-icon" src="media/treasure-chest-icon.svg" alt="">
+            </div>
+        </div>
+        <div id="square-18" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div>
+                <div class="square-title">TENNESSE AVENUE</div>
+                <div>$180</div>
+            </div>
+            <div class="square-color color-orange"></div>
+        </div>
+        <div id="square-19" class="square square-left">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">NEW YORK AVENUE</div>
+            <div>$200</div>
+            <div class="square-color color-orange"></div>
+        </div>
+        <!-- CORNER -->
+        <div id="square-20" class="square square-corner">
+            <div>FREE PARKING</div>
+            <img src="media/free-parking-icon.svg" alt="">
+        </div>
+        <!-- TOP -->
+        <div id="square-21" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">KENTUCKY AVENUE</div>
+            <div>$220</div>
+            <div class="square-color color-red"></div>
+        </div>
+        <div id="square-22" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">CHANCE</div>
+            <img class="special-square-icon" src="media/chance-icon.svg" alt="">
+
+        </div>
+        <div id="square-23" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">INDIANA AVENUE</div>
+            <div>$220</div>
+            <div class="square-color color-red"></div>
+        </div>
+        <div id="square-24" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">ILLINOIS AVENUE</div>
+            <div>$240</div>
+            <div class="square-color color-red"></div>
+        </div>
+        <div id="square-25" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">B. & O. RAILROAD</div>
+            <img class="special-square-icon" src="media/train-icon.svg" alt="">
+
+            <div>$200</div>
+        </div>
+        <div id="square-26" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">ATLANTIC AVENUE</div>
+            <div>$260</div>
+            <div class="square-color color-yellow"></div>
+        </div>
+        <div id="square-27" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">VENTNOR AVENUE</div>
+            <div>$260</div>
+            <div class="square-color color-yellow"></div>
+        </div>
+        <div id="square-28" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">WATER WORKS</div>
+            <img class="special-square-icon" src="media/water-works-icon.svg" alt="">
+            <div>$150</div>
+        </div>
+        <div id="square-29" class="square square-top">
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+            <div class="square-title">MARVIN GARDENS</div>
+            <div>$280</div>
+            <div class="square-color color-yellow"></div>
+        </div>
+        <!-- CORNER -->
+        <div id="square-30" class="square">
+            <div class="square-color color-brown"></div>
+            <div>GO TO JAIL</div>
+        </div>
+        <!-- RIGHT -->
+        <div id="square-31" class="square square-right">
+            <div class="square-color color-green"></div>
+            <div>
+                <div class="square-title">PACIFIC AVENUE</div>
+                <div>$300</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-32" class="square square-right">
+            <div class="square-color color-green"></div>
+            <div>
+                <div class="square-title">NORTH CAROLINA AVENUE</div>
+                <div>$300</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-33" class="square square-right">
+            <div>
+                <div class="square-title">COMMUNITY CHEST</div>
+                <img class="special-square-icon" src="media/treasure-chest-icon.svg" alt="">
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-34" class="square square-right">
+            <div class="square-color color-green"></div>
+            <div>
+                <div class="square-title">PENNSYLVANIA AVENUE</div>
+                <div>$320</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+
+        </div>
+        <div id="square-35" class="square square-right">
+            <div>
+
+                <div class="square-title">SHORT LINE</div>
+                <img class="special-square-icon" src="media/train-icon.svg" alt="">
+                <div>$200</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-36" class="square square-right">
+            <div>
+                <div class="square-title">CHANCE</div>
+                <img class="special-square-icon" src="media/chance-icon.svg" alt="">
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-37" class="square square-right">
+            <div class="square-color color-blue"></div>
+            <div>
+                <div class="square-title">PARK PLACE</div>
+                <div>$350</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+
+        </div>
+        <div id="square-38" class="square square-right">
+            <div class="square-title">LUXURY TAX</div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <div id="square-39" class="square square-right">
+            <div class="square-color color-blue"></div>
+            <div>
+                <div class="square-title">BOARDWALK</div>
+                <div>$400</div>
+            </div>
+            <div class="token-holder">
+                <span class="token token-color-red"></span>
+                <span class="token token-color-blue"></span>
+                <span class="token token-color-skin"></span>
+                <span class="token token-color-orange"></span>
+            </div>
+        </div>
+        <!-- COMMUNITY CHEST & CHANCE DECKS -->
+        <div class="chance-deck deck"></div>
+        <div class="community-chest-deck deck"></div>
+    </div>
+    <script src="js/squares.js"></script>
+    <script src="js/script.js" defer></script>
+</body>
+
+</html>

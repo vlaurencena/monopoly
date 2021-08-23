@@ -1,0 +1,382 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BOARD DISPLAY */
+body {
+    /* padding: 1rem 0; */
+}
+
+.board {
+    width: 100vh;
+    height: 100vh;
+    position: relative;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+    grid-template-rows: repeat(13, minmax(0, 1fr));
+}
+
+/* SQUARES' POSITIONS */
+
+#square-0 {
+    grid-area: 12 / 12 / 14 / 14;
+}
+
+#square-1 {
+    grid-area: 12 / 11 / 14 / 12;
+}
+
+#square-2 {
+    grid-area: 12 / 10 / 14 / 11;
+}
+
+#square-3 {
+    grid-area: 12 / 9 / 14 / 10;
+}
+
+#square-4 {
+    grid-area: 12 / 8 / 14 / 9;
+}
+
+#square-5 {
+    grid-area: 12 / 7 / 14 / 8;
+}
+
+#square-6 {
+    grid-area: 12 / 6 / 14 / 7;
+}
+
+#square-7 {
+    grid-area: 12 / 5 / 14 / 6;
+}
+
+#square-8 {
+    grid-area: 12 / 4 / 14 / 5;
+}
+
+#square-9 {
+    grid-area: 12 / 3 / 14 / 4;
+}
+
+#square-10 {
+    grid-area: 12 / 1 / 14 / 3;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.square-10-in-jail {
+    width: 100%;
+    height: 100%;
+    grid-area: 1 / 2 / 3 / 4;
+    background-color: aliceblue;
+    border-left: solid 1px black;
+    border-bottom: solid 1px black;
+}
+
+.square-10-just-visting {
+    grid-area: 1 / 1 / 4 / 2;
+    background-color: gray;
+}
+
+#square-11 {
+    grid-area: 11 / 1 / 12 / 3;
+}
+
+#square-12 {
+    grid-area: 10 / 1 / 11 / 3;
+}
+
+#square-13 {
+    grid-area: 9 / 1 / 10 / 3;
+}
+
+#square-14 {
+    grid-area: 8 / 1 / 9 / 3;
+}
+
+#square-15 {
+    grid-area: 7 / 1 / 8 / 3;
+}
+
+#square-16 {
+    grid-area: 6 / 1 / 7 / 3;
+}
+
+#square-17 {
+    grid-area: 5 / 1 / 6 / 3;
+}
+
+#square-18 {
+    grid-area: 4 / 1 / 5 / 3;
+}
+
+#square-19 {
+    grid-area: 3 / 1 / 4 / 3;
+}
+
+#square-20 {
+    grid-area: 1 / 1 / 3 / 3;
+}
+
+#square-21 {
+    grid-area: 1 / 3 / 3 / 4;
+}
+
+#square-22 {
+    grid-area: 1 / 4 / 3 / 5;
+}
+
+#square-23 {
+    grid-area: 1 / 5 / 3 / 6;
+}
+
+#square-24 {
+    grid-area: 1 / 6 / 3 / 7;
+}
+
+#square-25 {
+    grid-area: 1 / 7 / 3 / 8;
+}
+
+#square-26 {
+    grid-area: 1 / 8 / 3 / 9;
+}
+
+#square-27 {
+    grid-area: 1 / 9 / 3 / 10;
+}
+
+#square-28 {
+    grid-area: 1 / 10 / 3 / 11;
+}
+
+#square-29 {
+    grid-area: 1 / 11 / 3 / 12;
+}
+
+#square-30 {
+    grid-area: 1 / 12 / 3 / 14;
+}
+
+#square-31 {
+    grid-area: 3 / 12 / 4 / 14;
+}
+
+#square-32 {
+    grid-area: 4 / 12 / 5 / 14;
+}
+
+#square-33 {
+    grid-area: 5 / 12 / 6 / 14;
+}
+
+#square-34 {
+    grid-area: 6 / 12 / 7 / 14;
+}
+
+#square-35 {
+    grid-area: 7 / 12 / 8 / 14;
+}
+
+#square-36 {
+    grid-area: 8 / 12 / 9 / 14;
+}
+
+#square-37 {
+    grid-area: 9 / 12 / 10 / 14;
+}
+
+#square-38 {
+    grid-area: 10 / 12 / 11 / 14;
+}
+
+#square-39 {
+    grid-area: 11 / 12 / 12 / 14;
+}
+
+/* SQUARES' STYLES*/
+.square {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    border: solid 2px black;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.square-bottom {
+    border-top: solid 4px black;
+}
+
+.square-left {}
+
+.square-top {
+    border-bottom: solid 4px black;
+}
+
+.square-right {
+    border-left: solid 4px black;
+}
+
+.square-corner {
+    justify-content: center;
+}
+
+.square-left,
+.square-right {
+    border-right: solid 4px black;
+    flex-direction: row;
+}
+
+.square-bottom .square-color,
+.square-top .square-color {
+    width: 100%;
+    height: 30px;
+}
+
+.square-left .square-color,
+.square-right .square-color {
+    width: 30px;
+    height: 100%;
+}
+
+.color-brown {
+    background-color: brown;
+}
+
+.color-lightblue {
+    background-color: lightblue;
+}
+
+.color-red {
+    background-color: red;
+}
+
+.color-yellow {
+    background-color: yellow;
+}
+
+.color-fuchsia {
+    background-color: fuchsia;
+}
+
+.color-orange {
+    background-color: orange;
+}
+
+.color-green {
+    background-color: green;
+}
+
+.color-blue {
+    background-color: blue;
+}
+
+.square-title {
+    font-size: .5rem;
+    margin: 0 .5rem;
+}
+
+.special-square-icon {
+    width: 50px;
+    height: 50px;
+}
+
+
+.square-special {
+    /* padding: 1rem .5rem; */
+}
+
+/* COMMUNITY CHEST & CHANCE DECKS */
+
+.deck {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: solid 1px black;
+}
+
+.chance-deck {
+    grid-area: 9 / 8 / 11 / 11;
+    background-image: url(../media/chance-icon.svg);
+}
+
+.community-chest-deck {
+    grid-area: 9 / 4 / 11 / 7;
+    background-image: url(../media/treasure-chest-icon.svg);
+}
+
+/* CONSOLE */
+#control-panel {
+    grid-area: 6 / 5 / 9 / 10;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+#console {
+    border: solid 1px black;
+    grid-area: 1 / 1 / 3 / 6;
+}
+
+#control-buttons {
+    grid-area: 3 / 1 / 4 / 6;
+    display: flex;
+    align-items: center;
+}
+
+.button {
+    min-width: 33%;
+    text-align: center;
+    border: solid 1px black;
+    border-radius: 8px;
+}
+
+/* TOKENS */
+.token-holder {
+    display: flex;
+    justify-content: space-around;
+}
+
+.square-bottom .token-holder,
+.square-top .token-holder {
+    width: 100%;
+    height: 25px;
+}
+
+.square-left .token-holder,
+.square-right .token-holder {
+    flex-direction: column;
+    width: 20px;
+    height: 100%;
+}
+
+.token {
+    width: 20px;
+    height: 20px;
+    background-image: url(../media/token-icon.svg);
+    background-size: cover;
+}
+
+.token-color-red {
+    filter: invert(33%) sepia(77%) saturate(6162%) hue-rotate(339deg) brightness(102%) contrast(101%);
+}
+
+.token-color-blue {
+    filter: invert(68%) sepia(43%) saturate(4101%) hue-rotate(177deg) brightness(100%) contrast(102%);
+}
+
+.token-color-orange {
+    filter: invert(80%) sepia(43%) saturate(1972%) hue-rotate(333deg) brightness(107%) contrast(102%);
+}
+
+.token-color-skin {
+    filter: invert(90%) sepia(3%) saturate(2867%) hue-rotate(322deg) brightness(103%) contrast(113%);
+}
