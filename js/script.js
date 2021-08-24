@@ -11,18 +11,17 @@ class Player {
         this.anotherTurn = anotherTurn;
         this.throwDoubles = throwDoubles;
         this.jailCard = jailCard;
-
     }
 
     rollDices() {
         let dice1 = Math.ceil(Math.random() * 6);
         let dice2 = Math.ceil(Math.random() * 6);
-        console.log(`${currentPlayer.name} got ${dice1} and ${dice2}. Total = ${dice1 + dice2}.`);
+        console.log(`${this.name} got ${dice1} and ${dice2}. Total = ${dice1 + dice2}.`);
 
         if (dice1 === dice2) {
             this.throwDoubles++;
             this.anotherTurn = true;
-            console.log(`${currentPlayer.name} throwDoubles is = ${this.throwDoubles}`);
+            console.log(`${this.name} throwDoubles is = ${this.throwDoubles}`);
         }
 
         if (this.throwDoubles === 3) {
@@ -33,14 +32,22 @@ class Player {
     }
 
     move(positions) {
-        console.log(`${currentPlayer.name} was on square ${currentPlayer.position}`);
+        console.log(`${this.name} was on square ${this.position}`);
         this.position = this.position + positions;
-        console.log(`${currentPlayer.name} moved to ${currentPlayer.position}`);
-
+        console.log(`${this.name} moved to ${this.position}`);
+        // FINISH ROUND
         if (currentPlayer.position >= 40) {
             currentPlayer.position -= 40;
-            console.log(`${currentPlayer.name} completed the round, and now is in ${currentPlayer.position}.`)
+            console.log(`${this.name} completed the round, and now is in ${this.position}.`)
             this.transacion(200);
+        }
+        // CHANCE
+        if (currentPlayer.position === 7 || currentPlayer.position === 22 || currentPlayer.position === 36) {
+            chance();
+        }
+         // COMMUNITY CHEST
+        if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
+            communityChest();
         }
     }
 
@@ -48,28 +55,32 @@ class Player {
         this.position = newPosition;
     }
 
-    transacion(signAndAmount) {
+    transaction(signAndAmount) {
         this.wallet += signAndAmount;
-        console.log(`${currentPlayer.name} has ${currentPlayer.wallet} in his/her wallet`);
+        if (signAndAmount < 0) {
+            console.log(`${this.name} paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+        } else {
+            console.log(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+        }
     }
 
     buy(propertyName, propertyValue) {
         this.wallet = this.wallet - propertyValue;
         alert(`Congratulations, you have just bought ${propertyName}. Now you have $${this.wallet} on your wallet`);
-        squares[currentPlayer.position].owner = currentPlayerId;
-        console.log(squares[currentPlayer.position]);
+        squares[this.position].owner = currentPlayerId;
+        console.log(squares[this.position]);
     }
 
     endTurn() {
-        if (currentPlayer.anotherTurn === true) {
+        if (this.anotherTurn === true) {
 
-            currentPlayer.anotherTurn = false;
+            this.anotherTurn = false;
 
-        } else if (currentPlayer.anotherTurn === false) {
+        } else if (this.anotherTurn === false) {
 
-            currentPlayer.throwDoubles = 0;
+            this.throwDoubles = 0;
 
-            if (currentPlayerId === allPlayersIds.length - 1) {
+            if (this.id === allPlayersIds.length - 1) {
 
                 currentPlayerId = 0;
 
@@ -113,7 +124,7 @@ let numberOfPlayer = parseInt(prompt(`Choose number of players from 2-4?`));
 for (i = 0; i < numberOfPlayer; i++) {
     let playerName = prompt(`Whats the name of player ${i+1}`);
     players.push(new Player(i, playerName, tokenColors[i], 0, undefined, initialMoney, false, 0, false));
-    allPlayersIds.push(i);
+
 }
 
 // FAST VERSION FOR DEVELOPMENT
@@ -123,11 +134,9 @@ for (i = 0; i < numberOfPlayer; i++) {
 //     allPlayersIds.push(i);
 // }
 
-let currentPlayer = players[currentPlayerId];
-
-console.log(players);
-
 /* GAME PLAY */
+
+let currentPlayer = players[currentPlayerId];
 
 console.log(`Welcome, now it's ${currentPlayer.name}'s turn.`);
 
@@ -146,6 +155,16 @@ button_buy = () => {
 
 button_endTurn = () => {
     currentPlayer.endTurn();
+}
+
+chance = () => {
+    let randomNumber = Math.ceil(Math.random() * chanceCards.length);
+    chanceCards[randomNumber].action();
+}
+
+communityChest = () => {
+    let randomNumber = Math.ceil(Math.random() * communityChestCards.length);
+    communityChestCards[randomNumber].action();
 }
 
 currentPlayerListOfProperties = () => {
