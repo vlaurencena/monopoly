@@ -4,20 +4,30 @@
     box-sizing: border-box;
 }
 
-/* BOARD DISPLAY */
+/* GENERAL DISPLAY */
 /* body {
     padding: 1rem 0;
 } */
 
+main {
+    display: flex;
+    justify-content: center;
+}
+
+/* BOARD */
 
 .board {
-    width: 100vh;
+    min-width: 100vh;
+    max-width: 100vh;
     height: 100vh;
     position: relative;
-    margin: auto;
     display: grid;
     grid-template-columns: repeat(13, minmax(0, 1fr));
     grid-template-rows: repeat(13, minmax(0, 1fr));
+}
+
+ul li {
+    list-style: inside none;
 }
 
 /* SQUARES' POSITIONS */
@@ -293,7 +303,6 @@
     height: 50px;
 }
 
-
 /* .square-special {
     padding: 1rem .5rem;
 } */
@@ -326,9 +335,10 @@
     grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
-#console {
+#console-display {
     border: solid 1px black;
     grid-area: 1 / 1 / 3 / 6;
+    overflow-y: scroll;
 }
 
 #control-buttons {
@@ -342,6 +352,39 @@
     text-align: center;
     border: solid 1px black;
     border-radius: 8px;
+}
+
+/* PLAYER CONTAINER */
+
+#player-container-1,
+#player-container-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    background-color: lightblue;
+}
+
+#player-container-1>div,
+#player-container-2>div {
+    height: 50%;
+    padding: 2rem;
+    border: 1px solid black;
+}
+
+.player-name {
+    font-size: 3rem;
+    text-align: center;
+}
+
+.player-wallet {
+    font-size: 2rem;
+    text-align: center;
+}
+
+.player-list-of-properties {
+    font-size: 1.5rem;
+    text-align: center;
 }
 
 /* TOKENS */
@@ -368,20 +411,47 @@
     height: 20px;
     background-image: url(../media/token-icon.svg);
     background-size: cover;
+    display: none;
 }
 
-.token-color-red {
+/* GAMEPLAY STYLES */
+
+.token-color-player-red {
     filter: invert(33%) sepia(77%) saturate(6162%) hue-rotate(339deg) brightness(102%) contrast(101%);
 }
 
-.token-color-blue {
+.token-color-player-blue {
     filter: invert(68%) sepia(43%) saturate(4101%) hue-rotate(177deg) brightness(100%) contrast(102%);
 }
 
-.token-color-orange {
+.token-color-player-orange {
     filter: invert(80%) sepia(43%) saturate(1972%) hue-rotate(333deg) brightness(107%) contrast(102%);
 }
 
-.token-color-skin {
+.token-color-player-skin {
     filter: invert(90%) sepia(3%) saturate(2867%) hue-rotate(322deg) brightness(103%) contrast(113%);
+}
+
+#square-0 .token-holder span {
+    display: block;
+}
+
+.property-of-player-red {
+    border-color: #FF1E3B;
+    color: #FF1E3B;
+}
+
+.property-of-player-blue {
+    border-color: #34B0FF;
+    color: #34B0FF;
+}
+
+.property-of-player-orange {
+    border-color: #FFBA11;
+    color: #FFBA11;
+}
+
+.property-of-player-skin {
+    border-color: #FFEDDA;
+    color: #FFEDDA;
 }

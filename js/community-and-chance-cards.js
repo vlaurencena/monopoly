@@ -3,7 +3,7 @@ const chanceCards = [{
         "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jailCard = true;
+            players[currentPlayerId].jailCard = true;
 
         }
     },
@@ -21,7 +21,7 @@ const chanceCards = [{
         "text": "Speeding fine $15.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(-15);
+            players[currentPlayerId].transaction(-15);
 
         }
     },
@@ -34,7 +34,7 @@ const chanceCards = [{
                 return player.id !== currentPlayerId;
             });
             filteredArray.forEach(player => player.transaction(50));
-            currentPlayer.transaction(filteredArray.length * -50);
+            players[currentPlayerId].transaction(filteredArray.length * -50);
 
         }
     },
@@ -43,7 +43,7 @@ const chanceCards = [{
         "text": "Go back three spaces.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.move(-3);
+            players[currentPlayerId].move(-3);
 
         }
     },
@@ -61,7 +61,7 @@ const chanceCards = [{
         "text": "Bank pays you dividend of $50.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(50);
+            players[currentPlayerId].transaction(50);
         }
     },
     {
@@ -79,7 +79,7 @@ const chanceCards = [{
         "text": "Pay poor tax of $15.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(15);
+            players[currentPlayerId].transaction(15);
         }
     },
     {
@@ -87,7 +87,7 @@ const chanceCards = [{
         "text": "Take a trip to Reading Rail Road. If you pass \"GO\" collect $200.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(50);
+            players[currentPlayerId].transaction(50);
 
             // TO DO
         }
@@ -97,7 +97,7 @@ const chanceCards = [{
         "text": "ADVANCE to Boardwalk.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jump(39);
+            players[currentPlayerId].jump(39);
         }
     },
     {
@@ -115,7 +115,7 @@ const chanceCards = [{
         "text": "Your building loan matures. Collect $150.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(150);
+            players[currentPlayerId].transaction(150);
         }
     },
     {
@@ -143,7 +143,7 @@ const chanceCards = [{
         "text": "Go to Jail. Go Directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jump(10);
+            players[currentPlayerId].jump(10);
         }
     }
 ]
@@ -153,7 +153,7 @@ const communityChestCards = [{
         "text": "Get out of Jail, for free. This card may be kept until needed or sold.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jailCard = true;
+            players[currentPlayerId].jailCard = true;
         }
     },
     {
@@ -161,7 +161,7 @@ const communityChestCards = [{
         "text": "You have won second prize in a beauty contest. Collect $10.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(10);
+            players[currentPlayerId].transaction(10);
         }
     },
     {
@@ -169,7 +169,7 @@ const communityChestCards = [{
         "text": "From sale of stock, you get $50.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(50);
+            players[currentPlayerId].transaction(50);
         }
     },
     {
@@ -177,7 +177,7 @@ const communityChestCards = [{
         "text": "Life insurance matures. Collect $100.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(100);
+            players[currentPlayerId].transaction(100);
         }
     },
     {
@@ -185,7 +185,7 @@ const communityChestCards = [{
         "text": "Income tax refund. Collect $20.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(20);
+            players[currentPlayerId].transaction(20);
         }
     },
     {
@@ -193,7 +193,7 @@ const communityChestCards = [{
         "text": "Holiday fund matures. Receive $100.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(100);
+            players[currentPlayerId].transaction(100);
         }
     },
     {
@@ -201,7 +201,7 @@ const communityChestCards = [{
         "text": "You inherit $100.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(100);
+            players[currentPlayerId].transaction(100);
         }
     },
     {
@@ -209,7 +209,7 @@ const communityChestCards = [{
         "text": "Receive $25 consultancy fee.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(25);
+            players[currentPlayerId].transaction(25);
         }
     },
     {
@@ -217,7 +217,7 @@ const communityChestCards = [{
         "text": "Pay hospital fees of $100.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(100);
+            players[currentPlayerId].transaction(100);
         }
     },
     {
@@ -225,7 +225,7 @@ const communityChestCards = [{
         "text": "Bank error in your favor. Collect $200.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(200);
+            players[currentPlayerId].transaction(200);
         }
     },
     {
@@ -233,7 +233,7 @@ const communityChestCards = [{
         "text": "Pay school fees of $50.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(-50);
+            players[currentPlayerId].transaction(-50);
         }
     },
     {
@@ -241,7 +241,7 @@ const communityChestCards = [{
         "text": "Doctor's fee. Pay $50.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.transaction(-50);
+            players[currentPlayerId].transaction(-50);
         }
     },
     {
@@ -253,7 +253,7 @@ const communityChestCards = [{
                 return player.id !== currentPlayerId;
             });
             filteredArray.forEach(player => player.transaction(-10));
-            currentPlayer.transaction(filteredArray.length * 10);
+            players[currentPlayerId].transaction(filteredArray.length * 10);
         }
     },
     {
@@ -261,8 +261,8 @@ const communityChestCards = [{
         "text": "Advance to \"GO\" (Collect $200).",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jump(0);
-            currentPlayer.transaction(200);
+            players[currentPlayerId].jump(0);
+            players[currentPlayerId].transaction(200);
         }
     }, {
         "id": 14,
@@ -278,7 +278,7 @@ const communityChestCards = [{
         "text": "Go to Jail. Go directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
             console.log(this.text);
-            currentPlayer.jump(10);
+            players[currentPlayerId].jump(10);
         }
     }
 ]
