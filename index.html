@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
+    <!---- META TAGS ---->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!---- CSS ---->
     <link rel="stylesheet" href="css/styles.css">
+    <!---- PAGE TITLE ---->
     <title>Monopoly</title>
 </head>
 
@@ -19,7 +22,7 @@
             <div id="control-panel">
                 <!-- CONSOLE -->
                 <div id="console-display">
-                    <div id="console-title">CONSOLE</div>
+                    <div id="console-title">HOLA!!</div>
                 </div>
                 <!-- CONTROL BUTTONS -->
                 <div id="control-buttons">
@@ -29,6 +32,8 @@
                     <button id="button_end_turn" class="button">End Turn</button>
                     <button id="button_pay" class="button">Pay</button>
                     <button id="button_use_jail_card" class="button">Use Jail Card</button>
+                    <button id="button_pick_up_card" class="button">Pick up card!</button>
+                    <button id="button_ok" class="button">OK!</button>
                 </div>
             </div>
             <!-- SQUARES -->
@@ -136,10 +141,9 @@
             </div>
             <div id="square-15" class="square square-left">
                 <div id="token-holder-15" class="token-holder"></div>
+                <img class="special-square-icon" src="media/train-icon.svg" alt="">
                 <div>
-
                     <div class="square-title">PENNSYLVANIA RAILROAD</div>
-                    <img class="special-square-icon" src="media/train-icon.svg" alt="">
                     <div>$200</div>
                 </div>
             </div>
@@ -200,7 +204,7 @@
                 <div class="square-color color-red"></div>
             </div>
             <div id="square-24" class="square square-top">
-                <div id="token-holder-24" class="token-holder"> </div>
+                <div id="token-holder-24" class="token-holder"></div>
                 <div class="square-title">ILLINOIS AVENUE</div>
                 <div>$240</div>
                 <div class="square-color color-red"></div>
@@ -262,24 +266,14 @@
                     <div class="square-title">NORTH CAROLINA AVENUE</div>
                     <div>$300</div>
                 </div>
-                <div id="token-holder-32" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-32" class="token-holder"></div>
             </div>
             <div id="square-33" class="square square-right">
                 <div>
                     <div class="square-title">COMMUNITY CHEST</div>
                     <img class="special-square-icon" src="media/treasure-chest-icon.svg" alt="">
                 </div>
-                <div id="token-holder-33" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-33" class="token-holder"></div>
             </div>
             <div id="square-34" class="square square-right">
                 <div class="square-color color-green"></div>
@@ -287,39 +281,22 @@
                     <div class="square-title">PENNSYLVANIA AVENUE</div>
                     <div>$320</div>
                 </div>
-                <div id="token-holder-34" class="token-holder">
-
-
-
-
-                </div>
-
+                <div id="token-holder-34" class="token-holder"></div>
             </div>
             <div id="square-35" class="square square-right">
+                <img class="special-square-icon" src="media/train-icon.svg" alt="">
                 <div>
-
                     <div class="square-title">SHORT LINE</div>
-                    <img class="special-square-icon" src="media/train-icon.svg" alt="">
                     <div>$200</div>
                 </div>
-                <div id="token-holder-35" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-35" class="token-holder"></div>
             </div>
             <div id="square-36" class="square square-right">
                 <div>
                     <div class="square-title">CHANCE</div>
                     <img class="special-square-icon" src="media/chance-icon.svg" alt="">
                 </div>
-                <div id="token-holder-36" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-36" class="token-holder"></div>
             </div>
             <div id="square-37" class="square square-right">
                 <div class="square-color color-blue"></div>
@@ -327,22 +304,11 @@
                     <div class="square-title">PARK PLACE</div>
                     <div>$350</div>
                 </div>
-                <div id="token-holder-37" class="token-holder">
-
-
-
-
-                </div>
-
+                <div id="token-holder-37" class="token-holder"></div>
             </div>
             <div id="square-38" class="square square-right">
                 <div class="square-title">LUXURY TAX</div>
-                <div id="token-holder-38" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-38" class="token-holder"></div>
             </div>
             <div id="square-39" class="square square-right">
                 <div class="square-color color-blue"></div>
@@ -353,18 +319,31 @@
                 <div id="token-holder-39" class="token-holder">
                 </div>
             </div>
-            <!-- COMMUNITY CHEST & CHANCE DECKS -->
-            <div class="chance-deck deck"></div>
-            <div class="community-chest-deck deck"></div>
+            <img id="dice_1" src="media/dice-0.png"></img>
+            <img id="dice_2" src="media/dice-0.png"></img>
+            <div id="extra-turn-container">
+                <span id="extra-turn"></span>
+                <span id="extra-turn-amount"></span>
+            </div>
+            <!-- DEED CARD -->
+            <div id="title-deed-container">
+             
+            </div>
+
         </div>
         <div id="player-container-2">
             <!-- PLAYER 2 & 4 -->
         </div>
+
     </main>
+    <!---- JS ---->
     <script src="js/players-constructor.js"></script>
+    <script src="js/game-setup.js"></script>
     <script src="js/squares.js"></script>
     <script src="js/community-and-chance-cards.js"></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <!-- THIS IS JUST FOR DEVELOPMENT -->
+    <script src="js/simulate-scenario.js" defer></script>
 </body>
 
 </html>

@@ -1,3 +1,43 @@
+let selectedCard = [];
+
+let chest_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+let chance_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+// FUNCTION TO SHUFFLE ARRAYS
+const shuffle = (array) => {
+
+    let currentIndex = array.length;
+    let randomIndex;
+
+    while (currentIndex != 0) {
+
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
+// SHUFFLE CARDS ARRAYS
+shuffle(chest_cards_order);
+
+shuffle(chance_cards_order);
+
+// PICK UP CARD
+random_chance_card = () => {
+    let card = chance_cards_order.shift(); // TAKE THE FIRST CARD ID
+    selectedCard = chanceCards[card]; // SELECT THE CARD
+    chance_cards_order.push(card); // PUSH IT TO THE END
+}
+
+random_chest_card = () => {
+    let card = chest_cards_order.shift();
+    selectedCard = chanceCards[card];
+    chance_chest_cards_order.push(card);
+}
+
 const chanceCards = [{
         "id": 0,
         "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
@@ -142,8 +182,7 @@ const chanceCards = [{
         "id": 15,
         "text": "Go to Jail. Go Directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
-            console.log(this.text);
-            players[currentPlayerId].jump(10);
+            currentPlayer.goToJail();
         }
     }
 ]
@@ -152,8 +191,7 @@ const communityChestCards = [{
         "id": 0,
         "text": "Get out of Jail, for free. This card may be kept until needed or sold.",
         "action": function () {
-            console.log(this.text);
-            players[currentPlayerId].jailCard = true;
+            currentPlayer.jailCard = true;
         }
     },
     {

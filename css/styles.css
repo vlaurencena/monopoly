@@ -303,29 +303,11 @@ ul li {
     padding: 1rem .5rem;
 } */
 
-/* COMMUNITY CHEST & CHANCE DECKS */
 
-.deck {
-    width: 100%;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: contain;
-    border: solid 1px black;
-}
-
-.chance-deck {
-    grid-area: 9 / 8 / 11 / 11;
-    background-image: url(../media/chance-icon.svg);
-}
-
-.community-chest-deck {
-    grid-area: 9 / 4 / 11 / 7;
-    background-image: url(../media/treasure-chest-icon.svg);
-}
 
 /* CONSOLE */
 #control-panel {
-    grid-area: 6 / 5 / 9 / 10;
+    grid-area: 4 / 5 / 7 / 10;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -398,7 +380,7 @@ ul li {
 .square-left .token-holder,
 .square-right .token-holder {
     flex-direction: column;
-    width: 20px;
+    min-width: 20px;
     height: 100%;
 }
 
@@ -407,6 +389,24 @@ ul li {
     height: 20px;
     background-image: url(../media/token-icon.svg);
     background-size: cover;
+}
+
+/* DICES */
+
+#dice_1 {
+    grid-area: 9 / 5 / 10 / 6;
+    width: 90%;
+    height: 90%;
+}
+
+#dice_2 {
+    grid-area: 9 / 6 / 10 / 7;
+    width: 90%;
+    height: 90%;
+}
+
+#extra-turn-container {
+    grid-area: 10 / 5 / 11 / 7;
 }
 
 /* GAMEPLAY STYLES */
@@ -446,14 +446,80 @@ ul li {
     color: #FFBA11;
 }
 
+.player-skin-turn {
+    color: #FFEDDA;
+}
+
+.player-red-turn {
+    color: #FF1E3B;
+}
+
+.player-blue-turn {
+    color: #34B0FF;
+}
+
+.player-orange-turn {
+    color: #FFBA11;
+}
+
 .property-of-player-skin {
     border-color: #FFEDDA;
     color: #FFEDDA;
 }
 
 .token-in-jail {
-   position: relative;
-   z-index: 5;
-   bottom: 3rem;
-   left: 2rem; 
+    position: relative;
+    z-index: 5;
+    bottom: 3rem;
+    left: 2rem;
+}
+
+/* DEED CARD CONTAINER */
+#title-deed-container {
+    grid-area: 7 / 8 / 11 / 11;
+    border: solid 1px black;
+}
+
+.title-deed {
+    /* CHANGE TO FLEX */
+    display: none;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    text-align: center;
+}
+
+.title-deed__info>div {
+    margin: .4rem 0;
+}
+
+.title-deed__header {
+    font-weight: bold;
+    border: solid 1px black;
+    padding: 1rem 0;
+}
+
+.title-deed__houses-prices {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+.title-deed__bottom-line {
+    font-size: .5rem;
+}
+
+@keyframes example {
+    from {}
+
+    to {
+        transform: rotate(720deg);
+    }
+}
+
+/* The element to apply the animation to */
+.animation {    
+    animation-name: example;
+    animation-duration: 5s;
 }
