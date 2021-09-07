@@ -35,7 +35,7 @@ random_chance_card = () => {
 random_chest_card = () => {
     let card = chest_cards_order.shift();
     selectedCard = chanceCards[card];
-    chance_chest_cards_order.push(card);
+    chest_cards_order.push(card);
 }
 
 const chanceCards = [{

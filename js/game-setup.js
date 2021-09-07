@@ -42,8 +42,8 @@ if (realVersion) {
             <div id="player_name_${i}" class="player-name">${playerName}</div>
             <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
             <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-            <div id="player_properties_${i}" class="player-list-of-properties">List of properties</div>
-            <ul>
+            <div class="player-list-of-properties">List of properties</div>
+            <ul id=player_properties_${i}>
             </ul>
             </div>`;
         }
@@ -72,7 +72,7 @@ if (realVersion) {
             document.querySelector("#player-container-2").innerHTML =
                 document.querySelector("#player-container-2").innerHTML +=
                 `<div id="player-${i}">
-                            <div id="player_name_${i}" class="player-name">Player${i}</div>
+                            <div id="player_name_${i}" class="player-name">Player ${tokenColors[i]}</div>
                             <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
                             <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
                             <div class="player-list-of-properties">List of properties</div>
@@ -84,11 +84,11 @@ if (realVersion) {
             document.querySelector("#player-container-1").innerHTML =
                 document.querySelector("#player-container-1").innerHTML +=
                 `<div id="player-${i}">
-                                <div id="player_name_${i}" class="player-name">Player${i}</div>
+                                <div id="player_name_${i}" class="player-name">Player ${tokenColors[i]}</div>
                                 <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
                                 <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-                                <div id="player_properties_${i}" class="player-list-of-properties">List of properties</div>
-                                <ul>
+                                <div class="player-list-of-properties">List of properties</div>
+                                <ul id=player_properties_${i}>
                                 </ul>
                             </div>`;
         }

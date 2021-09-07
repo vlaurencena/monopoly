@@ -18,49 +18,43 @@ class Player {
         let dice1 = Math.ceil(Math.random() * 6);
         let dice2 = Math.ceil(Math.random() * 6);
 
-
-
         //  ANIMATE DICE IMAGES
         document.getElementById(`dice_1`).classList.add("animation");
         document.getElementById(`dice_2`).classList.add("animation");
 
-        // for (let i = 0; i <= 10; i++) {
-        //     let random_dice = `dice-${Math.ceil(Math.random() * 6)}`;
-
-        //     setTimeout(() => {
-        //         document.getElementById(`dice_1`).src = `../media/${random_dice}.svg`;
-        //         document.getElementById(`dice_2`).src = `../media/${random_dice}.svg`;
-        //     }, i * 500);
-        // }
-
         //  CHANGE DICE IMAGES
-        document.getElementById(`dice_1`).src = `../media/dice-${dice1}.svg`;
-        document.getElementById(`dice_2`).src = `../media/dice-${dice2}.svg`;
+        document.getElementById(`dice_1`).src = `media/dice-${dice1}.svg`;
+        document.getElementById(`dice_2`).src = `media/dice-${dice2}.svg`;
 
-        //  THROW DOUBLES
         if (dice1 === dice2) {
-
+            //  THROW DOUBLES
             this.throwDoubles++;
             this.anotherTurn = true;
             document.getElementById(`extra-turn`).innerHTML = `EXTRA TURN`;
 
             if (this.throwDoubles === 2) {
-
+                //  THROW DOUBLES X2
                 document.getElementById(`extra-turn-amount`).innerHTML = ` x2`;
 
             } else if (this.throwDoubles === 3) {
-
+                //  THROW DOUBLES X3
                 console.log(`${this.name} throwDoubles for the third time, go to Jail!`);
                 this.goToJail();
-
-            } else {
-
                 this.throwDoubles = 0;
                 this.anotherTurn = false;
-
+                document.getElementById(`extra-turn`).innerHTML = ``;
+                document.getElementById(`extra-turn-amount`).innerHTML = ``;
+                player_completed_turn();
             }
 
+        } else {
+            //  NOT THROW DOUBLES
+            document.getElementById(`extra-turn`).innerHTML = ``;
+            document.getElementById(`extra-turn-amount`).innerHTML = ``;
+            this.throwDoubles = 0;
+            this.anotherTurn = false;
         }
+
         //RETURN
         return [dice1, dice2, dice1 + dice2];
 
@@ -110,16 +104,18 @@ class Player {
             console.log(`player${this.name} is on position ${this.position}`);
         }
 
-        
+
+
     }
 
 
     jump(newPosition) {
         this.position = newPosition;
         document.getElementById(`token-holder-${this.position}`).appendChild(document.getElementById(`token-player-${this.id}`));
-        currentSquare = squares[this.position]
-    }
+        currentSquare = squares[this.position];
 
+
+    }
 
     transaction(signAndAmount) {
 
@@ -130,33 +126,34 @@ class Player {
         } else {
             console.log(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
         }
-        update_player_info();
+        
+
     }
 
-    //     buy(property) {
+    buy(property) {
 
-    //         this.wallet -= property.price;
+        this.wallet -= property.price;
 
-    //         document.querySelector(`#player_wallet_${this.id}`).innerHTML =
-    //             `$${this.wallet}`;
+        document.querySelector(`#player_wallet_${this.id}`).innerHTML =
+            `$${this.wallet}`;
 
-    //         alert(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
+        alert(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
 
-    //         property.owner = this.id;
+        property.owner = this.id;
 
-    //         document.querySelector(`#square-${property.id}`).classList.add(`property-of-player-${currentPlayer.tokenColor}`);
+        document.querySelector(`#square-${property.id}`).classList.add(`property-of-player-${currentPlayer.color}`);
 
-    //         this.propertiesOwn.push(property);
+        this.propertiesOwn.push(property);
 
 
-
-    //         update_player_info();
-    //     }
+    }
 
     goToJail() {
         document.getElementById(`token-player-${this.id}`).classList.add("token-in-jail");
         this.jump(10);
         this.inJail = true;
+        player_completed_turn();
+
     }
 
     getOutOfJail() {
@@ -178,6 +175,8 @@ class Player {
             if (this.id === allPlayersIds.length - 1) {
 
                 currentPlayerId = 0;
+                currentPlayer = players[currentPlayerId];
+                currentSquare = currentPlayer.position;
 
             } else {
 
@@ -197,5 +196,7 @@ class Player {
         document.getElementById(`dice_2`).src = `../media/dice-0.png`;
         document.getElementById(`dice_1`).classList.remove("animation");
         document.getElementById(`dice_2`).classList.remove("animation");
+
+
     }
 }
