@@ -109,6 +109,8 @@ class Player {
             currentSquare = squares[this.position];
             console.log(`player${this.name} is on position ${this.position}`);
         }
+
+        
     }
 
 

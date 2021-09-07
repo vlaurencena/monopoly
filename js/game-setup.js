@@ -5,10 +5,12 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const players = [];
+let players = [];
 const allPlayersIds = [];
 
 const realVersion = false;
+
+
 
 if (realVersion) {
 
@@ -53,6 +55,7 @@ if (realVersion) {
         document.getElementById("token-holder-0").append(token);
 
     }
+
 } else {
 
     // FAST VERSION FOR DEVELOPMENT

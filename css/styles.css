@@ -523,3 +523,8 @@ ul li {
     animation-name: example;
     animation-duration: 5s;
 }
+
+#button_clear_local_storage {
+    grid-area: 11 / 4 / 12 / 6;
+    background-color: aqua;
+}

@@ -1,7 +1,6 @@
 /*---------------------- BOARD CONFIGURACION ----------------------*/
 
-
-add_event_to_property = () => {
+const add_event_to_property = () => {
 
     for (var i = 0; i < arrayOfProperties.length; i++) {
 
@@ -10,9 +9,6 @@ add_event_to_property = () => {
         })
     }
 }
-
-
-
 
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
 
@@ -32,15 +28,15 @@ const button_use_jail_card = document.getElementById("button_use_jail_card");
 const button_pick_up_card = document.getElementById("button_pick_up_card");
 const button_ok = document.getElementById("button_ok");
 
-hide_element = (element) => {
+const hide_element = (element) => {
     element.style.display = "none";
 }
 
-show_element = (element) => {
+const show_element = (element) => {
     element.style.display = "block";
 }
 
-hide_all_buttons = () => {
+const hide_all_buttons = () => {
     hide_element(button_roll_dice);
     hide_element(button_move);
     hide_element(button_buy);
@@ -51,7 +47,7 @@ hide_all_buttons = () => {
     hide_element(button_ok);
 }
 
-update_player_info = () => {
+const update_player_info = () => {
     for (let i = 0; i < allPlayersIds.length; i++) {
         document.getElementById(`player_wallet_${i}`).innerHTML = `$${players[i].wallet}`;
         document.getElementById(`player_properties_${i}`).innerHTML = `${players[i].propertiesOwn}`;
@@ -61,7 +57,7 @@ update_player_info = () => {
 /*---------------------- GAME PLAY ----------------------*/
 
 /*------ STEP 1 ------*/
-new_turn = () => {
+const new_turn = () => {
 
     document.getElementById(`player_name_${currentPlayerId}`).classList.add(`player-${currentPlayer.color}-turn`);
 
@@ -171,7 +167,7 @@ new_turn = () => {
 
 /*------ STEP 2 ------*/
 
-player_rolled_dices = () => {
+const player_rolled_dices = () => {
 
     /*- HIDE ALL BUTTONS -*/
     hide_all_buttons();
@@ -191,7 +187,7 @@ player_rolled_dices = () => {
 
 
 /*------ STEP 3 ------*/
-player_moved = () => {
+const player_moved = () => {
 
     /*- HIDE ALL BUTTONS -*/
     hide_all_buttons();
@@ -268,7 +264,7 @@ player_moved = () => {
 
 
 /*------ STEP 4 ------*/
-player_completed_turn = () => {
+const player_completed_turn = () => {
 
     /*- HIDE ALL BUTTONS -*/
     hide_all_buttons();
