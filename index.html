@@ -14,6 +14,22 @@
 
 <body>
     <main>
+        <!-- FORM PLAYER SETUP -->
+        <div id="form_player_setup">
+            <h1>Welcome to virtual Monopoly, please enter the amount of players</h1>
+            <form name="form-number-players" action="">
+                <input type="radio" id="two_players" name="number-of-players" value="2">
+                <label for="two_players">2</label><br>
+                <input type="radio" id="three_players" name="number-of-players" value="3">
+                <label for="three_players">3</label><br>
+                <input type="radio" id="four_players" name="number-of-players" value="4">
+                <label for="four_players">4</label><br>
+            </form>
+            <form id="form_player_info" name="form-player-info" action="">
+
+            </form>
+
+        </div>
         <div id="player-container-1">
             <!-- PLAYER 1 & 3 -->
         </div>
@@ -346,8 +362,9 @@
     <script src="js/players-constructor.js"></script>
     <script src="js/squares.js"></script>
     <script src="js/community-and-chance-cards.js"></script>
-    <script src="js/game-setup.js"></script>
+    
     <script src="js/main.js"></script>
+    <script src="js/game-setup.js"></script>
     <script src="js/local-storage.js"></script>
     <!-- THIS IS JUST FOR DEVELOPMENT -->
     <script src="js/simulate-scenario.js" defer></script>

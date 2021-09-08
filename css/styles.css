@@ -336,6 +336,16 @@ ul li {
     border-radius: 8px;
 }
 
+/* FORM PLAYER SETUP */
+#form_player_setup {
+    position: absolute;
+    background-color: gray;
+    z-index: 1;
+}
+
+#form_player_info {
+    display: none;
+}
 /* PLAYER CONTAINER */
 
 #player-container-1,

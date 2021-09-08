@@ -1,20 +1,23 @@
-/*---------------------- BOARD CONFIGURACION ----------------------*/
+/*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
 
-
-// const add_event_to_property = () => {
-
-//     for (var i = 0; i < arrayOfProperties.length; i++) {
-
-//         document.getElementById(`property_${i}`).addEventListener("click", function () {
-//             message("sip");
-//         })
-//     }
-// }
+let currentPlayerId
+let currentPlayer
+let currentSquare
+let diceResult = [];
+let consoleMessages = [];
+let currentTurnStatus = {
+    "playerHasRolled": false,
+    "playerHasMoved": false,
+    "playerHasFinished": false
+}
+let players = [];
+let allPlayersIds = [];
 
 /*------ CONSOLE ------*/
 
 const message = (text) => {
     $("#console-display").prepend(`<p>${text}</p>`);
+    consoleMessages.push(text);
 }
 
 /*------ CONTROL PANNEL BUTTONS ------*/
@@ -36,14 +39,19 @@ button_roll_dice.addEventListener("click", function () {
 const button_move = document.getElementById("button_move");
 button_move.addEventListener("click", function () {
     currentPlayer.move(diceResult[2]);
-    diceResult = [];
     player_moved();
 });
 
 const button_end_turn = document.getElementById("button_end_turn");
 button_end_turn.addEventListener("click", function () {
     currentPlayer.endTurn();
+    currentTurnStatus = {
+        "playerHasRolled": false,
+        "playerHasMoved": false,
+        "playerHasFinished": false
+    }
     new_turn();
+    diceResult = [];
 });
 
 // FOR JAIL
@@ -142,14 +150,12 @@ const update_players_containers = () => {
     players.forEach(player => {
         // WALLET
         document.getElementById(`player_wallet_${player.id}`).innerHTML = `$ ${player.wallet}`;
-
-        // LOST OF PROPERTIES
-        var element = document.getElementById(`player_properties_${player.id}`);
+        // LIST OF PROPERTIES
+        let element = document.getElementById(`player_properties_${player.id}`);
         element.innerHTML = "";
-
         player.propertiesOwn.forEach(property => {
-            var tag = document.createElement("li");
-            var text = document.createTextNode(`${property.name}`);
+            let tag = document.createElement("li");
+            let text = document.createTextNode(`${property.name}`);
             tag.appendChild(text);
             element.appendChild(tag);
         });
@@ -158,31 +164,35 @@ const update_players_containers = () => {
 
         // TO DO
 
-        // COLOR IN NAME
 
-        document.getElementById(`player_name_${currentPlayer.id}`).classList.add(`player-${currentPlayer.color}-turn`);
-        const notCurrentPlayersIds = allPlayersIds.filter(playerId => playerId !== currentPlayerId);
-        notCurrentPlayersIds.forEach(playerId => {
-            document.getElementById(`player_name_${playerId}`).classList.remove(`player-${players[playerId].color}-turn`);
-        });
+
+    });
+    // COLOR IN NAME
+    document.getElementById(`player_name_${currentPlayer.id}`).classList.add(`player-${currentPlayer.color}-turn`);
+    const notCurrentPlayersIds = allPlayersIds.filter(playerId => playerId !== currentPlayerId);
+    notCurrentPlayersIds.forEach(playerId => {
+        document.getElementById(`player_name_${playerId}`).classList.remove(`player-${players[playerId].color}-turn`);
     });
 }
 
-/*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
-
-let currentPlayerId = 0; // NEEDS CONSTANT UPDATE
-let currentPlayer = players[currentPlayerId]; // NEEDS CONSTANT UPDATE
-let currentSquare = squares[currentPlayer.position]; // NEEDS CONSTANT UPDATE
-let diceResult = [];
-
 /*---------------------- GAME PLAY ----------------------*/
 
-/*------ STEP 1 ------*/
+hide_all_buttons();
+
+/*------ STEP 0 ------*/
+
+const start_new_game = () => {
+    currentPlayerId = 0; // NEEDS CONSTANT UPDATE
+    currentPlayer = players[currentPlayerId]; // NEEDS CONSTANT UPDATE
+    currentSquare = squares[currentPlayer.position]; // NEEDS CONSTANT UPDATE
+    diceResult = [];
+}
+
 const new_turn = () => {
 
     hide_all_buttons();
     update_players_containers();
-    message(`its ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
+    message(`It's ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
 
     if (currentPlayer.isInJail) {
         /*--- IS IN JAIL ---*/
@@ -215,13 +225,15 @@ const new_turn = () => {
 /*------ STEP 2 ------*/
 
 const player_rolled_dices = () => {
-
+    currentTurnStatus.playerHasRolled = true;
     hide_all_buttons();
     show_element(button_move);
+
 }
 
 /*------ STEP 3 ------*/
 const player_moved = () => {
+    currentTurnStatus.playerHasMoved = true;
 
     hide_all_buttons();
 
@@ -261,8 +273,7 @@ const player_moved = () => {
 }
 /*------ STEP 4 ------*/
 const player_completed_turn = () => {
-
+    currentTurnStatus.playerHasFinished = true;
     hide_all_buttons();
-
     show_element(button_end_turn);
 }
