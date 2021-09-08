@@ -53,7 +53,7 @@ if (localStorage.length === 0) {
     squares.forEach(property => {
 
         if(property.owner !== undefined) {
-            console.log(players[property.owner].color);
+            message(players[property.owner].color);
             document.querySelector(`#square-${property.id}`).classList.add(`property-of-player-${players[property.owner].color}`);
         }
         ;

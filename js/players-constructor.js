@@ -38,7 +38,7 @@ class Player {
 
             } else if (this.throwDoubles === 3) {
                 //  THROW DOUBLES X3
-                console.log(`${this.name} throwDoubles for the third time, go to Jail!`);
+                message(`${this.name} throwDoubles for the third time, go to Jail!`);
                 this.goToJail();
                 this.throwDoubles = 0;
                 this.anotherTurn = false;
@@ -97,11 +97,11 @@ class Player {
         if (completedRound) {
             this.position -= 40;
             currentSquare = squares[this.position];
-            console.log(`${this.name} completed the round. Here are your $200.`);
+            message(`${this.name} completed the round. Here are your $200.`);
             this.transaction(200);
         } else {
             currentSquare = squares[this.position];
-            console.log(`player${this.name} is on position ${this.position}`);
+            message(`player${this.name} is on position ${this.position}`);
         }
 
 
@@ -122,9 +122,9 @@ class Player {
         this.wallet += signAndAmount;
 
         if (signAndAmount < 0) {
-            console.log(`${this.name} paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+            message(`${this.name} paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
         } else {
-            console.log(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+            message(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
         }
         
 
@@ -137,7 +137,7 @@ class Player {
         document.querySelector(`#player_wallet_${this.id}`).innerHTML =
             `$${this.wallet}`;
 
-        alert(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
+        message(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
 
         property.owner = this.id;
 
@@ -192,11 +192,10 @@ class Player {
 
         }
 
-        document.getElementById(`dice_1`).src = `../media/dice-0.png`;
-        document.getElementById(`dice_2`).src = `../media/dice-0.png`;
+        document.getElementById(`dice_1`).src = `media/dice-0.png`;
+        document.getElementById(`dice_2`).src = `media/dice-0.png`;
         document.getElementById(`dice_1`).classList.remove("animation");
         document.getElementById(`dice_2`).classList.remove("animation");
-
 
     }
 }

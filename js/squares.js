@@ -898,36 +898,55 @@ let squares = [{
     }
 ];
 
-// let arrayOfProperties = squares.filter(property => property.price !== 0);
 
 // DEED CARDS
 
-// for (let i = 0; i < arrayOfProperties.length; i++) {
+let arrayOfProperties = squares.filter(property => property.price !== 0);
 
-//     document.getElementById(`title-deed-container`).innerHTML =
-//         document.getElementById(`title-deed-container`).innerHTML +=
+arrayOfProperties.forEach(property => 
 
-//         `<div id="property_${i}" class="title-deed">
-//             <div class="title-deed__header color-${arrayOfProperties[i].groupColor}">${arrayOfProperties[i].name.toUpperCase()}</div>
-//                 <div class="title-deed__info">
-//                     <div>RENT $${arrayOfProperties[i].baseRent}</div>
-//                     <div class="title-deed__houses-prices">
-//                         <div>With 1 House</div>
-//                         <div>$${arrayOfProperties[i].rent1}</div>
-//                         <div>With 2 Houses</div>
-//                         <div>$${arrayOfProperties[i].rent2}</div>
-//                         <div>With 3 Houses</div>
-//                         <div>$${arrayOfProperties[i].rent3}</div>
-//                         <div>With 4 Houses</div>
-//                         <div>$${arrayOfProperties[i].rent4}</div>
-//                     </div>
-//                     <div>With HOTEL $${arrayOfProperties[i].rent5}</div>
-//                     <div>Mortage Value FALTA</div>
-//                     <div>Houses Cost $${arrayOfProperties[i].housePrice} each</div>
-//                     <div>Hoteles, $${arrayOfProperties[i].rent1}, plus 4 Houses</div>
-//                 </div>
-//             <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
-//             Doubled on Uninproved Lots in that
-//             group.</div>
-//         </div>`
-// }
+    document.getElementById(`title-deed-container`).innerHTML =
+        document.getElementById(`title-deed-container`).innerHTML +=
+
+        `<div id="property_${property.id}" class="title-deed">
+            <div class="title-deed__header color-${property.groupColor}">${property.name.toUpperCase()}</div>
+                <div class="title-deed__info">
+                    <div>RENT $${property.baseRent}</div>
+                    <div class="title-deed__houses-prices">
+                        <div>With 1 House</div>
+                        <div>$${property.rent1}</div>
+                        <div>With 2 Houses</div>
+                        <div>$${property.rent2}</div>
+                        <div>With 3 Houses</div>
+                        <div>$${property.rent3}</div>
+                        <div>With 4 Houses</div>
+                        <div>$${property.rent4}</div>
+                    </div>
+                    <div>With HOTEL $${property.rent5}</div>
+                    <div>Mortage Value FALTA</div>
+                    <div>Houses Cost $${property.housePrice} each</div>
+                    <div>Hoteles, $${property.rent1}, plus 4 Houses</div>
+                </div>
+            <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
+            Doubled on Uninproved Lots in that
+            group.</div>
+        </div>`
+);
+
+
+let allSquares = document.getElementsByClassName("square");
+let allTitleDeeds = document.getElementsByClassName("title-deed");
+
+let showDeedCard = function () {
+
+    for (var i = 0; i < allTitleDeeds.length; i++) {
+        allTitleDeeds[i].classList.remove("title-deed-flex");
+    }
+    let squareId = this.getAttribute("id");
+    let splitId = squareId.split('-')[1];
+    document.getElementById(`property_${splitId}`).classList.add("title-deed-flex");
+}
+
+for (var i = 0; i < allSquares.length; i++) {
+    allSquares[i].addEventListener('click', showDeedCard, false);
+}

@@ -6,11 +6,16 @@
 //     for (var i = 0; i < arrayOfProperties.length; i++) {
 
 //         document.getElementById(`property_${i}`).addEventListener("click", function () {
-//             console.log("sip");
+//             message("sip");
 //         })
 //     }
 // }
 
+/*------ CONSOLE ------*/
+
+const message = (text) => {
+    $("#console-display").prepend(`<p>${text}</p>`);
+}
 
 /*------ CONTROL PANNEL BUTTONS ------*/
 
@@ -45,7 +50,7 @@ button_end_turn.addEventListener("click", function () {
 const button_use_jail_card = document.getElementById("button_use_jail_card");
 button_use_jail_card.addEventListener("click", function () {
     currentPlayer.getOutOfJail();
-    console.log(`You used your jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
+    message(`You used your jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
     player_completed_turn();
 });
 
@@ -56,11 +61,11 @@ button_roll_dice_in_jail.addEventListener("click", function () {
     /*------ ROLLED DOUBLES? ------*/
     if (currentPlayer.throwDoubles) {
         /*--- YES ---*/
-        console.log(`You throw doubles. (currentPlayer.ThrowDoubles = ${currentPlayer.throwDoubles}`);
+        message(`You throw doubles. (currentPlayer.ThrowDoubles = ${currentPlayer.throwDoubles}`);
         currentPlayer.getOutOfJail();
     } else {
         /*--- NO ---*/
-        console.log(`No doubles, you lost turn. (currentPlayer.ThrowDoubles = ${currentPlayer.throwDoubles}`);
+        message(`No doubles, you lost turn. (currentPlayer.ThrowDoubles = ${currentPlayer.throwDoubles}`);
     }
 });
 
@@ -90,7 +95,7 @@ button_pick_up_chest_card.addEventListener("click", function () {
     random_chest_card();
     hide_element(button_pick_up_chest_card);
     show_element(button_ok);
-    console.log(selectedCard.text);
+    message(selectedCard.text);
 });
 
 const button_pick_up_chance_card = document.getElementById("button_pick_up_chance_card");
@@ -98,7 +103,7 @@ button_pick_up_chance_card.addEventListener("click", function () {
     random_chance_card();
     hide_element(button_pick_up_chance_card);
     show_element(button_ok);
-    console.log(selectedCard.text);
+    message(selectedCard.text);
 });
 
 const button_ok = document.getElementById("button_ok");
@@ -177,21 +182,21 @@ const new_turn = () => {
 
     hide_all_buttons();
     update_players_containers();
-    console.log(`its ${currentPlayer.name} (Id ${currentPlayerId}) turn`);
+    message(`its ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
 
     if (currentPlayer.isInJail) {
         /*--- IS IN JAIL ---*/
-        console.log(`You are in jail. (currentPlayer.isInJail = ${currentPlayer.isInJail}`);
+        message(`You are in jail. (currentPlayer.isInJail = ${currentPlayer.isInJail}`);
         show_element(button_pay_50);
         show_element(button_roll_dice_in_jail);
 
         if (currentPlayer.jailCard) {
             /*--- YES JAIL CARD ---*/
-            console.log(`You have jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
+            message(`You have jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
             show_element(button_use_jail_card);
         } else {
             /*--- NO JAIL CARD ---*/
-            console.log(`You don't have jail card`);
+            message(`You don't have jail card`);
         }
 
     } else {
@@ -201,7 +206,7 @@ const new_turn = () => {
 
         if (currentPlayer.position === 20) {
             /*--- IS ON FREE PARKING ---*/
-            console.log(`${currentPlayer.name}} is in free parking, you can stay or roll dice and move`);
+            message(`${currentPlayer.name}} is in free parking, you can stay or roll dice and move`);
             show_element(button_end_turn);
         }
     }
@@ -222,28 +227,28 @@ const player_moved = () => {
 
     if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
         /*------ IS IN CHEST ------*/
-        console.log(`current player is in chest`);
+        message(`current player is in chest`);
         show_element(button_pick_up_chest_card);
 
 
     } else if (currentPlayer.position === 7 || currentPlayer.position === 22 || currentPlayer.position === 36) {
         /*------ IS IN CHANCE ------*/
-        console.log(`current player is in chance`);
+        message(`current player is in chance`);
         show_element(button_pick_up_chance_card);
 
     } else if (currentPlayer.position === 10 || currentPlayer.position === 20) {
         /*------ IS IN JUST VISITIN OF FREE PARKING? ------*/
-        console.log(`current player is in just visiting or free parking`);
+        message(`current player is in just visiting or free parking`);
         show_element(button_end_turn);
 
     } else if (currentPlayer.position === 4) {
         /*------ IS IN INCOME TAX ------*/
-        console.log(`current player is in Income Tax`);
+        message(`current player is in Income Tax`);
         show_element(button_pay_200);
 
     } else {
         /*------ IS ON PROPERTY ------*/
-        console.log(`current player is in on property`);
+        message(`current player is in on property`);
 
         show_element(button_buy);
         show_element(button_end_turn);

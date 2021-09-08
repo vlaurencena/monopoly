@@ -319,6 +319,10 @@ ul li {
     overflow-y: scroll;
 }
 
+#console-display p {
+    margin-bottom: 1rem;
+}
+
 #control_buttons {
     grid-area: 3 / 1 / 4 / 6;
     display: flex;
@@ -488,6 +492,10 @@ ul li {
     justify-content: space-between;
     padding: 1rem;
     text-align: center;
+}
+
+.title-deed-flex {
+    display: flex;
 }
 
 .title-deed__info>div {
