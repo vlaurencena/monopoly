@@ -52,7 +52,7 @@ const chanceCards = [{
         "text": "Make General Repairs on All Your Property. For each house pay $25. For each hotel $100.",
         "action": function () {
             message(this.text);
-            // TO DO
+            // TODO
 
         }
     },
@@ -92,7 +92,7 @@ const chanceCards = [{
         "text": "ADVANCE TO THE NEAREST UTILITY. IF UNOWNED, you may buy it from the Bank. IF OWNED, throw dice and pay owner a total ten times the amount thrown.",
         "action": function () {
             message(this.text);
-            // TO DO 
+            // TODO 
 
         }
     },
@@ -129,7 +129,7 @@ const chanceCards = [{
             message(this.text);
             players[currentPlayerId].transaction(50);
 
-            // TO DO
+            // TODO
         }
     },
     {
@@ -146,7 +146,7 @@ const chanceCards = [{
         "action": function () {
             message(this.text);
 
-            // TO DO
+            // TODO
 
         }
     },
@@ -164,7 +164,7 @@ const chanceCards = [{
         "action": function () {
             message(this.text);
 
-            // TO DO
+            // TODO
 
         }
     },
@@ -174,7 +174,7 @@ const chanceCards = [{
         "action": function () {
             message(this.text);
 
-            // TO DO
+            // TODO
 
         }
     },
@@ -308,7 +308,7 @@ const communityChestCards = [{
         "action": function () {
             message(this.text);
 
-            // TO DO
+            // TODO
 
         }
     }, {

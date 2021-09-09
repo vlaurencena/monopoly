@@ -338,14 +338,36 @@ ul li {
 
 /* FORM PLAYER SETUP */
 #form_player_setup {
+    width: 100vh;
+    height: 100vh;
+    padding: 3rem;
+    text-align: center;
     position: absolute;
-    background-color: gray;
+    background-color: white;
     z-index: 1;
+}
+
+#form_player_setup h1 {
+    margin-bottom: 4rem;
+}
+
+input[type="radio"] {
+    margin-bottom: 1rem;
+}
+
+#form_player_info {
+    margin-top: 5rem;
+}
+
+
+#form_player_info input {
+    margin-bottom: 1rem;
 }
 
 #form_player_info {
     display: none;
 }
+
 /* PLAYER CONTAINER */
 
 #player-container-1,
@@ -537,7 +559,7 @@ ul li {
 }
 
 /* The element to apply the animation to */
-.animation {    
+.animation {
     animation-name: example;
     animation-duration: 5s;
 }

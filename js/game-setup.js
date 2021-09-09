@@ -84,7 +84,7 @@ if (localStorage.length === 0) {
             $("#form_player_setup").hide();
             start_new_game();
             new_turn();
-
+            update_local_storage();
         });
 
 

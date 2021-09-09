@@ -162,7 +162,7 @@ const update_players_containers = () => {
 
         // FREE JAIL CARD
 
-        // TO DO
+        // TODO
 
 
 
@@ -260,13 +260,31 @@ const player_moved = () => {
 
     } else {
         /*------ IS ON PROPERTY ------*/
-        message(`current player is in on property`);
+
 
         show_element(button_buy);
         show_element(button_end_turn);
 
         // CHECK OWNER
+        if (currentSquare.owner === undefined) {
+            // NO OWNER
+            console.log(`current player is in on property with NO owner`);
+            show_element(button_buy);
+            show_element(button_end_turn);
+        } else {
 
+            console.log(`current player is in on property with YES owner`);
+            if (currentSquare.owner === currentPlayerId) {
+                // OWNER IS CURRENT PLAYER
+                console.log(`its your property`);
+                show_element(button_end_turn);
+            } else {
+                // OWNER IS OTHER PLAYER
+                console.log(`its other player property`);
+            }
+
+
+        }
         // TODO
     }
 

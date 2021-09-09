@@ -17,6 +17,25 @@ const update_local_storage = () => {
     console.log("Local Storage was updated");
 }
 
+ // RETRIEVE LOCAL STORAGE
+ const retrieve_local_storage = () => {
+    // PLAYERS ARRAY
+    players = [];
+    let string_of_players = JSON.parse(localStorage.getItem("players"));
+    string_of_players.forEach(player => {
+        players.push(new Player(player.id, player.name, player.color, player.position, player.wallet, player.propertiesOwn, player.throwDoubles, player.anotherTurn, player.inJail, player.jailCard));
+    });
+    //  SQUARES ARRAYS
+    squares = JSON.parse(localStorage.getItem("squares"));
+    // INITIAL GAMEPLAY
+    currentPlayerId = JSON.parse(localStorage.getItem("currentPlayerId"));
+    currentPlayer = players[currentPlayerId];
+    currentSquare = JSON.parse(localStorage.getItem("currentSquare"));
+    diceResult = JSON.parse(localStorage.getItem("diceResult"));
+    currentTurnStatus = JSON.parse(localStorage.getItem("currentTurnStatus"));
+    allPlayersIds = JSON.parse(localStorage.getItem("allPlayersIds"));
+}
+
 /*------ CHECK LOCAL STORAGE ------*/
 if (localStorage.length === 0) {
     // IS EMPTY
@@ -26,26 +45,6 @@ if (localStorage.length === 0) {
     // IS NOT EMPTY
     console.log("local storage has something");
     $("#form_player_setup").hide();
-
-    // RETRIEVE LOCAL STORAGE
-    const retrieve_local_storage = () => {
-        // PLAYERS ARRAY
-        players = [];
-        let string_of_players = JSON.parse(localStorage.getItem("players"));
-        string_of_players.forEach(player => {
-            players.push(new Player(player.id, player.name, player.color, player.position, player.wallet, player.propertiesOwn, player.throwDoubles, player.anotherTurn, player.inJail, player.jailCard));
-        });
-        //  SQUARES ARRAYS
-        squares = JSON.parse(localStorage.getItem("squares"));
-        // INITIAL GAMEPLAY
-        currentPlayerId = JSON.parse(localStorage.getItem("currentPlayerId"));
-        currentPlayer = players[currentPlayerId];
-        currentSquare = JSON.parse(localStorage.getItem("currentSquare"));
-        diceResult = JSON.parse(localStorage.getItem("diceResult"));
-        currentTurnStatus = JSON.parse(localStorage.getItem("currentTurnStatus"));
-        allPlayersIds = JSON.parse(localStorage.getItem("allPlayersIds"));
-    }
-
     retrieve_local_storage();
 
     // CREATE PLAYER CONTAINER
@@ -112,6 +111,8 @@ if (localStorage.length === 0) {
         document.getElementById(`dice_1`).src = `media/dice-${diceResult[0]}.svg`;
         document.getElementById(`dice_2`).src = `media/dice-${diceResult[1]}.svg`;
     }
+
+    // TODO -> UPDATE EXTRA TURN
     
     if (currentTurnStatus.playerHasRolled === false) {
         new_turn();
@@ -126,3 +127,6 @@ if (localStorage.length === 0) {
         console.error("Shit, we don't know what happen");
     }
 };
+
+// TODO -> CURRENT CHEST/CHANCE CARD IS NOT SAVED
+// TODO -> DOESN't RETRIEVE CURRENT SQUARE
