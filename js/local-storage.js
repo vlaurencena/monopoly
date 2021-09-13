@@ -115,13 +115,17 @@ if (localStorage.length === 0) {
     // TODO -> UPDATE EXTRA TURN
     
     if (currentTurnStatus.playerHasRolled === false) {
+        currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         new_turn();
     } else if (currentTurnStatus.playerHasRolled === true && currentTurnStatus.playerHasMoved === false) {
+        currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         player_rolled_dices();
 
     } else if (currentTurnStatus.playerHasMoved === true && currentTurnStatus.playerHasFinished === false) {
+        currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         player_moved();
     } else if (currentTurnStatus.playerHasFinished === true) {
+        currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         player_completed_turn()
     } else {
         console.error("Shit, we don't know what happen");

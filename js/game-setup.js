@@ -5,7 +5,7 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const realVersion = true;
+const realVersion = false;
 
 if (localStorage.length === 0) {
 
