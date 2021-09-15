@@ -131,7 +131,7 @@ let squares = [{
         "name": "Oriental Avenue",
         "price": 100,
         "owner": undefined,
-        "groupColor": "#87CEEB",
+        "groupColor": "lightblue",
         "groupIDs": [
             6,
             8,
@@ -174,7 +174,7 @@ let squares = [{
         "name": "Vermont Avenue",
         "price": 100,
         "owner": undefined,
-        "groupColor": "#87CEEB",
+        "groupColor": "lightblue",
         "groupIDs": [
             6,
             8,
@@ -198,7 +198,7 @@ let squares = [{
         "name": "Connecticut Avenue",
         "price": 120,
         "owner": undefined,
-        "groupColor": "#87CEEB",
+        "groupColor": "lightblue",
         "groupIDs": [
             6,
             8,
@@ -241,7 +241,7 @@ let squares = [{
         "name": "St. Charles Place",
         "price": 140,
         "owner": undefined,
-        "groupColor": "#FF0080",
+        "groupColor": "fuchsia",
         "groupIDs": [
             11,
             13,
@@ -288,7 +288,7 @@ let squares = [{
         "name": "States Avenue",
         "price": 140,
         "owner": undefined,
-        "groupColor": "#FF0080",
+        "groupColor": "fuchsia",
         "groupIDs": [
             11,
             13,
@@ -312,7 +312,7 @@ let squares = [{
         "name": "Virginia Avenue",
         "price": 160,
         "owner": undefined,
-        "groupColor": "#FF0080",
+        "groupColor": "fuchsia",
         "groupIDs": [
             11,
             13,
@@ -361,7 +361,7 @@ let squares = [{
         "name": "St. James Place",
         "price": 180,
         "owner": undefined,
-        "groupColor": "#FFA500",
+        "groupColor": "orange",
         "groupIDs": [
             16,
             18,
@@ -404,7 +404,7 @@ let squares = [{
         "name": "Tennessee Avenue",
         "price": 180,
         "owner": undefined,
-        "groupColor": "#FFA500",
+        "groupColor": "orange",
         "groupIDs": [
             16,
             18,
@@ -428,7 +428,7 @@ let squares = [{
         "name": "New York Avenue",
         "price": 200,
         "owner": undefined,
-        "groupColor": "#FFA500",
+        "groupColor": "orange",
         "groupIDs": [
             16,
             18,
@@ -471,7 +471,7 @@ let squares = [{
         "name": "Kentucky Avenue",
         "price": 220,
         "owner": undefined,
-        "groupColor": "#FF0000",
+        "groupColor": "red",
         "groupIDs": [
             21,
             23,
@@ -514,7 +514,7 @@ let squares = [{
         "name": "Indiana Avenue",
         "price": 220,
         "owner": undefined,
-        "groupColor": "#FF0000",
+        "groupColor": "red",
         "groupIDs": [
             21,
             23,
@@ -538,7 +538,7 @@ let squares = [{
         "name": "Illinois Avenue",
         "price": 240,
         "owner": undefined,
-        "groupColor": "#FF0000",
+        "groupColor": "red",
         "groupIDs": [
             21,
             23,
@@ -587,7 +587,7 @@ let squares = [{
         "name": "Atlantic Avenue",
         "price": 260,
         "owner": undefined,
-        "groupColor": "#FFFF00",
+        "groupColor": "yellow",
         "groupIDs": [
             26,
             27,
@@ -611,7 +611,7 @@ let squares = [{
         "name": "Ventnor Avenue",
         "price": 260,
         "owner": undefined,
-        "groupColor": "#FFFF00",
+        "groupColor": "yellow",
         "groupIDs": [
             26,
             27,
@@ -658,7 +658,7 @@ let squares = [{
         "name": "Marvin Gardens",
         "price": 280,
         "owner": undefined,
-        "groupColor": "#FFFF00",
+        "groupColor": "yellow",
         "groupIDs": [
             26,
             27,
@@ -836,7 +836,7 @@ let squares = [{
         "name": "Park Place",
         "price": 350,
         "owner": undefined,
-        "groupColor": "#0000FF",
+        "groupColor": "blue",
         "groupIDs": [
             37,
             39
@@ -878,7 +878,7 @@ let squares = [{
         "name": "Boardwalk",
         "price": 400,
         "owner": undefined,
-        "groupColor": "#0000FF",
+        "groupColor": "blue",
         "groupIDs": [
             37,
             39
@@ -898,17 +898,63 @@ let squares = [{
     }
 ];
 
+let arrayOfProperties = squares.filter(property => property.price !== 0);
+
+// CALCULATE RENT
+
+// RETURNS RENT, EXCEPT UTILITY THAT RETURN VALUE THAT NEEDS TO BE MULTIPLIED BY DICE RESULT
+let calculateRent = () => {
+    if (currentSquare.id === 12 || currentSquare.id === 28) {
+        // UTILITY
+        if (squares[12].owner === squares[28].owner) {
+            return 10;
+        } else {
+            return 4;
+        }
+    } else if (currentSquare.id === 5 || currentSquare.id === 15 || currentSquare.id === 25 || currentSquare.id === 35) {
+        // RAILROAD
+        let arrayOfRailroads = [squares[5], squares[15], squares[25], squares[35]];
+        let counter = 0;
+        for (let railroad of arrayOfRailroads) {
+
+            if (currentSquare.owner === railroad.owner) {
+                counter++;
+            }
+        }
+        return counter * 25;
+
+    } else {
+
+        switch (currentSquare.house) {
+            case 2:
+                return currentSquare.rent2;
+                break;
+            case 3:
+                return currentSquare.rent3;
+                break;
+            case 4:
+                return currentSquare.rent4;
+                break;
+            case 5:
+                return currentSquare.rent5;
+                break;
+            default:
+                return currentSquare.rent1;
+        }
+    }
+};
+
+
 
 // DEED CARDS
 
-let arrayOfProperties = squares.filter(property => property.price !== 0);
 
-arrayOfProperties.forEach(property => 
 
+arrayOfProperties.forEach(property =>
     document.getElementById(`title-deed-container`).innerHTML =
-        document.getElementById(`title-deed-container`).innerHTML +=
+    document.getElementById(`title-deed-container`).innerHTML +=
 
-        `<div id="property_${property.id}" class="title-deed">
+    `<div id="property_${property.id}" class="title-deed">
             <div class="title-deed__header color-${property.groupColor}">${property.name.toUpperCase()}</div>
                 <div class="title-deed__info">
                     <div>RENT $${property.baseRent}</div>

@@ -2,6 +2,7 @@
 document.getElementById("button_clear_local_storage").addEventListener("click", function () {
     localStorage.clear();
     console.log("Local Storage is clear");
+    location.reload();
 });
 
 /*------ UPDATE LOCAL STORAGE ------*/
@@ -17,8 +18,12 @@ const update_local_storage = () => {
     console.log("Local Storage was updated");
 }
 
- // RETRIEVE LOCAL STORAGE
- const retrieve_local_storage = () => {
+all_buttons.addEventListener("click", function () {
+    update_local_storage();
+});
+
+// RETRIEVE LOCAL STORAGE
+const retrieve_local_storage = () => {
     // PLAYERS ARRAY
     players = [];
     let string_of_players = JSON.parse(localStorage.getItem("players"));
@@ -113,7 +118,7 @@ if (localStorage.length === 0) {
     }
 
     // TODO -> UPDATE EXTRA TURN
-    
+
     if (currentTurnStatus.playerHasRolled === false) {
         currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         new_turn();

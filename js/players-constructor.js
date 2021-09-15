@@ -86,7 +86,7 @@ class Player {
 
             setTimeout(() => {
                 document.getElementById(`token-holder-${transition}`).appendChild(document.getElementById(`token-player-${this.id}`));
-            }, i * 300);
+            }, i * 20);
 
         }
 
@@ -101,7 +101,7 @@ class Player {
             this.transaction(200);
         } else {
             currentSquare = squares[this.position];
-            message(`player${this.name} is on position ${this.position}`);
+            message(`${this.name} is on position ${this.position}`);
         }
 
 

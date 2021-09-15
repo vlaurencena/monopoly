@@ -1,8 +1,8 @@
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
 
-let currentPlayerId
-let currentPlayer
-let currentSquare
+let currentPlayerId = undefined;
+let currentPlayer = [];
+let currentSquare = [];
 let diceResult = [];
 let consoleMessages = [];
 let currentTurnStatus = {
@@ -25,7 +25,6 @@ const message = (text) => {
 // GENERAL USAGE
 const all_buttons = document.getElementById("control_buttons");
 all_buttons.addEventListener("click", function () {
-    update_local_storage();
     update_players_containers();
 });
 
@@ -97,6 +96,32 @@ button_buy.addEventListener("click", function () {
     player_completed_turn();
 });
 
+const button_pay_rent = document.getElementById("button_pay_rent");
+button_pay_rent.addEventListener("click", function () {
+    let rent = calculateRent() * multiplier;
+    currentPlayer.wallet -= rent;
+    players[currentSquare.owner].wallet += rent;
+    message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
+    player_completed_turn();
+});
+
+const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
+button_pay_rent_utility.addEventListener("click", function () {
+    let rent = calculateRent() * diceResult[2];
+    currentPlayer.wallet -= rent;
+    players[currentSquare.owner].wallet += rent;
+    message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
+    player_completed_turn();
+});
+
+const button_roll_dice_utility = document.getElementById("button_roll_dice_utility");
+button_roll_dice_utility.addEventListener("click", function () {
+    diceResult = currentPlayer.rollDices();
+    hide_element(button_roll_dice_utility);
+    show_element(button_pay_rent_utility);
+    message(`${currentPlayer.name} needs to pay $${calculateRent() * diceResult[2]} to ${players[currentSquare.owner].name}`);
+});
+
 // FOR CARDS
 const button_pick_up_chest_card = document.getElementById("button_pick_up_chest_card");
 button_pick_up_chest_card.addEventListener("click", function () {
@@ -133,6 +158,9 @@ const hide_all_buttons = () => {
     hide_element(button_pick_up_chest_card);
     hide_element(button_pick_up_chance_card);
     hide_element(button_ok);
+    hide_element(button_pay_rent);
+    hide_element(button_roll_dice_utility);
+    hide_element(button_pay_rent_utility);
 }
 
 const hide_element = (element) => {
@@ -250,7 +278,7 @@ const player_moved = () => {
 
     } else if (currentPlayer.position === 10 || currentPlayer.position === 20) {
         /*------ IS IN JUST VISITIN OF FREE PARKING? ------*/
-        message(`current player is in just visiting or free parking`);
+        message(`${currentPlayer.name} is in just visiting or free parking`);
         show_element(button_end_turn);
 
     } else if (currentPlayer.position === 4) {
@@ -260,10 +288,6 @@ const player_moved = () => {
 
     } else {
         /*------ IS ON PROPERTY ------*/
-
-
-        show_element(button_buy);
-        show_element(button_end_turn);
 
         // CHECK OWNER
         if (currentSquare.owner === undefined) {
@@ -280,15 +304,38 @@ const player_moved = () => {
                 show_element(button_end_turn);
             } else {
                 // OWNER IS OTHER PLAYER
-                console.log(`its other player property`);
+                if (currentPlayer.position === 12 || currentPlayer.position === 28) {
+                    // UTILITY
+                    show_element(button_roll_dice_utility);
+                    if (calculateRent() === 4) {
+
+                        message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
+
+                    } else if (calculateRent() === 10) {
+
+                        message(`${players[currentSquare.owner].name} owns both utilities. To determine rent, roll dices and the result will be multiplied by 10.`);
+
+                    } else {
+
+                        console.error("Something went wrong");
+
+                    }
+
+                } else {
+                    // REGULAR PROPERTY
+                    show_element(button_pay_rent);
+                    message(`${currentPlayer.name} needs to pay $${calculateRent()} to ${players[currentSquare.owner].name}`);
+                }
+
+
             }
 
 
         }
-        // TODO
     }
 
 }
+
 /*------ STEP 4 ------*/
 const player_completed_turn = () => {
     currentTurnStatus.playerHasFinished = true;
