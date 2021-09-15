@@ -517,8 +517,7 @@ input[type="radio"] {
 }
 
 .title-deed {
-    /* CHANGE TO FLEX */
-    display: none;
+    display: flex;
     min-height: 100%;
     flex-direction: column;
     justify-content: space-between;
