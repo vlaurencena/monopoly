@@ -951,40 +951,65 @@ for (let property of arrayOfProperties) {
     propertiesIds.push(property.id);
 }
 
+const clearDeedContainer = () => {
+    document.getElementById(`title-deed-container`).innerHTML = ``;
+}
+
+
+
+
 for (let id of propertiesIds) {
-    
+
     $(`#square-${id}`).click(function () {
 
         let getId = this.id.split("-")[1];
         console.log(getId);
-
-        document.getElementById(`title-deed-container`).innerHTML = ``;
+        clearDeedContainer();
         document.getElementById(`title-deed-container`).innerHTML =
 
-            `<div id="property_${getId}" class="title-deed">
-                    <div class="title-deed__header color-${squares[getId].groupColor}">${squares[getId].name.toUpperCase()}</div>
-                        <div class="title-deed__info">
-                            <div>RENT $${squares[getId].baseRent}</div>
-                            <div class="title-deed__houses-prices">
-                                <div>With 1 House</div>
-                                <div>$${squares[getId].rent1}</div>
-                                <div>With 2 Houses</div>
-                                <div>$${squares[getId].rent2}</div>
-                                <div>With 3 Houses</div>
-                                <div>$${squares[getId].rent3}</div>
-                                <div>With 4 Houses</div>
-                                <div>$${squares[getId].rent4}</div>
+            `<div id="property_${getId}" 
+                    
+                    <div class="title-deed">
+
+                        <div class="title-deed__header color-${squares[getId].groupColor}">${squares[getId].name.toUpperCase()}</div>
+                            <div class="title-deed__info">
+                                <div>RENT $${squares[getId].baseRent}</div>
+                                <div class="title-deed__houses-prices">
+                                    <div>With 1 House</div>
+                                    <div>$${squares[getId].rent1}</div>
+                                    <div>With 2 Houses</div>
+                                    <div>$${squares[getId].rent2}</div>
+                                    <div>With 3 Houses</div>
+                                    <div>$${squares[getId].rent3}</div>
+                                    <div>With 4 Houses</div>
+                                    <div>$${squares[getId].rent4}</div>
+                                </div>
+                                <div>With HOTEL $${squares[getId].rent5}</div>
+                                <div>Mortage Value FALTA</div>
+                                <div>Houses Cost $${squares[getId].housePrice} each</div>
+                                <div>Hoteles, $${squares[getId].housePrice}, plus 4 Houses</div>
                             </div>
-                            <div>With HOTEL $${squares[getId].rent5}</div>
-                            <div>Mortage Value FALTA</div>
-                            <div>Houses Cost $${squares[getId].housePrice} each</div>
-                            <div>Hoteles, $${squares[getId].housePrice}, plus 4 Houses</div>
-                        </div>
-                    <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
-                    Doubled on Uninproved Lots in that
-                    group.</div>
+                        <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
+                        Doubled on Uninproved Lots in that
+                        group.</div>
+                        
+                    </div>
+
+                        <ul class="title-deed-options">
+                            <li id="title-deed-close">Close</li>
+                        </ul>
+     
                 </div>`
 
+                 
+    $(`#title-deed-close`).click(function () {
+        clearDeedContainer();
+    }) 
+
     });
+
+    
+
 }
+
 
