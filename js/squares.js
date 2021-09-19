@@ -901,21 +901,21 @@ let squares = [{
 // CALCULATE RENT
 
 // RETURNS RENT, EXCEPT UTILITY THAT RETURN VALUE THAT NEEDS TO BE MULTIPLIED BY DICE RESULT
-let calculateRent = () => {
-    if (currentSquare.id === 12 || currentSquare.id === 28) {
+let calculateRent = (property) => {
+    if (property.id === 12 || property.id === 28) {
         // UTILITY
         if (squares[12].owner === squares[28].owner) {
             return 10;
         } else {
             return 4;
         }
-    } else if (currentSquare.id === 5 || currentSquare.id === 15 || currentSquare.id === 25 || currentSquare.id === 35) {
+    } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
         // RAILROAD
         let arrayOfRailroads = [squares[5], squares[15], squares[25], squares[35]];
         let counter = 0;
         for (let railroad of arrayOfRailroads) {
 
-            if (currentSquare.owner === railroad.owner) {
+            if (property.owner === railroad.owner) {
                 counter++;
             }
         }
@@ -923,93 +923,250 @@ let calculateRent = () => {
 
     } else {
 
-        switch (currentSquare.house) {
+        switch (property.house) {
             case 2:
-                return currentSquare.rent2;
+                return property.rent2;
                 break;
             case 3:
-                return currentSquare.rent3;
+                return property.rent3;
                 break;
             case 4:
-                return currentSquare.rent4;
+                return property.rent4;
                 break;
             case 5:
-                return currentSquare.rent5;
+                return property.rent5;
                 break;
             default:
-                return currentSquare.rent1;
+                return property.rent1;
         }
     }
 };
 
 
+// TODO DEED CARDS UTILITYES AND RAIROAD THE
 
-// DEED CARDS
+squares[1].owner = 1;
+squares[3].owner = 1;
+
+// EVENT LISTENER TO PROPERTY SQUARES
 let propertiesIds = [];
 let arrayOfProperties = squares.filter(property => property.price !== 0);
 for (let property of arrayOfProperties) {
     propertiesIds.push(property.id);
 }
 
+for (let id of propertiesIds) {
+    $(`#square-${id}`).click(function () {
+        let getId = this.id.split("-")[1];
+        let selectedProperty = squares[getId];
+        createDeedCard(selectedProperty);
+    });
+}
+// CREATE DEED CARD
 const clearDeedContainer = () => {
     document.getElementById(`title-deed-container`).innerHTML = ``;
 }
 
+let createDeedCard = (property) => { // OBJECT
+    clearDeedContainer();
 
-
-
-for (let id of propertiesIds) {
-
-    $(`#square-${id}`).click(function () {
-
-        let getId = this.id.split("-")[1];
-        console.log(getId);
-        clearDeedContainer();
+    if (property.id === 12 || property.id === 28) {
+        let utilityImgSubstring;
+        property.name.includes("Electric") ? utilityImgSubstring = "electric-company" : utilityImgSubstring = "water-works";
+        // UTILITY
+        document.getElementById(`title-deed-container`).innerHTML =
+        `<div id="property_${property.id}" 
+            <div class="title-deed">
+                <img class="title-deed-img" src="media/${utilityImgSubstring}-icon.svg">
+                <div class="title-deed__header">${property.name.toUpperCase()}</div>
+                <div class="title-deed__utility-descripton">
+                    <div>If one "Utility" is owned rent is 4 times amount shown on dice.</div>
+                    <div>If both "Utilities are owned rent is 10 times amount shown on dice.</div>
+                </div>
+            </div>
+            <ul class="title-deed-options">
+                <li id="title-deed-close">Close</li>
+                <li id="title-deed-mortage">Set mortage</li>
+            </ul>
+        </div>`
+    } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
+        // RAIL ROAD
         document.getElementById(`title-deed-container`).innerHTML =
 
-            `<div id="property_${getId}" 
-                    
-                    <div class="title-deed">
+        `<div id="property_${property}" 
+        
+            <div class="title-deed">
+            <img class="title-deed-img" src="media/train-icon.svg">
+                    <div class="title-deed__info">
+                    <div class="title-deed__header">${property.name.toUpperCase()}</div>
+                        <div>RENT $25</div>
+                        <div class="title-deed__houses-prices">
+                            <div>If 2 R.R.'s are owned</div>
+                            <div>$50</div>
+                            <div>If 3 R.R.'s are owned</div>
+                            <div>$100</div>
+                            <div>If 4 R.R.'s are owned</div>
+                            <div>$200</div>
+                        </div>
+                        <div>Mortage Value FALTA</div>
+                    </div>            
+            </div>
 
-                        <div class="title-deed__header color-${squares[getId].groupColor}">${squares[getId].name.toUpperCase()}</div>
-                            <div class="title-deed__info">
-                                <div>RENT $${squares[getId].baseRent}</div>
-                                <div class="title-deed__houses-prices">
-                                    <div>With 1 House</div>
-                                    <div>$${squares[getId].rent1}</div>
-                                    <div>With 2 Houses</div>
-                                    <div>$${squares[getId].rent2}</div>
-                                    <div>With 3 Houses</div>
-                                    <div>$${squares[getId].rent3}</div>
-                                    <div>With 4 Houses</div>
-                                    <div>$${squares[getId].rent4}</div>
-                                </div>
-                                <div>With HOTEL $${squares[getId].rent5}</div>
-                                <div>Mortage Value FALTA</div>
-                                <div>Houses Cost $${squares[getId].housePrice} each</div>
-                                <div>Hoteles, $${squares[getId].housePrice}, plus 4 Houses</div>
-                            </div>
-                        <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
-                        Doubled on Uninproved Lots in that
-                        group.</div>
-                        
+            <ul class="title-deed-options">
+                <li id="title-deed-close">Close</li>
+                <li id="title-deed-mortage">Set mortage</li>
+                <li id="title-deed-buy-house">Buy House</li>
+                <li id="title-deed-sell-house">Sell House</li>
+            </ul>
+
+        </div>`
+    } else {
+        // REGULAR PROPERTY
+        document.getElementById(`title-deed-container`).innerHTML =
+
+        `<div id="property_${property}" 
+        
+            <div class="title-deed">
+
+                <div class="title-deed__header color-${property.groupColor}">${property.name.toUpperCase()}</div>
+                    <div class="title-deed__info">
+                        <div>RENT $${property.baseRent}</div>
+                        <div class="title-deed__houses-prices">
+                            <div>With 1 House</div>
+                            <div>$${property.rent1}</div>
+                            <div>With 2 Houses</div>
+                            <div>$${property.rent2}</div>
+                            <div>With 3 Houses</div>
+                            <div>$${property.rent3}</div>
+                            <div>With 4 Houses</div>
+                            <div>$${property.rent4}</div>
+                        </div>
+                        <div>With HOTEL $${property.rent5}</div>
+                        <div>Mortage Value FALTA</div>
+                        <div>Houses Cost $${property.housePrice} each</div>
+                        <div>Hoteles, $${property.housePrice}, plus 4 Houses</div>
                     </div>
+                <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
+                Doubled on Uninproved Lots in that
+                group.</div>
+            
+            </div>
 
-                        <ul class="title-deed-options">
-                            <li id="title-deed-close">Close</li>
-                        </ul>
-     
-                </div>`
+            <ul class="title-deed-options">
+                <li id="title-deed-close">Close</li>
+                <li id="title-deed-mortage">Set mortage</li>
+                <li id="title-deed-buy-house">Buy House</li>
+                <li id="title-deed-sell-house">Sell House</li>
+            </ul>
 
-                 
+        </div>`
+
+        // TITLE DEED OPTIONS
+        if (checkAllOwnersTheSame(property)) {
+
+            if (checkPropertyCanBuyHouse(property)) {
+                $(`#title-deed-buy-house`).show();
+                $(`#title-deed-buy-house`).click(function () {
+                    buyHouse(property);
+                    createDeedCard(property);
+                });
+            }
+
+            if (checkPropertyCanSellHouse(property)) {
+                $(`#title-deed-sell-house`).show();
+                $(`#title-deed-sell-house`).click(function () {
+                    sellHouse(property);
+                    createDeedCard(property);
+                });
+            }
+
+        }
+    }
+
+    // CLOSE TITLE DEED
     $(`#title-deed-close`).click(function () {
         clearDeedContainer();
-    }) 
-
     });
-
-    
+    $("#title-deed-buy-house").hide();
+    $("#title-deed-sell-house").hide();
 
 }
 
+// TODO SET MORTAGE
 
+
+// VALIDATE HOUSE BUY & SELL
+
+let checkAllOwnersTheSame = (property) => { // OBJECT
+    let allOwnersTheSame = true;
+    let groupPropertiesIds = property.groupIDs;
+    let groupPropertiesOwners = [];
+    for (let property of groupPropertiesIds) {
+        groupPropertiesOwners.push(squares[property].owner);
+    }
+    for (owner of groupPropertiesOwners) {
+        if (owner !== property.owner || owner === undefined) {
+            allOwnersTheSame = false;
+        }
+    }
+    return allOwnersTheSame;
+}
+
+let checkPropertyCanBuyHouse = (property) => { // (OBJECT)
+    let canBuy = true;
+    let groupPropertiesIds = property.groupIDs;
+    let groupProperties = [];
+    for (let property of groupPropertiesIds) {
+        groupProperties.push(squares[property]);
+    }
+    for (let i = 0; i < groupProperties.length; i++) {
+        if (property.house >= 5 || property.house > groupProperties[i].house) {
+            canBuy = false;
+        }
+    }
+    return canBuy;
+}
+
+let checkPropertyCanSellHouse = (property) => { // (OBJECT)
+    let canSell = true;
+    let groupPropertiesIds = property.groupIDs;
+    let groupProperties = [];
+    for (let property of groupPropertiesIds) {
+        groupProperties.push(squares[property]);
+    }
+    for (let i = 0; i < groupProperties.length; i++) {
+        if (property.house <= 0 || property.house < groupProperties[i].house) {
+            canSell = false;
+        }
+    }
+    return canSell;
+}
+
+// PERFORM HOUSE BUY & SELL
+let buyHouse = (property) => { // (OBJECT)
+    property.house += 1;
+    players[property.owner].transaction(-property.housePrice);
+    updateHousesDisplay(property);
+}
+
+let sellHouse = (property) => { // (OBJECT)
+    property.house -= 1;
+    players[property.owner].transaction(property.housePrice);
+    updateHousesDisplay(property);
+}
+
+let updateHousesDisplay = (property) => { // (OBJECT)
+    let squareColor = $(`#square-${property.id}`).children(".square-color");
+    squareColor.empty();
+    if (property.house === 0) {
+        // DO NOTHING
+    } else if (property.house > 0 && property.house < 5) {
+        for (let i = 0; i < property.house; i++) {
+            squareColor.append(`<img class="house-icon" src="media/house-icon.svg" alt="">`);
+        }
+    } else if (property.house === 5) {
+        squareColor.append(`<img class="hotel-icon" src="media/hotel-icon.svg" alt="">`);
+    } else {
+        console.error("House doesn't have a correct number of houses");
+    }
+}

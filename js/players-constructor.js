@@ -19,12 +19,23 @@ class Player {
         let dice2 = Math.ceil(Math.random() * 6);
 
         //  ANIMATE DICE IMAGES
-        document.getElementById(`dice_1`).classList.add("animation");
-        document.getElementById(`dice_2`).classList.add("animation");
+        document.getElementById(`dice_1`).classList.add("animation-roll-dices");
+        document.getElementById(`dice_2`).classList.add("animation-roll-dices");
 
-        //  CHANGE DICE IMAGES
-        document.getElementById(`dice_1`).src = `media/dice-${dice1}.svg`;
-        document.getElementById(`dice_2`).src = `media/dice-${dice2}.svg`;
+        let i = 0;
+        for (i; i <= 10; i++) {
+            setTimeout(() => {
+                document.getElementById(`dice_1`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
+                document.getElementById(`dice_2`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
+            }, i * 500);
+        }
+
+        //  SET DICE RESULT IMAGES
+        setTimeout(() => {
+            console.log(`i is ${i}`)
+            document.getElementById(`dice_1`).src = `media/dice-${dice1}.svg`;
+            document.getElementById(`dice_2`).src = `media/dice-${dice2}.svg`;
+        }, ((i - 1) * 500) + 1);
 
         if (dice1 === dice2) {
             //  THROW DOUBLES
@@ -104,8 +115,6 @@ class Player {
             message(`${this.name} is on position ${this.position}`);
         }
 
-
-
     }
 
 
@@ -113,7 +122,6 @@ class Player {
         this.position = newPosition;
         document.getElementById(`token-holder-${this.position}`).appendChild(document.getElementById(`token-player-${this.id}`));
         currentSquare = squares[this.position];
-
 
     }
 
@@ -126,7 +134,8 @@ class Player {
         } else {
             message(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
         }
-        
+
+        update_players_containers();
 
     }
 
@@ -194,8 +203,8 @@ class Player {
 
         document.getElementById(`dice_1`).src = `media/dice-0.png`;
         document.getElementById(`dice_2`).src = `media/dice-0.png`;
-        document.getElementById(`dice_1`).classList.remove("animation");
-        document.getElementById(`dice_2`).classList.remove("animation");
+        document.getElementById(`dice_1`).classList.remove("animation-roll-dices");
+        document.getElementById(`dice_2`).classList.remove("animation-roll-dices");
 
     }
 }

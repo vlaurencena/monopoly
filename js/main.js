@@ -98,7 +98,7 @@ button_buy.addEventListener("click", function () {
 
 const button_pay_rent = document.getElementById("button_pay_rent");
 button_pay_rent.addEventListener("click", function () {
-    let rent = calculateRent() * multiplier;
+    let rent = calculateRent(currentSquare) * multiplier;
     currentPlayer.wallet -= rent;
     players[currentSquare.owner].wallet += rent;
     message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
@@ -107,7 +107,7 @@ button_pay_rent.addEventListener("click", function () {
 
 const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
 button_pay_rent_utility.addEventListener("click", function () {
-    let rent = calculateRent() * diceResult[2];
+    let rent = calculateRent(currentSquare) * diceResult[2];
     currentPlayer.wallet -= rent;
     players[currentSquare.owner].wallet += rent;
     message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
@@ -119,7 +119,7 @@ button_roll_dice_utility.addEventListener("click", function () {
     diceResult = currentPlayer.rollDices();
     hide_element(button_roll_dice_utility);
     show_element(button_pay_rent_utility);
-    message(`${currentPlayer.name} needs to pay $${calculateRent() * diceResult[2]} to ${players[currentSquare.owner].name}`);
+    message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare) * diceResult[2]} to ${players[currentSquare.owner].name}`);
 });
 
 // FOR CARDS
@@ -307,11 +307,11 @@ const player_moved = () => {
                 if (currentPlayer.position === 12 || currentPlayer.position === 28) {
                     // UTILITY
                     show_element(button_roll_dice_utility);
-                    if (calculateRent() === 4) {
+                    if (calculateRent(currentSquare) === 4) {
 
                         message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
 
-                    } else if (calculateRent() === 10) {
+                    } else if (calculateRent(currentSquare) === 10) {
 
                         message(`${players[currentSquare.owner].name} owns both utilities. To determine rent, roll dices and the result will be multiplied by 10.`);
 
@@ -324,7 +324,7 @@ const player_moved = () => {
                 } else {
                     // REGULAR PROPERTY
                     show_element(button_pay_rent);
-                    message(`${currentPlayer.name} needs to pay $${calculateRent()} to ${players[currentSquare.owner].name}`);
+                    message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare)} to ${players[currentSquare.owner].name}`);
                 }
 
 

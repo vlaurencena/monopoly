@@ -255,6 +255,8 @@ ul li {
 .square-right .square-color {
     width: 30px;
     height: 100%;
+    display: flex;
+flex-direction: column;
 }
 
 .color-brown {
@@ -550,17 +552,56 @@ input[type="radio"] {
     font-size: .5rem;
 }
 
-@keyframes example {
+.title-deed-options {
+    display: flex;
+}
+
+.title-deed-options li {
+    background-color: pink;
+    margin: .3rem;
+}
+
+.title-deed-img {
+width: 40%;
+margin: 0 auto;
+}
+
+.house-icon {
+    width: 25%;
+}
+
+.hotel-icon {
+    height: 100%;
+}
+
+.square-right .hotel-icon,
+.square-left .hotel-icon {
+    width: 100%;
+}
+.square-right .house-icon,
+.square-left .house-icon {
+    height: 25%;
+    width: 100%;
+}
+
+.title-deed__utility-descripton:first-child {
+    margin-bottom: 1rem;
+}
+
+
+
+
+@keyframes rollDices {
     from {}
 
     to {
-        transform: rotate(720deg);
+        transform: rotate(1440deg);
     }
 }
 
 /* The element to apply the animation to */
-.animation {
-    animation-name: example;
+.animation-roll-dices {
+    animation-name: rollDices;
     animation-duration: 5s;
 }
 
