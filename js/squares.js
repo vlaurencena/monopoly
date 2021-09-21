@@ -1072,6 +1072,7 @@ let createDeedCard = (property) => { // OBJECT
             <ul class="title-deed-options">
                 <li id="title-deed-close">Close</li>
                 <li id="title-deed-mortage">Set mortage</li>
+                <li id="title-deed-sell-property">Sell property</li>
                 <li id="title-deed-buy-house">Buy House</li>
                 <li id="title-deed-sell-house">Sell House</li>
             </ul>
@@ -1081,6 +1082,7 @@ let createDeedCard = (property) => { // OBJECT
         // TITLE DEED OPTIONS
         $("#title-deed-buy-house").hide();
         $("#title-deed-sell-house").hide();
+        $("#title-deed-sell-property").hide();
         if (checkAllOwnersTheSame(property)) {
 
             if (checkPropertyCanBuyHouse(property)) {
@@ -1100,6 +1102,13 @@ let createDeedCard = (property) => { // OBJECT
             }
         }
 
+        if (property.house === 0) {
+            $(`#title-deed-sell-property`).show();
+            $(`#title-deed-sell-property`).click(function () {
+                sellPropertyDisplay(property);
+            });
+        }
+
         if (property.house === 4) {
             $(`#title-deed-buy-house`).html("Buy hotel");
         } else if (property.house === 5) {
@@ -1117,7 +1126,70 @@ let createDeedCard = (property) => { // OBJECT
     }
 }
 
-// TODO SET MORTAGE
+
+// TODO SELL OR AUCTION PROPERTY
+
+let sellPropertyDisplay = (property) => {
+    let filteredArray = players.filter(function (player) {
+        return player.id !== property.owner;
+    });
+
+
+    console.log(filteredArray)
+    $(`.board`).append(`
+    <div class="sell-property-container">
+    <div class="sell-property-popup">
+        <p class="sell-property-title">${players[property.owner].name}, do you want to sell ${property.name}?</p>
+        <p>Who are you selling it to?<p>
+        <form class="sell-property-buyer">
+        </form>
+    
+    </div>
+    </div>`);
+
+    for (let player of filteredArray) {
+        $(".sell-property-buyer").append(
+            `<input type="radio" id="player_${player.id}_wants_to_buy" name="buyer" value="${player.id}" required">
+            <label for="value-${player.id}">${player.name}</label><br>`
+        )
+    }
+
+    $(".sell-property-buyer").append(`
+        <label for="amoun">How much will he or she pay?:</label>
+        <input type="text" id="sale_amount" name="sale-amount" required
+        size="10">
+       <input id="confirm_sale" type="submit" value="Sell property">`
+    )
+
+    $("#confirm_sale").click(function (event) {
+        console.log(property.owner);
+        event.preventDefault();
+        let transactionInfo = $('.sell-property-buyer').serializeArray();
+        console.log(transactionInfo);
+        players[property.owner].transaction(parseInt(transactionInfo[1].value));
+        console.log(transactionInfo[1].value);
+        property.owner = transactionInfo[0].value;
+        players[property.owner].transaction(parseInt(-transactionInfo[1].value));
+        console.log(property.owner);
+        removeSellPropertyDisplay();
+    })
+
+    $(".sell-property-popup").append(`<div id="close-sell-property-container">Close</div>`);
+
+    $("#close-sell-property-container").click(function () {
+        removeSellPropertyDisplay();
+    });
+
+
+    $("#player_bank_wants_to_buy").change(function () {
+        $("#sale_amount").val(property.price);
+    });
+
+}
+
+let removeSellPropertyDisplay = () => {
+    $(".sell-property-container").remove();
+}
 
 
 // VALIDATE HOUSE BUY & SELL
@@ -1176,7 +1248,7 @@ const buyHouse = (property) => { // (OBJECT)
 
 const sellHouse = (property) => { // (OBJECT)
     property.house -= 1;
-    players[property.owner].transaction(property.housePrice);
+    players[property.owner].transaction(property.housePrice / 2);
     updateHousesDisplay(property);
 }
 

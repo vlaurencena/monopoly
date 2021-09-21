@@ -73,6 +73,7 @@ button_roll_dice_in_jail.addEventListener("click", function () {
     } else {
         /*--- NO ---*/
         message(`No doubles, you lost turn. (currentPlayer.ThrowDoubles = ${currentPlayer.throwDoubles}`);
+        // TODO After 3rd attempt to roll doubles, you must pay the $50 fine and leave jail.
     }
 });
 

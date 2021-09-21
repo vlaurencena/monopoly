@@ -256,7 +256,7 @@ ul li {
     width: 30px;
     height: 100%;
     display: flex;
-flex-direction: column;
+    flex-direction: column;
 }
 
 .color-brown {
@@ -562,8 +562,8 @@ input[type="radio"] {
 }
 
 .title-deed-img {
-width: 40%;
-margin: 0 auto;
+    width: 40%;
+    margin: 0 auto;
 }
 
 .house-icon {
@@ -578,6 +578,7 @@ margin: 0 auto;
 .square-left .hotel-icon {
     width: 100%;
 }
+
 .square-right .house-icon,
 .square-left .house-icon {
     height: 25%;
@@ -610,4 +611,25 @@ margin: 0 auto;
 #button_clear_local_storage {
     grid-area: 11 / 4 / 12 / 6;
     background-color: aqua;
+}
+.sell-property-container {
+    position: absolute; 
+    min-width: 100%;
+    min-height: 100%; 
+    background-color: white;
+}
+.sell-property-popup {
+    border: solid 1px black;
+    padding: 2rem;
+    position: absolute;
+    min-width: 50%;
+    min-height: 50%;
+    background-color: white;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+}
+
+.sell-property-title {
+    font-size: 2rem;
 }

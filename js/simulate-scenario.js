@@ -4,6 +4,8 @@
 // currentPlayer.buy(squares[39]);
 // currentPlayer.buy(squares[37]);
 
-// squares[12].owner = 2;
+squares[1].owner = 1;
+squares[3].owner = 1;
 // currentPlayer.move(12);
 // player_moved();
+
