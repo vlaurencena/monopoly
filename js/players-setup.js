@@ -25,6 +25,8 @@ if (localStorage.length === 0) {
                 $("#form_player_info").show();
                 $("#form_player_info").html(``);
                 createPlayerForm(this.value);
+
+                // GET SUPERHERO NAMES
                 $(".get-superhero-name").click(function (event) {
                     let playerID = event.target.id.split('-')[1];
                     const getName = () => {
@@ -34,20 +36,16 @@ if (localStorage.length === 0) {
                         let randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
                         console.log(randomLetter);
                         let URL = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${randomLetter}&ts=1&apikey=${publicKey}&hash=${hash}`;
-                        const marvel = {
-                            render: () => {
-                                fetch(URL)
-                                    .then(res => res.json())
-                                    .then((json) => {
-                                        console.log(json, "RES.JSON");
-                                        let randomIndex = Math.floor(Math.random() * json.data.results.length);
-                                        console.log(json.data.results.length);
-                                        $(`#player_name_${playerID}`).val(json.data.results[randomIndex].name);
-                                        $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
-                                    })
+                        $.get(URL, function (respuesta, estado) {
+                            if (estado === "success") {
+                                console.log(respuesta);
+                                let randomIndex = Math.floor(Math.random() * respuesta.data.results.length);
+                                console.log(randomIndex);
+                                $(`#player_name_${playerID}`).val(respuesta.data.results[randomIndex].name);
+                                $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
                             }
-                        }
-                        marvel.render();
+                        });
+
                     }
                     getName();
                 });
