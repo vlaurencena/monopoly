@@ -5,7 +5,7 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const realVersion = false;
+const realVersion = true;
 
 if (localStorage.length === 0) {
 
@@ -17,12 +17,40 @@ if (localStorage.length === 0) {
 
         let radios = document.forms["form-number-players"].elements["number-of-players"];
 
+        //TODO NOW IT GEST A RANDOM NAME FROM THE 20 FIRST THAT ARE SENT, NEED TO GET REAL RANDOM NAME BY USING OFFSET
+
         for (radio in radios) {
             radios[radio].onclick = function () {
                 console.log(this.value);
                 $("#form_player_info").show();
                 $("#form_player_info").html(``);
                 createPlayerForm(this.value);
+                $(".get-superhero-name").click(function (event) {
+                    let playerID = event.target.id.split('-')[1];
+                    const getName = () => {
+                        const publicKey = "2cbc1527cffc69d668e63c9a86cfc013";
+                        const hash = "9fec144e8c5f068531d1ce7c701987f5";
+                        const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+                        let randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        console.log(randomLetter);
+                        let URL = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${randomLetter}&ts=1&apikey=${publicKey}&hash=${hash}`;
+                        const marvel = {
+                            render: () => {
+                                fetch(URL)
+                                    .then(res => res.json())
+                                    .then((json) => {
+                                        console.log(json, "RES.JSON");
+                                        let randomIndex = Math.floor(Math.random() * json.data.results.length);
+                                        console.log(json.data.results.length);
+                                        $(`#player_name_${playerID}`).val(json.data.results[randomIndex].name);
+                                        $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
+                                    })
+                            }
+                        }
+                        marvel.render();
+                    }
+                    getName();
+                });
             }
         }
 
@@ -30,13 +58,15 @@ if (localStorage.length === 0) {
             for (let i = 0; i < number; i++) {
                 $("#form_player_info").append(`
                 <label for="player_${i}">Player ${i + 1} Name:</label>
-                <input type="text" id="player_1" name="player-${i}" required><br>
+                <input type="text" id="player_name_${i}" name="player-${i}" required>
+                <input class="get-superhero-name" type="button" id="superhero-${i}" value="I want a Marvel superhero name!"><br>
                 `);
             }
             $("#form_player_info").append(`
             <button type="submit">SUBMIT</button>
                 `);
         }
+
 
         document.getElementById("form_player_info").addEventListener("submit", function (e) {
             let arrayOfNames = $(this).serializeArray()
@@ -88,7 +118,6 @@ if (localStorage.length === 0) {
         });
 
 
-
     } else {
 
         // FAST VERSION FOR DEVELOPMENT
@@ -137,9 +166,13 @@ if (localStorage.length === 0) {
         }
 
         $("#form_player_setup").hide();
-            start_new_game();
-            new_turn();
+        start_new_game();
+        new_turn();
 
     }
 
 }
+// Your public key
+// 2cbc1527cffc69d668e63c9a86cfc013
+// Your private key
+// b79b9a1797c8ffb07da1c149ea4463077b610281

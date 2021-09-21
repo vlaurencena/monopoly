@@ -43,20 +43,31 @@ const chanceCards = [{
         "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
         "action": function () {
             currentPlayer.jailCard = true;
+            update_players_containers();
         }
     },
     {
         "id": 1,
         "text": "Make General Repairs on All Your Property. For each house pay $25. For each hotel $100.",
         "action": function () {
-            // TODO
+            let totalHouses = 0;
+            let totalHotels = 0;
+            console.log(currentPlayer.propertiesOwn)
+            for (property of currentPlayer.propertiesOwn) {
+                console.log(property.house);
+                if (property.house > 0 && property.house < 5) {
+                    totalHouses += 25 * property.house;
+                } else if (property.house === 5) {
+                    totalHotels += 100;
+                }
+            }
+            currentPlayer.transaction(-(totalHouses + totalHotels));
         }
     },
     {
         "id": 2,
         "text": "Speeding fine $15.",
         "action": function () {
-
             currentPlayer.transaction(-15);
         }
     },
@@ -80,15 +91,21 @@ const chanceCards = [{
     },
     {
         "id": 5,
-        "text": "ADVANCE TO THE NEAREST UTILITY. IF UNOWNED, you may buy it from the Bank. IF OWNED, throw dice and pay owner a total ten times the amount thrown.",
+        "text": "ADVANCE TO THE NEAREST UTILITY. IF UNOWNED, you may buy it from the Bank. IF OWNED, roll and pay owner 10 times amount shown on dice.",
         "action": function () {
-              // TODO
+            if (currentPlayer.position < 12 || currentPlayer.position > 28) {
+                currentPlayer.jump(12);
+            } else {
+                currentPlayer.jump(28)
+            }
+            comesFromCard = true;
+            player_moved();
         }
     },
     {
         "id": 6,
         "text": "Bank pays you dividend of $50.",
-        "action": function () {  
+        "action": function () {
             currentPlayer.transaction(50);
         }
     },
@@ -97,7 +114,7 @@ const chanceCards = [{
         "text": "ADVANCE TO THE NEAREST RAILROAD. If UNOWNED, you may buy it from the Bank. If OWNED, pay owner twice the rental to which they are otherwise entitled.",
         "action": function () {
 
-             
+
             // TODO
 
         }
@@ -106,7 +123,7 @@ const chanceCards = [{
         "id": 8,
         "text": "Pay poor tax of $15.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(15);
         }
     },
@@ -114,7 +131,7 @@ const chanceCards = [{
         "id": 9,
         "text": "Take a trip to Reading Rail Road. If you pass \"GO\" collect $200.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(50);
 
             // TODO
@@ -124,7 +141,7 @@ const chanceCards = [{
         "id": 10,
         "text": "ADVANCE to Boardwalk.",
         "action": function () {
-             
+
             players[currentPlayerId].jump(39);
         }
     },
@@ -132,7 +149,7 @@ const chanceCards = [{
         "id": 11,
         "text": "ADVANCE to Illinois Avenue. If you pass \"GO\" collect $200.",
         "action": function () {
-             
+
 
             // TODO
 
@@ -179,7 +196,7 @@ const communityChestCards = [{
         "id": 1,
         "text": "You have won second prize in a beauty contest. Collect $10.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(10);
         }
     },
@@ -187,7 +204,7 @@ const communityChestCards = [{
         "id": 2,
         "text": "From sale of stock, you get $50.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(50);
         }
     },
@@ -195,7 +212,7 @@ const communityChestCards = [{
         "id": 3,
         "text": "Life insurance matures. Collect $100.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(100);
         }
     },
@@ -203,7 +220,7 @@ const communityChestCards = [{
         "id": 4,
         "text": "Income tax refund. Collect $20.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(20);
         }
     },
@@ -211,7 +228,7 @@ const communityChestCards = [{
         "id": 5,
         "text": "Holiday fund matures. Receive $100.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(100);
         }
     },
@@ -219,7 +236,7 @@ const communityChestCards = [{
         "id": 6,
         "text": "You inherit $100.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(100);
         }
     },
@@ -227,7 +244,7 @@ const communityChestCards = [{
         "id": 7,
         "text": "Receive $25 consultancy fee.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(25);
         }
     },
@@ -235,7 +252,7 @@ const communityChestCards = [{
         "id": 8,
         "text": "Pay hospital fees of $100.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(100);
         }
     },
@@ -243,7 +260,7 @@ const communityChestCards = [{
         "id": 9,
         "text": "Bank error in your favor. Collect $200.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(200);
         }
     },
@@ -251,7 +268,7 @@ const communityChestCards = [{
         "id": 10,
         "text": "Pay school fees of $50.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(-50);
         }
     },
@@ -259,7 +276,7 @@ const communityChestCards = [{
         "id": 11,
         "text": "Doctor's fee. Pay $50.",
         "action": function () {
-             
+
             players[currentPlayerId].transaction(-50);
         }
     },
@@ -267,7 +284,7 @@ const communityChestCards = [{
         "id": 12,
         "text": "It is your birthday. Collect $10 from every player.",
         "action": function () {
-             
+
             let filteredArray = players.filter(function (player) {
                 return player.id !== currentPlayerId;
             });
@@ -279,7 +296,7 @@ const communityChestCards = [{
         "id": 13,
         "text": "Advance to \"GO\" (Collect $200).",
         "action": function () {
-             
+
             players[currentPlayerId].jump(0);
             players[currentPlayerId].transaction(200);
         }
@@ -292,7 +309,7 @@ const communityChestCards = [{
     }, {
         "id": 15,
         "text": "Go to Jail. Go directly to Jail. Do not pass \"GO\". Do not collect $200.",
-        "action": function () { 
+        "action": function () {
             players[currentPlayerId].jump(10);
         }
     }

@@ -98,7 +98,7 @@ button_buy.addEventListener("click", function () {
 
 const button_pay_rent = document.getElementById("button_pay_rent");
 button_pay_rent.addEventListener("click", function () {
-    let rent = calculateRent(currentSquare) * multiplier;
+    let rent = calculateRent(currentSquare);
     currentPlayer.wallet -= rent;
     players[currentSquare.owner].wallet += rent;
     message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
@@ -107,7 +107,8 @@ button_pay_rent.addEventListener("click", function () {
 
 const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
 button_pay_rent_utility.addEventListener("click", function () {
-    let rent = calculateRent(currentSquare) * diceResult[2];
+    let rent;
+    comesFromCard === true ? rent = 10 * diceResult[2] : rent = calculateRent(currentSquare) * diceResult[2];
     currentPlayer.wallet -= rent;
     players[currentSquare.owner].wallet += rent;
     message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
@@ -189,10 +190,8 @@ const update_players_containers = () => {
         });
 
         // FREE JAIL CARD
-
+        $(`#player_jail_card_${player.id}`).html(`Free Jail Card? ${player.jailCard}`);
         // TODO
-
-
 
     });
     // COLOR IN NAME
@@ -255,11 +254,13 @@ const new_turn = () => {
 const player_rolled_dices = () => {
     currentTurnStatus.playerHasRolled = true;
     hide_all_buttons();
-    show_element(button_move);
-
+    //TODO WAITING FOR ANIMATIoN TO FINISH NOT WORKING
+    setTimeout(show_element(button_move), 4000);
 }
 
 /*------ STEP 3 ------*/
+let comesFromCard = false;
+
 const player_moved = () => {
     currentTurnStatus.playerHasMoved = true;
 
@@ -285,7 +286,6 @@ const player_moved = () => {
         /*------ IS IN INCOME TAX ------*/
         message(`current player is in Income Tax`);
         show_element(button_pay_200);
-
     } else {
         /*------ IS ON PROPERTY ------*/
 
@@ -304,40 +304,37 @@ const player_moved = () => {
                 show_element(button_end_turn);
             } else {
                 // OWNER IS OTHER PLAYER
+
                 if (currentPlayer.position === 12 || currentPlayer.position === 28) {
                     // UTILITY
-                    show_element(button_roll_dice_utility);
-                    if (calculateRent(currentSquare) === 4) {
+                    console.log(comesFromCard);
+                    if (comesFromCard === false) {
+                        show_element(button_roll_dice_utility);
+                        if (calculateRent(currentSquare) === 4) {
 
-                        message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
+                            message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
 
-                    } else if (calculateRent(currentSquare) === 10) {
-
-                        message(`${players[currentSquare.owner].name} owns both utilities. To determine rent, roll dices and the result will be multiplied by 10.`);
-
+                        } else if (calculateRent(currentSquare) === 10) {
+                            message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 10.`);
+                        } else {
+                            console.error("Something went wrong");
+                        }
                     } else {
-
-                        console.error("Something went wrong");
-
+                        show_element(button_roll_dice_utility);
                     }
-
                 } else {
                     // REGULAR PROPERTY
                     show_element(button_pay_rent);
                     message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare)} to ${players[currentSquare.owner].name}`);
                 }
-
-
             }
-
-
         }
     }
-
 }
 
 /*------ STEP 4 ------*/
 const player_completed_turn = () => {
+    comesFromCard = false;
     currentTurnStatus.playerHasFinished = true;
     hide_all_buttons();
     show_element(button_end_turn);

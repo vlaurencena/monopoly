@@ -588,7 +588,9 @@ margin: 0 auto;
     margin-bottom: 1rem;
 }
 
-
+.free-parking-img {
+    width: 50%;
+}
 
 
 @keyframes rollDices {

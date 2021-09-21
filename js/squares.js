@@ -942,12 +942,6 @@ let calculateRent = (property) => {
     }
 };
 
-
-// TODO DEED CARDS UTILITYES AND RAIROAD THE
-
-squares[1].owner = 1;
-squares[3].owner = 1;
-
 // EVENT LISTENER TO PROPERTY SQUARES
 let propertiesIds = [];
 let arrayOfProperties = squares.filter(property => property.price !== 0);
@@ -975,7 +969,7 @@ let createDeedCard = (property) => { // OBJECT
         property.name.includes("Electric") ? utilityImgSubstring = "electric-company" : utilityImgSubstring = "water-works";
         // UTILITY
         document.getElementById(`title-deed-container`).innerHTML =
-        `<div id="property_${property.id}" 
+            `<div id="property_${property.id}" 
             <div class="title-deed">
                 <img class="title-deed-img" src="media/${utilityImgSubstring}-icon.svg">
                 <div class="title-deed__header">${property.name.toUpperCase()}</div>
@@ -989,11 +983,13 @@ let createDeedCard = (property) => { // OBJECT
                 <li id="title-deed-mortage">Set mortage</li>
             </ul>
         </div>`
+        $("#title-deed-buy-house").hide();
+        $("#title-deed-sell-house").hide();
     } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
         // RAIL ROAD
         document.getElementById(`title-deed-container`).innerHTML =
 
-        `<div id="property_${property}" 
+            `<div id="property_${property}" 
         
             <div class="title-deed">
             <img class="title-deed-img" src="media/train-icon.svg">
@@ -1020,11 +1016,13 @@ let createDeedCard = (property) => { // OBJECT
             </ul>
 
         </div>`
+        $("#title-deed-buy-house").hide();
+        $("#title-deed-sell-house").hide();
     } else {
         // REGULAR PROPERTY
         document.getElementById(`title-deed-container`).innerHTML =
 
-        `<div id="property_${property}" 
+            `<div id="property_${property}" 
         
             <div class="title-deed">
 
@@ -1062,6 +1060,8 @@ let createDeedCard = (property) => { // OBJECT
         </div>`
 
         // TITLE DEED OPTIONS
+        $("#title-deed-buy-house").hide();
+        $("#title-deed-sell-house").hide();
         if (checkAllOwnersTheSame(property)) {
 
             if (checkPropertyCanBuyHouse(property)) {
@@ -1079,7 +1079,12 @@ let createDeedCard = (property) => { // OBJECT
                     createDeedCard(property);
                 });
             }
+        }
 
+        if (property.house === 4) {
+            $(`#title-deed-buy-house`).html("Buy hotel");
+        } else if (property.house === 5) {
+            $(`#title-deed-sell-house`).html("Sell hotel");
         }
     }
 
@@ -1087,9 +1092,10 @@ let createDeedCard = (property) => { // OBJECT
     $(`#title-deed-close`).click(function () {
         clearDeedContainer();
     });
-    $("#title-deed-buy-house").hide();
-    $("#title-deed-sell-house").hide();
-
+    console.log(property.owner)
+    if (property.owner === undefined) {
+        $(`#title-deed-mortage`).hide();
+    }
 }
 
 // TODO SET MORTAGE
@@ -1143,19 +1149,19 @@ let checkPropertyCanSellHouse = (property) => { // (OBJECT)
 }
 
 // PERFORM HOUSE BUY & SELL
-let buyHouse = (property) => { // (OBJECT)
+const buyHouse = (property) => { // (OBJECT)
     property.house += 1;
     players[property.owner].transaction(-property.housePrice);
     updateHousesDisplay(property);
 }
 
-let sellHouse = (property) => { // (OBJECT)
+const sellHouse = (property) => { // (OBJECT)
     property.house -= 1;
     players[property.owner].transaction(property.housePrice);
     updateHousesDisplay(property);
 }
 
-let updateHousesDisplay = (property) => { // (OBJECT)
+const updateHousesDisplay = (property) => { // (OBJECT)
     let squareColor = $(`#square-${property.id}`).children(".square-color");
     squareColor.empty();
     if (property.house === 0) {
@@ -1168,5 +1174,11 @@ let updateHousesDisplay = (property) => { // (OBJECT)
         squareColor.append(`<img class="hotel-icon" src="media/hotel-icon.svg" alt="">`);
     } else {
         console.error("House doesn't have a correct number of houses");
+    }
+}
+
+const updateAllHousesDisplay = () => {
+    for (property of arrayOfProperties) {
+        updateHousesDisplay(property);
     }
 }

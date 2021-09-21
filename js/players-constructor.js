@@ -1,3 +1,5 @@
+const animationDuration = 500;
+
 class Player {
     constructor(id, name, color, position, wallet, propertiesOwn, throwDoubles, anotherTurn, inJail, jailCard) {
         this.id = id;
@@ -27,7 +29,7 @@ class Player {
             setTimeout(() => {
                 document.getElementById(`dice_1`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
                 document.getElementById(`dice_2`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
-            }, i * 500);
+            }, i * animationDuration);
         }
 
         //  SET DICE RESULT IMAGES
@@ -35,7 +37,7 @@ class Player {
             console.log(`i is ${i}`)
             document.getElementById(`dice_1`).src = `media/dice-${dice1}.svg`;
             document.getElementById(`dice_2`).src = `media/dice-${dice2}.svg`;
-        }, ((i - 1) * 500) + 1);
+        }, ((i - 1) * animationDuration) + 1);
 
         if (dice1 === dice2) {
             //  THROW DOUBLES
@@ -117,12 +119,12 @@ class Player {
 
     }
 
-
     jump(newPosition) {
+        let token = $(`#token-player-${this.id}`);
+        token.remove();
+        $(`#token-holder-${newPosition}`).append(token);
         this.position = newPosition;
-        document.getElementById(`token-holder-${this.position}`).appendChild(document.getElementById(`token-player-${this.id}`));
         currentSquare = squares[this.position];
-
     }
 
     transaction(signAndAmount) {
