@@ -7,5 +7,3 @@
 // squares[12].owner = 2;
 // currentPlayer.move(12);
 // player_moved();
-
-

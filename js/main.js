@@ -79,6 +79,7 @@ button_roll_dice_in_jail.addEventListener("click", function () {
 const button_pay_50 = document.getElementById("button_pay_50");
 button_pay_50.addEventListener("click", function () {
     currentPlayer.transaction(-50);
+    currentPlayer.getOutOfJail();
     player_completed_turn();
 });
 
@@ -221,7 +222,7 @@ const new_turn = () => {
     update_players_containers();
     message(`It's ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
 
-    if (currentPlayer.isInJail) {
+    if (currentPlayer.inJail) {
         /*--- IS IN JAIL ---*/
         message(`You are in jail. (currentPlayer.isInJail = ${currentPlayer.isInJail}`);
         show_element(button_pay_50);

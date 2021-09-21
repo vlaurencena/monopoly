@@ -897,7 +897,6 @@ let squares = [{
         "mortage": false
     }
 ];
-
 // CALCULATE RENT
 
 // RETURNS RENT, EXCEPT UTILITY THAT RETURN VALUE THAT NEEDS TO BE MULTIPLIED BY DICE RESULT
@@ -919,7 +918,27 @@ let calculateRent = (property) => {
                 counter++;
             }
         }
-        return counter * 25;
+        if (comesFromCard === false) {
+            if (counter === 1) {
+                return 25;
+            } else if (counter === 2) {
+                return 50;
+            } else if (counter === 3) {
+                return 100;
+            } else if (counter === 4) {
+                return 200;
+            }
+        } else if (comesFromCard === true) {
+            if (counter === 1) {
+                return 50;
+            } else if (counter === 2) {
+                return 100;
+            } else if (counter === 3) {
+                return 200;
+            } else if (counter === 4) {
+                return 400;
+            }
+        }
 
     } else {
 

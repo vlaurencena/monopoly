@@ -5,7 +5,7 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const realVersion = true;
+const realVersion = false;
 
 if (localStorage.length === 0) {
 
@@ -32,10 +32,10 @@ if (localStorage.length === 0) {
                     const getName = () => {
                         const publicKey = "2cbc1527cffc69d668e63c9a86cfc013";
                         const hash = "9fec144e8c5f068531d1ce7c701987f5";
-                        const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-                        let randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        console.log(randomLetter);
-                        let URL = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${randomLetter}&ts=1&apikey=${publicKey}&hash=${hash}`;
+                        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+                        let randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        console.log(randomCharacter);
+                        let URL = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${randomCharacter}&ts=1&apikey=${publicKey}&hash=${hash}`;
                         $.get(URL, function (respuesta, estado) {
                             if (estado === "success") {
                                 console.log(respuesta);
