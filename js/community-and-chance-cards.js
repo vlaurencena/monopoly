@@ -43,7 +43,7 @@ const chanceCards = [{
         "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
         "action": function () {
             currentPlayer.jailCard = true;
-            update_players_containers();
+            updatePlayersContainers();
         }
     },
     {
@@ -140,8 +140,10 @@ const chanceCards = [{
         "id": 9,
         "text": "Take a trip to Reading Rail Road. If you pass \"GO\" collect $200.",
         "action": function () {
+            if (currentPlayer.position > 5) {
+                currentPlayer.transaction(200);
+            }
             currentPlayer.jump(5);
-            currentPlayer.transaction(200);
             player_moved();
         }
     },
@@ -189,6 +191,8 @@ const chanceCards = [{
             comesFromCard = true;
             player_moved();
         }
+
+        //TODO DOESNT ALLOW TO BUY IT
     },
     {
         "id": 14,

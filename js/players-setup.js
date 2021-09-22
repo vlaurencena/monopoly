@@ -73,7 +73,7 @@ if (localStorage.length === 0) {
 
             for (i = 0; i < arrayOfNames.length; i++) {
                 let playerName = arrayOfNames[i].value;
-                players.push(new Player(i, playerName, tokenColors[i], 0, initialMoney, [], 0, false, false, false));
+                players.push(new Player(i, playerName, tokenColors[i], 0, initialMoney, 0, false, false, false));
                 allPlayersIds.push(i);
 
                 if (i % 2 !== 0) {
@@ -125,7 +125,7 @@ if (localStorage.length === 0) {
 
         for (i = 0; i < 4; i++) {
 
-            players.push(new Player(i, `Player ${tokenColors[i]}`, tokenColors[i], 0, initialMoney, [], 0, false, false, false));
+            players.push(new Player(i, `Player ${tokenColors[i]}`, tokenColors[i], 0, initialMoney, 0, false, false, false));
             allPlayersIds.push(i);
 
             /*------ PLAYERS CONTAINER ------*/

@@ -108,7 +108,7 @@ if (localStorage.length === 0) {
     });
 
     $("#form_player_setup").hide();
-    update_players_containers(); // MAIN
+    updatePlayersContainers(); // MAIN
 
     /*------ CONTINUE CURRENT GAMEPLAY ------*/
 
@@ -138,3 +138,5 @@ if (localStorage.length === 0) {
 };
 
 // TODO -> CURRENT CHEST/CHANCE CARD IS NOT SAVED
+
+// TODO -> CARD SENDING TO UTILITY OR RAILRAOD NOT WORKING OK

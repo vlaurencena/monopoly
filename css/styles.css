@@ -593,6 +593,12 @@ input[type="radio"] {
     width: 50%;
 }
 
+.mortage-sign {
+    color: black;
+    font-weight: bold;
+    margin: auto;
+}
+
 
 @keyframes rollDices {
     from {}

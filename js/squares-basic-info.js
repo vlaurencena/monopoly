@@ -116,7 +116,7 @@ let squares = [{
             35
         ],
         // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -278,7 +278,7 @@ let squares = [{
             28
         ],
         // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -354,7 +354,7 @@ let squares = [{
             35
         ],
         // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -587,7 +587,7 @@ let squares = [{
             35
         ],
         // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -661,7 +661,7 @@ let squares = [{
             28
         ],
         // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -825,7 +825,7 @@ let squares = [{
             35
         ],
         // // "canBuyHouse": false,
-        // "house": 0,
+        "house": 0,
         // "hotel": 0,
         // // "groupIDsSameOwner": [],
         // "baseRent": 0,
@@ -925,382 +925,3 @@ let squares = [{
         "mortage": false
     }
 ];
-// CALCULATE RENT
-
-// RETURNS RENT, EXCEPT UTILITY THAT RETURN VALUE THAT NEEDS TO BE MULTIPLIED BY DICE RESULT
-let calculateRent = (property) => {
-    if (property.id === 12 || property.id === 28) {
-        // UTILITY
-        if (squares[12].owner === squares[28].owner) {
-            return 10;
-        } else {
-            return 4;
-        }
-    } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
-        // RAILROAD
-        let arrayOfRailroads = [squares[5], squares[15], squares[25], squares[35]];
-        let counter = 0;
-        for (let railroad of arrayOfRailroads) {
-
-            if (property.owner === railroad.owner) {
-                counter++;
-            }
-        }
-        if (comesFromCard === false) {
-            if (counter === 1) {
-                return 25;
-            } else if (counter === 2) {
-                return 50;
-            } else if (counter === 3) {
-                return 100;
-            } else if (counter === 4) {
-                return 200;
-            }
-        } else if (comesFromCard === true) {
-            if (counter === 1) {
-                return 50;
-            } else if (counter === 2) {
-                return 100;
-            } else if (counter === 3) {
-                return 200;
-            } else if (counter === 4) {
-                return 400;
-            }
-        }
-
-    } else {
-
-        switch (property.house) {
-            case 2:
-                return property.rent2;
-                break;
-            case 3:
-                return property.rent3;
-                break;
-            case 4:
-                return property.rent4;
-                break;
-            case 5:
-                return property.rent5;
-                break;
-            default:
-                return property.rent1;
-        }
-    }
-};
-
-// EVENT LISTENER TO PROPERTY SQUARES
-let propertiesIds = [];
-let arrayOfProperties = squares.filter(property => property.price !== undefined);
-for (let property of arrayOfProperties) {
-    propertiesIds.push(property.id);
-}
-
-for (let id of propertiesIds) {
-    $(`#square-${id}`).click(function () {
-        let getId = this.id.split("-")[1];
-        let selectedProperty = squares[getId];
-        createDeedCard(selectedProperty);
-    });
-}
-// CREATE DEED CARD
-const clearDeedContainer = () => {
-    document.getElementById(`title-deed-container`).innerHTML = ``;
-}
-
-let createDeedCard = (property) => { // OBJECT
-    clearDeedContainer();
-
-    if (property.id === 12 || property.id === 28) {
-        let utilityImgSubstring;
-        property.name.includes("Electric") ? utilityImgSubstring = "electric-company" : utilityImgSubstring = "water-works";
-        // UTILITY
-        document.getElementById(`title-deed-container`).innerHTML =
-            `<div id="property_${property.id}" 
-            <div class="title-deed">
-                <img class="title-deed-img" src="media/${utilityImgSubstring}-icon.svg">
-                <div class="title-deed__header">${property.name.toUpperCase()}</div>
-                <div class="title-deed__utility-descripton">
-                    <div>If one "Utility" is owned rent is 4 times amount shown on dice.</div>
-                    <div>If both "Utilities are owned rent is 10 times amount shown on dice.</div>
-                </div>
-            </div>
-            <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-mortage">Set mortage</li>
-            </ul>
-        </div>`
-        $("#title-deed-buy-house").hide();
-        $("#title-deed-sell-house").hide();
-    } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
-        // RAIL ROAD
-        document.getElementById(`title-deed-container`).innerHTML =
-
-            `<div id="property_${property}" 
-        
-            <div class="title-deed">
-            <img class="title-deed-img" src="media/train-icon.svg">
-                    <div class="title-deed__info">
-                    <div class="title-deed__header">${property.name.toUpperCase()}</div>
-                        <div>RENT $25</div>
-                        <div class="title-deed__houses-prices">
-                            <div>If 2 R.R.'s are owned</div>
-                            <div>$50</div>
-                            <div>If 3 R.R.'s are owned</div>
-                            <div>$100</div>
-                            <div>If 4 R.R.'s are owned</div>
-                            <div>$200</div>
-                        </div>
-                        <div>Mortage Value FALTA</div>
-                    </div>            
-            </div>
-
-            <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-mortage">Set mortage</li>
-                <li id="title-deed-buy-house">Buy House</li>
-                <li id="title-deed-sell-house">Sell House</li>
-            </ul>
-
-        </div>`
-        $("#title-deed-buy-house").hide();
-        $("#title-deed-sell-house").hide();
-    } else {
-        // REGULAR PROPERTY
-        document.getElementById(`title-deed-container`).innerHTML =
-
-            `<div id="property_${property}" 
-        
-            <div class="title-deed">
-
-                <div class="title-deed__header color-${property.groupColor}">${property.name.toUpperCase()}</div>
-                    <div class="title-deed__info">
-                        <div>RENT $${property.baseRent}</div>
-                        <div class="title-deed__houses-prices">
-                            <div>With 1 House</div>
-                            <div>$${property.rent1}</div>
-                            <div>With 2 Houses</div>
-                            <div>$${property.rent2}</div>
-                            <div>With 3 Houses</div>
-                            <div>$${property.rent3}</div>
-                            <div>With 4 Houses</div>
-                            <div>$${property.rent4}</div>
-                        </div>
-                        <div>With HOTEL $${property.rent5}</div>
-                        <div>Mortage Value FALTA</div>
-                        <div>Houses Cost $${property.housePrice} each</div>
-                        <div>Hoteles, $${property.housePrice}, plus 4 Houses</div>
-                    </div>
-                <div class="title-deed__bottom-line">If player owns ALL the Lots of any Color Group, the rent is
-                Doubled on Uninproved Lots in that
-                group.</div>
-            
-            </div>
-
-            <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-mortage">Set mortage</li>
-                <li id="title-deed-sell-property">Sell property</li>
-                <li id="title-deed-buy-house">Buy House</li>
-                <li id="title-deed-sell-house">Sell House</li>
-            </ul>
-
-        </div>`
-
-        // TITLE DEED OPTIONS
-        $("#title-deed-buy-house").hide();
-        $("#title-deed-sell-house").hide();
-        $("#title-deed-sell-property").hide();
-        if (checkAllOwnersTheSame(property)) {
-
-            if (checkPropertyCanBuyHouse(property)) {
-                $(`#title-deed-buy-house`).show();
-                $(`#title-deed-buy-house`).click(function () {
-                    buyHouse(property);
-                    createDeedCard(property);
-                });
-            }
-
-            if (checkPropertyCanSellHouse(property)) {
-                $(`#title-deed-sell-house`).show();
-                $(`#title-deed-sell-house`).click(function () {
-                    sellHouse(property);
-                    createDeedCard(property);
-                });
-            }
-        }
-
-        if (property.owner !== undefined && property.house === 0) {
-            $(`#title-deed-sell-property`).show();
-            $(`#title-deed-sell-property`).click(function () {
-                sellPropertyDisplay(property);
-            });
-        }
-
-        if (property.house === 4) {
-            $(`#title-deed-buy-house`).html("Buy hotel");
-        } else if (property.house === 5) {
-            $(`#title-deed-sell-house`).html("Sell hotel");
-        }
-    }
-
-
-    // TODO SET Mortage
-    
-    // CLOSE TITLE DEED
-    $(`#title-deed-close`).click(function () {
-        clearDeedContainer();
-    });
-    console.log(property.owner)
-    if (property.owner === undefined) {
-        $(`#title-deed-mortage`).hide();
-    }
-}
-
-
-// AUCTION PROPERTY
-
-let sellPropertyDisplay = (property) => {
-    let filteredArray = players.filter(function (player) {
-        return player.id !== property.owner;
-    });
-
-
-    console.log(filteredArray)
-    $(`.board`).append(`
-    <div class="sell-property-container">
-    <div class="sell-property-popup">
-        <p class="sell-property-title">${players[property.owner].name}, do you want to sell ${property.name}?</p>
-        <p>Who are you selling it to?<p>
-        <form class="sell-property-buyer">
-        </form>
-    
-    </div>
-    </div>`);
-
-    for (let player of filteredArray) {
-        $(".sell-property-buyer").append(
-            `<input type="radio" id="player_${player.id}_wants_to_buy" name="buyer" value="${player.id}" required">
-            <label for="value-${player.id}">${player.name}</label><br>`
-        )
-    }
-
-    $(".sell-property-buyer").append(`
-        <label for="amoun">How much will he or she pay?:</label>
-        <input type="text" id="sale_amount" name="sale-amount" required
-        size="10">
-       <input id="confirm_sale" type="submit" value="Sell property">`
-    )
-
-    $("#confirm_sale").click(function (event) {
-        console.log(property.owner);
-        event.preventDefault();
-        let transactionInfo = $('.sell-property-buyer').serializeArray();
-        console.log(transactionInfo);
-        players[property.owner].transaction(parseInt(transactionInfo[1].value));
-        console.log(transactionInfo[1].value);
-        property.owner = transactionInfo[0].value;
-        players[property.owner].transaction(parseInt(-transactionInfo[1].value));
-        console.log(property.owner);
-        removeSellPropertyDisplay();
-    })
-
-    $(".sell-property-popup").append(`<div id="close-sell-property-container">Close</div>`);
-
-    $("#close-sell-property-container").click(function () {
-        removeSellPropertyDisplay();
-    });
-
-
-    $("#player_bank_wants_to_buy").change(function () {
-        $("#sale_amount").val(property.price);
-    });
-
-}
-
-let removeSellPropertyDisplay = () => {
-    $(".sell-property-container").remove();
-}
-
-
-// VALIDATE HOUSE BUY & SELL
-
-let checkAllOwnersTheSame = (property) => { // OBJECT
-    let allOwnersTheSame = true;
-    let groupPropertiesIds = property.groupIDs;
-    let groupPropertiesOwners = [];
-    for (let property of groupPropertiesIds) {
-        groupPropertiesOwners.push(squares[property].owner);
-    }
-    for (owner of groupPropertiesOwners) {
-        if (owner !== property.owner || owner === undefined) {
-            allOwnersTheSame = false;
-        }
-    }
-    return allOwnersTheSame;
-}
-
-let checkPropertyCanBuyHouse = (property) => { // (OBJECT)
-    let canBuy = true;
-    let groupPropertiesIds = property.groupIDs;
-    let groupProperties = [];
-    for (let property of groupPropertiesIds) {
-        groupProperties.push(squares[property]);
-    }
-    for (let i = 0; i < groupProperties.length; i++) {
-        if (property.house >= 5 || property.house > groupProperties[i].house) {
-            canBuy = false;
-        }
-    }
-    return canBuy;
-}
-
-let checkPropertyCanSellHouse = (property) => { // (OBJECT)
-    let canSell = true;
-    let groupPropertiesIds = property.groupIDs;
-    let groupProperties = [];
-    for (let property of groupPropertiesIds) {
-        groupProperties.push(squares[property]);
-    }
-    for (let i = 0; i < groupProperties.length; i++) {
-        if (property.house <= 0 || property.house < groupProperties[i].house) {
-            canSell = false;
-        }
-    }
-    return canSell;
-}
-
-// PERFORM HOUSE BUY & SELL
-const buyHouse = (property) => { // (OBJECT)
-    property.house += 1;
-    players[property.owner].transaction(-property.housePrice);
-    updateHousesDisplay(property);
-}
-
-const sellHouse = (property) => { // (OBJECT)
-    property.house -= 1;
-    players[property.owner].transaction(property.housePrice / 2);
-    updateHousesDisplay(property);
-}
-
-const updateHousesDisplay = (property) => { // (OBJECT)
-    let squareColor = $(`#square-${property.id}`).children(".square-color");
-    squareColor.empty();
-    if (property.house === 0) {
-        // DO NOTHING
-    } else if (property.house > 0 && property.house < 5) {
-        for (let i = 0; i < property.house; i++) {
-            squareColor.append(`<img class="house-icon" src="media/house-icon.svg" alt="">`);
-        }
-    } else if (property.house === 5) {
-        squareColor.append(`<img class="hotel-icon" src="media/hotel-icon.svg" alt="">`);
-    } else {
-        console.error("House doesn't have a correct number of houses");
-    }
-}
-
-const updateAllHousesDisplay = () => {
-    for (property of arrayOfProperties) {
-        updateHousesDisplay(property);
-    }
-}

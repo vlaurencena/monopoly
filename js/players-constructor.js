@@ -1,13 +1,12 @@
-const animationDuration = 500;
+// TODO correct propertiesIdsOwn
 
 class Player {
-    constructor(id, name, color, position, wallet, propertiesOwn, throwDoubles, anotherTurn, inJail, jailCard) {
+    constructor(id, name, color, position, wallet, throwDoubles, anotherTurn, inJail, jailCard) {
         this.id = id;
         this.name = name;
         this.color = color;
         this.position = position;
         this.wallet = wallet;
-        this.propertiesOwn = propertiesOwn;
         this.throwDoubles = throwDoubles;
         this.anotherTurn = anotherTurn;
         this.inJail = inJail;
@@ -16,28 +15,10 @@ class Player {
 
     rollDices() {
 
-        //  ROLL DICE
-        let dice1 = Math.ceil(Math.random() * 6);
-        let dice2 = Math.ceil(Math.random() * 6);
-
-        //  ANIMATE DICE IMAGES
-        document.getElementById(`dice_1`).classList.add("animation-roll-dices");
-        document.getElementById(`dice_2`).classList.add("animation-roll-dices");
-
-        let i = 0;
-        for (i; i <= 10; i++) {
-            setTimeout(() => {
-                document.getElementById(`dice_1`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
-                document.getElementById(`dice_2`).src = `media/dice-${Math.ceil(Math.random() * 6)}.svg`;
-            }, i * animationDuration);
-        }
-
-        //  SET DICE RESULT IMAGES
-        setTimeout(() => {
-            console.log(`i is ${i}`)
-            document.getElementById(`dice_1`).src = `media/dice-${dice1}.svg`;
-            document.getElementById(`dice_2`).src = `media/dice-${dice2}.svg`;
-        }, ((i - 1) * animationDuration) + 1);
+        let playerDices = getDicesResult();
+        let dice1 = playerDices[0];
+        let dice2 = playerDices[1];
+        animateDices(dice1, dice2);
 
         if (dice1 === dice2) {
             //  THROW DOUBLES
@@ -55,9 +36,8 @@ class Player {
                 this.goToJail();
                 this.throwDoubles = 0;
                 this.anotherTurn = false;
-                document.getElementById(`extra-turn`).innerHTML = ``;
-                document.getElementById(`extra-turn-amount`).innerHTML = ``;
-                player_completed_turn();
+                document.getElementById(`extra-turn`).delay(diceAnimationDuration).innerHTML = ``;
+                document.getElementById(`extra-turn-amount`).delay(diceAnimationDuration).innerHTML = ``;
             }
 
         } else {
@@ -67,10 +47,7 @@ class Player {
             this.throwDoubles = 0;
             this.anotherTurn = false;
         }
-
-        //RETURN
-        return [dice1, dice2, dice1 + dice2];
-
+        return playerDices;
     }
 
     move(positions) {
@@ -137,25 +114,14 @@ class Player {
             message(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
         }
 
-        update_players_containers();
+        updatePlayersContainers();
 
     }
 
-    buy(property) {
-
+    buyProperty(property) {
         this.wallet -= property.price;
-
-        document.querySelector(`#player_wallet_${this.id}`).innerHTML =
-            `$${this.wallet}`;
-
         message(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
-
         property.owner = this.id;
-
-        document.querySelector(`#square-${property.id}`).classList.add(`property-of-player-${currentPlayer.color}`);
-
-        this.propertiesOwn.push(property);
-
 
     }
 
@@ -164,7 +130,6 @@ class Player {
         this.jump(10);
         this.inJail = true;
         player_completed_turn();
-
     }
 
     getOutOfJail() {
@@ -205,8 +170,5 @@ class Player {
 
         document.getElementById(`dice_1`).src = `media/dice-0.png`;
         document.getElementById(`dice_2`).src = `media/dice-0.png`;
-        document.getElementById(`dice_1`).classList.remove("animation-roll-dices");
-        document.getElementById(`dice_2`).classList.remove("animation-roll-dices");
-
     }
 }
