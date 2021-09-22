@@ -138,4 +138,3 @@ if (localStorage.length === 0) {
 };
 
 // TODO -> CURRENT CHEST/CHANCE CARD IS NOT SAVED
-// TODO -> DOESN't RETRIEVE CURRENT SQUARE

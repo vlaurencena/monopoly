@@ -341,3 +341,4 @@ const player_completed_turn = () => {
     hide_all_buttons();
     show_element(button_end_turn);
 }
+

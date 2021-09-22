@@ -1,6 +1,3 @@
-// TODO -> SELECT ALL BUTTONS AND TRIGGER THEM RANDOMLY
-
-
 // for (let i = 0; i < 40; i++) {
 
 //     let buttons_tester = $("button:visible");

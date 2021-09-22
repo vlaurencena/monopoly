@@ -339,3 +339,4 @@ const checkTotalHousesAndHotel = (player) => {
     return total;
 }
 
+// TODO JUMP TO UTILITY DOESNT GIVE THE OPTION TO BUY
