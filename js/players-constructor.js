@@ -14,10 +14,9 @@ class Player {
     }
 
     rollDices() {
-
-        let playerDices = getDicesResult();
-        let dice1 = playerDices[0];
-        let dice2 = playerDices[1];
+        let randomDice = getDicesResult();
+        let dice1 = randomDice[0];
+        let dice2 = randomDice[1];
         animateDices(dice1, dice2);
 
         if (dice1 === dice2) {
@@ -42,12 +41,14 @@ class Player {
 
         } else {
             //  NOT THROW DOUBLES
+
+            // TODO LEAVE ONLY this.things AND REMOVE EVERY ANIMATION AND INTERACTION WITH BOARD
             document.getElementById(`extra-turn`).innerHTML = ``;
             document.getElementById(`extra-turn-amount`).innerHTML = ``;
             this.throwDoubles = 0;
             this.anotherTurn = false;
         }
-        return playerDices;
+        return randomDice;
     }
 
     move(positions) {

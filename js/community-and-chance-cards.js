@@ -22,7 +22,6 @@ const shuffle = (array) => {
 
 // SHUFFLE CARDS ARRAYS
 shuffle(chest_cards_order);
-
 shuffle(chance_cards_order);
 
 // PICK UP CARD
@@ -31,6 +30,8 @@ random_chance_card = () => {
     selectedCard = chanceCards[card]; // SELECT THE CARD
     chance_cards_order.push(card); // PUSH IT TO THE END
 }
+
+// TODO REMOVE ALL PROPERTIES OWNE IN CHANCE CARDS
 
 random_chest_card = () => {
     let card = chest_cards_order.shift();
@@ -330,7 +331,7 @@ const communityChestCards = [{
         }
     }
 ]
-
+// TODO CHAGNE TO RETURN TOTAL HOUSES AND HOTEL
 const checkTotalHousesAndHotel = (player) => {
     let total = 0;
     for (let property of player.propertiesOwn) {

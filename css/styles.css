@@ -24,6 +24,7 @@ main {
     display: grid;
     grid-template-columns: repeat(13, minmax(0, 1fr));
     grid-template-rows: repeat(13, minmax(0, 1fr));
+    background-color: #CDE6D0;
 }
 
 ul li {
@@ -91,6 +92,7 @@ ul li {
 }
 
 .square-10-just-visting {
+    position: relative;
     grid-area: 1 / 1 / 4 / 2;
     background-color: gray;
 }
@@ -378,7 +380,7 @@ input[type="radio"] {
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
-    background-color: lightblue;
+    /* background-color: lightblue; */
 }
 
 #player-container-1>div,
@@ -638,4 +640,49 @@ input[type="radio"] {
 
 .sell-property-title {
     font-size: 2rem;
+}
+
+.rules-container {
+    position: absolute;
+    min-width: 100vw;
+    min-height: 100vh;
+    background-color: white;
+    z-index: 1;
+    padding: 5rem 15rem;
+    line-height: 1.5;
+    display: none;
+}
+
+.rules-title {
+    font-size: 3rem;
+}
+
+.rules-subtitle {
+    font-size: 1.5rem;
+}
+
+.open-rules-monopoly-board {
+    grid-area: 10 / 4 / 11 / 6;
+}
+
+.open-rules-monopoly-board {
+    grid-area: 10 / 4 / 11 / 6;
+    margin: auto;
+}
+
+.open-rules-monopoly-player-setup {
+    margin-top: 5rem;
+}
+
+.just-text {
+    position: absolute;
+    left: 10px;
+    margin-top: 40%;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.visiting-text {
+    position: absolute;
+    bottom: 10px;
 }

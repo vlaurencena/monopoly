@@ -5,7 +5,7 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const realVersion = false;
+const realVersion = true;
 
 if (localStorage.length === 0) {
 
@@ -41,7 +41,7 @@ if (localStorage.length === 0) {
                                 console.log(respuesta);
                                 let randomIndex = Math.floor(Math.random() * respuesta.data.results.length);
                                 console.log(randomIndex);
-                                $(`#player_name_${playerID}`).val(respuesta.data.results[randomIndex].name);
+                                $(`#name_${playerID}`).val(respuesta.data.results[randomIndex].name);
                                 $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
                             }
                         });
@@ -56,7 +56,7 @@ if (localStorage.length === 0) {
             for (let i = 0; i < number; i++) {
                 $("#form_player_info").append(`
                 <label for="player_${i}">Player ${i + 1} Name:</label>
-                <input type="text" id="player_name_${i}" name="player-${i}" required>
+                <input type="text" id="name_${i}" name="player-${i}" required>
                 <input class="get-superhero-name" type="button" id="superhero-${i}" value="I want a Marvel superhero name!"><br>
                 `);
             }
@@ -111,8 +111,9 @@ if (localStorage.length === 0) {
             }
             $("#form_player_setup").hide();
             start_new_game();
-            new_turn();
-            update_local_storage();
+            newTurn();
+            updatePlayersContainers();
+           // update_local_storage();
         });
 
 
@@ -165,12 +166,10 @@ if (localStorage.length === 0) {
 
         $("#form_player_setup").hide();
         start_new_game();
-        new_turn();
+        newTurn();
 
     }
 
 }
-// Your public key
-// 2cbc1527cffc69d668e63c9a86cfc013
-// Your private key
-// b79b9a1797c8ffb07da1c149ea4463077b610281
+
+// TODO ROLL DICES TO SEE WHO STARTS (IDEA USE FOR SETS OF DICES)

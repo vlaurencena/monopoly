@@ -28,7 +28,7 @@ const button_roll_dice = document.getElementById("button_roll_dice");
 button_roll_dice.addEventListener("click", function () {
     diceResult = currentPlayer.rollDices();
     animateDices(diceResult[0], diceResult[1]);
-    player_rolled_dices();
+    playerRolledDices();
 });
 
 const button_move = document.getElementById("button_move");
@@ -45,7 +45,7 @@ button_end_turn.addEventListener("click", function () {
         "playerHasMoved": false,
         "playerHasFinished": false
     }
-    new_turn();
+    newTurn();
     diceResult = [];
 });
 
@@ -91,6 +91,7 @@ button_pay_200.addEventListener("click", function () {
 const button_buy = document.getElementById("button_buy");
 button_buy.addEventListener("click", function () {
     currentPlayer.buyProperty(currentSquare);
+    updateSquaresDisplay();
     player_completed_turn();
 });
 
@@ -165,8 +166,8 @@ const start_new_game = () => {
     diceResult = [];
 }
 
-const new_turn = () => {
-
+const newTurn = () => {
+    $("#button_end_turn").html("End turn");
     hide_all_buttons();
     updatePlayersContainers();
     message(`It's ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
@@ -201,12 +202,13 @@ const new_turn = () => {
 
 /*------ STEP 2 ------*/
 
-const player_rolled_dices = () => {
+const playerRolledDices = () => {
     currentTurnStatus.playerHasRolled = true;
     hide_all_buttons();
     setTimeout(function () {
         show_element(button_move)
     }, diceAnimationDuration + 10);
+
 }
 
 /*------ STEP 3 ------*/
@@ -214,7 +216,9 @@ let comesFromCard = false;
 
 const player_moved = () => {
     currentTurnStatus.playerHasMoved = true;
-
+    if (currentPlayer.anotherTurn) {
+        $("#button_end_turn").html("Play again");
+    }
     hide_all_buttons();
 
     if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
@@ -246,6 +250,7 @@ const player_moved = () => {
             console.log(`current player is in on property with NO owner`);
             show_element(button_buy);
             show_element(button_end_turn);
+
         } else {
             console.log(`current player is in on property with YES owner`);
             if (currentSquare.owner === currentPlayerId || currentSquare.mortage === true) {
@@ -288,3 +293,5 @@ const player_completed_turn = () => {
     hide_all_buttons();
     show_element(button_end_turn);
 }
+
+// TODO Congratulations, you have just bought LUXURY TAX. Now you have $NaN on your wallet

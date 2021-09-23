@@ -23,7 +23,7 @@ all_buttons.addEventListener("click", function () {
 });
 
 // RETRIEVE LOCAL STORAGE
-const retrieve_local_storage = () => {
+const retrieveLocalStorage = () => {
     // PLAYERS ARRAY
     players = [];
     let string_of_players = JSON.parse(localStorage.getItem("players"));
@@ -44,13 +44,13 @@ const retrieve_local_storage = () => {
 /*------ CHECK LOCAL STORAGE ------*/
 if (localStorage.length === 0) {
     // IS EMPTY
-    console.log("local storage is empty");
+    console.log("Local Storage is empty");
 
 } else {
     // IS NOT EMPTY
-    console.log("local storage has something");
+    console.log("Local Storage has something");
     $("#form_player_setup").hide();
-    retrieve_local_storage();
+    retrieveLocalStorage();
 
     // CREATE PLAYER CONTAINER
     for (i = 0; i < players.length; i++) {
@@ -121,10 +121,10 @@ if (localStorage.length === 0) {
 
     if (currentTurnStatus.playerHasRolled === false) {
         currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
-        new_turn();
+        newTurn();
     } else if (currentTurnStatus.playerHasRolled === true && currentTurnStatus.playerHasMoved === false) {
         currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
-        player_rolled_dices();
+        playerRolledDices();
 
     } else if (currentTurnStatus.playerHasMoved === true && currentTurnStatus.playerHasFinished === false) {
         currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
@@ -140,3 +140,5 @@ if (localStorage.length === 0) {
 // TODO -> CURRENT CHEST/CHANCE CARD IS NOT SAVED
 
 // TODO -> CARD SENDING TO UTILITY OR RAILRAOD NOT WORKING OK
+
+// TODO -> CHECK IF THROW DOUBLES WORKS OK

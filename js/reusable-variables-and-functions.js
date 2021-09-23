@@ -3,6 +3,15 @@
 let arrayOfProperties = squares.filter(property => property.price !== undefined);
 let propertiesIds = arrayOfProperties.map(property => property.id);
 
+/*----- OPEN AND CLOSE RULES ------*/
+
+$("#button_close_rules").click(function () {
+    $(".rules-container").hide();
+});
+$(".open-rules-monopoly ").click(function () {
+    $(".rules-container").show();
+});
+
 /*----- ROLL DICE ------*/
 
 let getDicesResult = () => {
@@ -77,7 +86,6 @@ const updateSquaresDisplay = () => {
 }
 
 /*------ UPDATE PLAYERS CONTAINERS ------*/
-squares[1].owner = 1;
 
 const updatePlayersContainers = () => {
 
@@ -90,12 +98,9 @@ const updatePlayersContainers = () => {
         propertiesOwnByThisPlayer.forEach(property => {
             $(`#player_properties_${property.owner}`).append(`<li>${property.name}</li>`);
         })
-
-        // // FREE JAIL CARD
-        // $(`#player_jail_card_${player.id}`).html(`Free Jail Card? ${player.jailCard}`);
-        // // TODO
+        // FREE JAIL CARD
+        $(`#player_jail_card_${player.id}`).html(`Free Jail Card? ${player.jailCard}`);
     });
-
     // COLOR IN NAME
     document.getElementById(`player_name_${currentPlayer.id}`).classList.add(`player-${currentPlayer.color}-turn`);
     const notCurrentPlayersIds = allPlayersIds.filter(playerId => playerId !== currentPlayerId);
