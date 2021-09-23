@@ -77,7 +77,7 @@ class Player {
 
             setTimeout(() => {
                 document.getElementById(`token-holder-${transition}`).appendChild(document.getElementById(`token-player-${this.id}`));
-            }, i * 20);
+            }, i * 100);
 
         }
 

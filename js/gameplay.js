@@ -1,5 +1,5 @@
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
-const diceAnimationDuration = 100;
+const diceAnimationDuration = 5000;
 let currentPlayerId = undefined;
 let currentPlayer = [];
 let currentSquare = [];
