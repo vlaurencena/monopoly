@@ -5,7 +5,7 @@ const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
-const realVersion = true;
+const realVersion = false;
 
 if (localStorage.length === 0) {
 
@@ -113,7 +113,7 @@ if (localStorage.length === 0) {
             start_new_game();
             newTurn();
             updatePlayersContainers();
-           // update_local_storage();
+            // update_local_storage();
         });
 
 
@@ -148,9 +148,11 @@ if (localStorage.length === 0) {
                 document.querySelector("#player-container-1").innerHTML =
                     document.querySelector("#player-container-1").innerHTML +=
                     `<div id="player-${i}">
+                    <div>
                                     <div id="player_name_${i}" class="player-name">Player ${tokenColors[i]}</div>
                                     <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
                                     <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
+                                    </div>
                                     <div class="player-list-of-properties">List of properties</div>
                                     <ul id=player_properties_${i}>
                                     </ul>
@@ -169,6 +171,45 @@ if (localStorage.length === 0) {
         newTurn();
 
     }
+
+    players.forEach(player =>
+        $(`#player-${player.id}`).append(`<button id="quit_player_${player.id}" class="player-quit-game">Quit game</button>`)
+    )
+
+
+
+}
+
+// QUIT GAME
+
+const checkPlayerNoMoney = () => {
+    players.forEach(function (player) {
+        if (player.wallet < 0) {
+            message(`${player.name} run out of money. Set mortages or sell properties, hotels or houses. Or you can quit the game.`);
+            hide_all_buttons();
+        }
+    })
+}
+
+players[2].buyProperty(squares[1]);
+players[2].buyProperty(squares[9]);
+players[2].buyProperty(squares[12]);
+players[2].buyProperty(squares[19]);
+updateAllBoard();
+
+$(".player-quit-game").click(function (event) {
+    let playerId = parseInt(event.target.id.slice(12, 13));
+    let arrayOfProperties = squares.filter(property => property.price !== undefined);
+    let propertiesOfThisOwner = arrayOfProperties.filter(property => property.owner === playerId);
+    for (let property of propertiesOfThisOwner) {
+        property.owner = undefined;
+    }
+    updateAllBoard();
+    players.splice(playerId, 1);
+
+});
+
+const createPlayerContainer = (players) => {
 
 }
 

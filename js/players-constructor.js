@@ -31,7 +31,7 @@ class Player {
 
             } else if (this.throwDoubles === 3) {
                 //  THROW DOUBLES X3
-                message(`${this.name} throwDoubles for the third time, go to Jail!`);
+                message(`<span class="player-${this.color}-turn">${this.name}</span>throwDoubles for the third time, go to Jail!`);
                 this.goToJail();
                 this.throwDoubles = 0;
                 this.anotherTurn = false;
@@ -88,11 +88,11 @@ class Player {
         if (completedRound) {
             this.position -= 40;
             currentSquare = squares[this.position];
-            message(`${this.name} completed the round. Here are your $200.`);
+            message(`<span class="player-${this.color}-turn">${this.name}</span> completed the round. Here are your $200.`);
             this.transaction(200);
         } else {
             currentSquare = squares[this.position];
-            message(`${this.name} is on position ${this.position}`);
+            message(`<span class="player-${this.color}-turn">${this.name}</span> is on position ${this.position}`);
         }
 
     }
@@ -105,25 +105,22 @@ class Player {
         currentSquare = squares[this.position];
     }
 
-    transaction(signAndAmount) {
-
+    transaction(signAndAmount, displayMessage = true) {
         this.wallet += signAndAmount;
-
-        if (signAndAmount < 0) {
-            message(`${this.name} paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
-        } else {
-            message(`${this.name} received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+        if (displayMessage) {
+            if (signAndAmount < 0) {
+                message(`<span class="player-${this.color}-turn">${this.name}</span> paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+            } else {
+                message(`<span class="player-${this.color}-turn">${this.name}</span> received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+            }
         }
-
         updatePlayersContainers();
-
     }
 
     buyProperty(property) {
         this.wallet -= property.price;
-        message(`Congratulations, you have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
+        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span> have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
         property.owner = this.id;
-
     }
 
     goToJail() {
@@ -135,7 +132,7 @@ class Player {
 
     getOutOfJail() {
         document.getElementById(`token-player-${this.id}`).classList.remove("token-in-jail");
-        this.isInJail = false;
+        this.inJail = false;
     }
 
     endTurn() {
@@ -149,9 +146,9 @@ class Player {
             document.getElementById(`extra-turn-amount`).innerHTML = ``;
             document.getElementById(`extra-turn`).innerHTML = ``;
 
-            if (this.id === allPlayersIds.length - 1) {
+            if (this.id === players.length - 1) {
 
-                currentPlayerId = 0;
+                currentPlayerId = players[0].id;
                 currentPlayer = players[currentPlayerId];
                 currentSquare = currentPlayer.position;
 
@@ -173,3 +170,5 @@ class Player {
         document.getElementById(`dice_2`).src = `media/dice-0.png`;
     }
 }
+
+// TODO REMOVE ALL PLAYERS ID AS IT GENERATES A PROBLEM WHEN A PLAYERS QUITS, USE PLAYERS INDEX

@@ -8,13 +8,14 @@ let propertiesIds = arrayOfProperties.map(property => property.id);
 $("#button_close_rules").click(function () {
     $(".rules-container").hide();
 });
+
 $(".open-rules-monopoly ").click(function () {
     $(".rules-container").show();
 });
 
 /*----- ROLL DICE ------*/
 
-let getDicesResult = () => {
+const getDicesResult = () => {
     let dice1 = Math.ceil(Math.random() * 6);
     let dice2 = Math.ceil(Math.random() * 6);
     console.log([dice1, dice2, dice1 + dice2]);
@@ -23,7 +24,7 @@ let getDicesResult = () => {
 
 /*----- ANIMATE ROLL DICE ------*/
 
-let animateDices = (dice1, dice2) => {
+const animateDices = (dice1, dice2) => {
     document.getElementById(`dice_1`).classList.add("animation-roll-dices");
     document.getElementById(`dice_2`).classList.add("animation-roll-dices");
 
@@ -65,6 +66,7 @@ const hide_all_buttons = () => {
     hide_element(button_buy);
     hide_element(button_end_turn);
     hide_element(button_pay_50);
+    hide_element(button_pay_75);
     hide_element(button_pay_200);
     hide_element(button_use_jail_card);
     hide_element(button_pick_up_chest_card);
@@ -78,8 +80,13 @@ const hide_all_buttons = () => {
 
 const updateSquaresDisplay = () => {
     for (property of arrayOfProperties) {
+
         if (property.owner !== undefined) {
-            $(`#square-${property.id}`).addClass(`property-of-player-${players[property.owner].color}`)
+            $(`#square-${property.id}`).addClass(`property-of-player-${players[property.owner].color}`);
+        } else if (property.owner === undefined) {
+            players.forEach(function (player) {
+                $(`#square-${property.id}`).removeClass(`property-of-player-${player.color}`);
+            });
         }
     }
     updateAllHousesAndMortageDisplay();
@@ -88,7 +95,7 @@ const updateSquaresDisplay = () => {
 /*------ UPDATE PLAYERS CONTAINERS ------*/
 
 const updatePlayersContainers = () => {
-
+    console.log(players);
     players.forEach(player => {
         //WALLET
         document.getElementById(`player_wallet_${player.id}`).innerHTML = `$ ${player.wallet}`;
@@ -103,7 +110,8 @@ const updatePlayersContainers = () => {
     });
     // COLOR IN NAME
     document.getElementById(`player_name_${currentPlayer.id}`).classList.add(`player-${currentPlayer.color}-turn`);
-    const notCurrentPlayersIds = allPlayersIds.filter(playerId => playerId !== currentPlayerId);
+    let currentPlayersIds = players.map(player => player.id);
+    let notCurrentPlayersIds = currentPlayersIds.filter(playerId => playerId !== currentPlayerId);
     notCurrentPlayersIds.forEach(playerId => {
         document.getElementById(`player_name_${playerId}`).classList.remove(`player-${players[playerId].color}-turn`);
     });
@@ -133,7 +141,7 @@ let checkAllOwnersTheSame = (property) => { // OBJECT
     return allOwnersTheSame;
 }
 
-let checkPropertyCanBuyHouse = (property) => { // (OBJECT)
+const checkPropertyCanBuyHouse = (property) => { // (OBJECT)
     let canBuy = true;
     let groupPropertiesIds = property.groupIDs;
     let groupProperties = [];
@@ -227,17 +235,21 @@ const liftMortage = (property) => {
     updateHousesAndMortageDisplay(property);
 }
 
-let removeSellPropertyDisplay = () => {
+const removeSellPropertyDisplay = () => {
     $(".sell-property-container").remove();
 }
 
-let calculateRent = (property) => {
+const calculateRent = (property) => {
     if (property.id === 12 || property.id === 28) {
         // UTILITY
-        if (squares[12].owner === squares[28].owner) {
+        if (comesFromCard === true) {
             return 10;
-        } else {
-            return 4;
+        } else if (comesFromCard === false) {
+            if (squares[12].owner === squares[28].owner) {
+                return 10;
+            } else {
+                return 4;
+            }
         }
     } else if (property.id === 5 || property.id === 15 || property.id === 25 || property.id === 35) {
         // RAILROAD
@@ -293,3 +305,8 @@ let calculateRent = (property) => {
         }
     }
 };
+
+
+
+
+// TODO If player owns ALL the Lots of any Color Group, the rent is Doubled on Uninproved Lots in that group.

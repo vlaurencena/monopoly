@@ -1,5 +1,5 @@
 /*------ CLEAR LOCAL STORAGE ------*/
-document.getElementById("button_clear_local_storage").addEventListener("click", function () {
+document.getElementById("button_restart_game").addEventListener("click", function () {
     localStorage.clear();
     console.log("Local Storage is clear");
     location.reload();

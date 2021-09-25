@@ -49,6 +49,7 @@
                     <button id="button_buy" class="button">Buy</button>
                     <button id="button_end_turn" class="button">End Turn</button>
                     <button id="button_pay_200" class="button">Pay $200</button>
+                    <button id="button_pay_75" class="button">Pay $75</button>
                     <button id="button_pay_50" class="button">Pay $50</button>
                     <button id="button_use_jail_card" class="button">Use Jail Card</button>
                     <button id="button_pick_up_chest_card" class="button">Pick up Chest card!</button>
@@ -277,17 +278,12 @@
                     <div class="square-title">PACIFIC AVENUE</div>
                     <div>$300</div>
                 </div>
-                <div id="token-holder-31" class="token-holder">
-
-
-
-
-                </div>
+                <div id="token-holder-31" class="token-holder"></div>
             </div>
             <div id="square-32" class="square square-right">
                 <div class="square-color color-green"></div>
                 <div>
-                    <div class="square-title">NORTH CAROLINA AVENUE</div>
+                    <div class="square-title">NORTH<br>CAROLINA<br>AVENUE</div>
                     <div>$300</div>
                 </div>
                 <div id="token-holder-32" class="token-holder"></div>
@@ -354,11 +350,13 @@
             <div id="title-deed-container">
             </div>
             <!-- CLEAR LS -->
-            <div id="button_clear_local_storage">Clear LS & Reload</div>
+            <div class="restart-game-container">
+                <button id="button_restart_game">Restart Game</button>
+            </div>
             <!-- SEE RULES MONOPOLY -->
             <div class="open-rules-monopoly-board">
-            <button class="open-rules-monopoly">See rules of Monopoly</button>
-        </div>
+                <button class="open-rules-monopoly">See rules of Monopoly</button>
+            </div>
         </div>
         <div id="player-container-2">
             <!-- PLAYER 2 & 4 -->
@@ -442,8 +440,7 @@
     <script src="js/players-setup.js"></script>
     <!-- <script src="js/local-storage.js"></script> -->
     <!-- THIS IS JUST FOR DEVELOPMENT -->
-    <script src="js/tester.js" defer></script>
-    <script src="js/simulate-scenario.js" defer></script>
+    <script src="js/tester.js"></script>
 </body>
 
 </html>

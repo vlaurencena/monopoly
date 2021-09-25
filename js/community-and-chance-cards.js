@@ -1,19 +1,16 @@
 let selectedCard = [];
 
-let chest_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-let chance_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const chest_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+const chance_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 // FUNCTION TO SHUFFLE ARRAYS
 const shuffle = (array) => {
-
     let currentIndex = array.length;
     let randomIndex;
 
     while (currentIndex != 0) {
-
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-
         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
 
@@ -38,6 +35,8 @@ random_chest_card = () => {
     selectedCard = chanceCards[card];
     chest_cards_order.push(card);
 }
+// TODO CHANCECARD 0 TRADE JAIL CARD
+// TODO ADD FREE JAIL CARD CARD
 
 const chanceCards = [{
         "id": 0,
@@ -53,8 +52,9 @@ const chanceCards = [{
         "action": function () {
             let totalHouses = 0;
             let totalHotels = 0;
-            console.log(currentPlayer.propertiesOwn)
-            for (property of currentPlayer.propertiesOwn) {
+            let propoertiesOfCurrentPlayer = squares.filter(property => property.owner === currentPlayer.id);
+            console.log(propoertiesOfCurrentPlayer)
+            for (property of propoertiesOfCurrentPlayer) {
                 console.log(property.house);
                 if (property.house > 0 && property.house < 5) {
                     totalHouses += 25 * property.house;
@@ -62,6 +62,7 @@ const chanceCards = [{
                     totalHotels += 100;
                 }
             }
+            console.log(totalHotels)
             currentPlayer.transaction(-(totalHouses + totalHotels));
         }
     },
@@ -331,17 +332,4 @@ const communityChestCards = [{
         }
     }
 ]
-// TODO CHAGNE TO RETURN TOTAL HOUSES AND HOTEL
-const checkTotalHousesAndHotel = (player) => {
-    let total = 0;
-    for (let property of player.propertiesOwn) {
-        if (property.house > 0 && property.house < 5) {
-            total += 40;
-        } else if (property.house === 5) {
-            total += 115;
-        }
-    }
-    return total;
-}
-
-// TODO JUMP TO UTILITY DOESNT GIVE THE OPTION TO BUY
+// TODO CHANGE ALL ARROW FUNCTIONS TO CONST, not let!

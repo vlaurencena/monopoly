@@ -31,6 +31,10 @@ ul li {
     list-style: inside none;
 }
 
+.rules-container ul li {
+    list-style: circle;
+}
+
 /* SQUARES' POSITIONS */
 
 #square-0 {
@@ -222,7 +226,6 @@ ul li {
     text-align: center;
     border: solid 2px black;
     overflow: hidden;
-    word-break: break-all;
 }
 
 .square-bottom {
@@ -420,7 +423,7 @@ input[type="radio"] {
 .square-left .token-holder,
 .square-right .token-holder {
     flex-direction: column;
-    min-width: 20px;
+    width: 25px;
     height: 100%;
 }
 
@@ -463,12 +466,22 @@ input[type="radio"] {
     filter: invert(80%) sepia(43%) saturate(1972%) hue-rotate(333deg) brightness(107%) contrast(102%);
 }
 
+#token-holder-10 {
+    position: absolute;
+    bottom: 0;
+}
+
 .token-color-player-skin {
     filter: invert(90%) sepia(3%) saturate(2867%) hue-rotate(322deg) brightness(103%) contrast(113%);
 }
 
 #square-0 .token-holder span {
     display: block;
+}
+
+.property-of-player-undefined {
+    border-color: black;
+    color: black;
 }
 
 .property-of-player-red {
@@ -616,16 +629,18 @@ input[type="radio"] {
     animation-duration: 5s;
 }
 
-#button_clear_local_storage {
+.restart-game-container {
     grid-area: 11 / 4 / 12 / 6;
-    background-color: aqua;
+    margin: auto;
 }
+
 .sell-property-container {
-    position: absolute; 
+    position: absolute;
     min-width: 100%;
-    min-height: 100%; 
+    min-height: 100%;
     background-color: white;
 }
+
 .sell-property-popup {
     border: solid 1px black;
     padding: 2rem;
@@ -685,4 +700,20 @@ input[type="radio"] {
 .visiting-text {
     position: absolute;
     bottom: 10px;
+}
+
+.player-quit-game {
+    bottom: 0;
+
+}
+
+#player-0,
+#player-1,
+#player-2,
+#player-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
 }

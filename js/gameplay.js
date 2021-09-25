@@ -1,5 +1,5 @@
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
-const diceAnimationDuration = 5000;
+const diceAnimationDuration = 10;
 let currentPlayerId = undefined;
 let currentPlayer = [];
 let currentSquare = [];
@@ -12,8 +12,6 @@ let currentTurnStatus = {
 }
 let players = [];
 let allPlayersIds = [];
-
-
 
 
 /*------ CONTROL PANNEL BUTTONS ------*/
@@ -87,6 +85,12 @@ button_pay_200.addEventListener("click", function () {
     player_completed_turn();
 });
 
+const button_pay_75 = document.getElementById("button_pay_75");
+button_pay_75.addEventListener("click", function () {
+    currentPlayer.transaction(-75);
+    player_completed_turn();
+});
+
 // FOR PROPERTIES
 const button_buy = document.getElementById("button_buy");
 button_buy.addEventListener("click", function () {
@@ -101,16 +105,17 @@ button_pay_rent.addEventListener("click", function () {
     currentPlayer.wallet -= rent;
     players[currentSquare.owner].wallet += rent;
     message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
+    comesFromCard = false;
     player_completed_turn();
 });
 
 const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
 button_pay_rent_utility.addEventListener("click", function () {
-    let rent;
-    comesFromCard === true ? rent = 10 * multiplier : rent = calculateRent(currentSquare) * multiplier;
-    currentPlayer.wallet -= rent;
-    players[currentSquare.owner].wallet += rent;
-    message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
+    let rent = calculateRent(currentSquare);
+    currentPlayer.wallet -= rent * multiplier;
+    players[currentSquare.owner].wallet += rent * multiplier;
+    message(`${currentPlayer.name}paid $${rent * multiplier} to ${players[currentSquare.owner].name}`);
+    comesFromCard = false;
     player_completed_turn();
 });
 
@@ -170,11 +175,11 @@ const newTurn = () => {
     $("#button_end_turn").html("End turn");
     hide_all_buttons();
     updatePlayersContainers();
-    message(`It's ${currentPlayer.name} (Id ${currentPlayerId}) turn.`);
+    message(`It's <span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> turn.`);
 
     if (currentPlayer.inJail) {
         /*--- IS IN JAIL ---*/
-        message(`You are in jail. (currentPlayer.isInJail = ${currentPlayer.isInJail}`);
+        message(`You are in jail. (currentPlayer.inJail = ${currentPlayer.inJail}`);
         show_element(button_pay_50);
         show_element(button_roll_dice_in_jail);
 
@@ -239,11 +244,13 @@ const player_moved = () => {
 
     } else if (currentPlayer.position === 4) {
         /*------ IS IN INCOME TAX ------*/
-        message(`current player is in Income Tax`);
+        message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in Income Tax and needs to pay $200.`);
         show_element(button_pay_200);
+    } else if (currentPlayer.position === 38) {
+        message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in Luxury Tax and needs to pay $75.`);
+        show_element(button_pay_75);
     } else {
         /*------ IS ON PROPERTY ------*/
-
         // CHECK OWNER
         if (currentSquare.owner === undefined) {
             // NO OWNER
@@ -261,21 +268,18 @@ const player_moved = () => {
                 // OWNER IS OTHER PLAYER AND PROPERTY IS NOT MORTAGE
                 if (currentPlayer.position === 12 || currentPlayer.position === 28) {
                     // UTILITY
-                    console.log(comesFromCard);
-                    if (comesFromCard === false) {
-                        show_element(button_roll_dice_utility);
-                        if (calculateRent(currentSquare) === 4) {
+                    show_element(button_roll_dice_utility);
+                    if (calculateRent(currentSquare) === 4) {
 
-                            message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
+                        message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
 
-                        } else if (calculateRent(currentSquare) === 10) {
-                            message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 10.`);
-                        } else {
-                            console.error("Something went wrong");
-                        }
+                    } else if (calculateRent(currentSquare) === 10) {
+                        message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 10.`);
                     } else {
-                        show_element(button_roll_dice_utility);
+                        console.error("Something went wrong");
                     }
+
+
                 } else {
                     // REGULAR PROPERTY
                     show_element(button_pay_rent);
@@ -288,10 +292,14 @@ const player_moved = () => {
 
 /*------ STEP 4 ------*/
 const player_completed_turn = () => {
-    comesFromCard = false;
     currentTurnStatus.playerHasFinished = true;
     hide_all_buttons();
     show_element(button_end_turn);
 }
 
-// TODO Congratulations, you have just bought LUXURY TAX. Now you have $NaN on your wallet
+/*------ CHECK IF PLAYER RUN OUT OF MONEY ------*/
+
+
+
+
+// TODO CHECK IF PLAYER CAN AFFORD
