@@ -1,6 +1,6 @@
 /*---------------------- INITIAL SETUP ----------------------*/
 
-const initialMoney = 1500;
+const initialMoney = 10;
 const tokenColors = ["red", "blue", "skin", "orange"];
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
@@ -13,11 +13,28 @@ if (localStorage.length === 0) {
 
         // REAL VERSION
 
-        console.log("real version ON");
+        console.log("Player's setup real version ON");
+
+        // FORM PLAYER SETUP 
+        $("main").append(`
+        <div id="form_player_setup">
+            <h1>Welcome to virtual Monopoly, please enter the amount of players</h1>
+            <form name="form-number-players" action="">
+                <input type="radio" id="two_players" name="number-of-players" value="2">
+                <label for="two_players">2</label><br>
+                <input type="radio" id="three_players" name="number-of-players" value="3">
+                <label for="three_players">3</label><br>
+                <input type="radio" id="four_players" name="number-of-players" value="4">
+                <label for="four_players">4</label>
+            </form>
+            <form id="form_player_info" name="form-player-info" action="">
+
+            </form>
+            <button class="open-rules-monopoly open-rules-monopoly-player-setup">See rules of Monopoly</button>
+        </div>
+    `);
 
         let radios = document.forms["form-number-players"].elements["number-of-players"];
-
-        //TODO NOW IT GEST A RANDOM NAME FROM THE 20 FIRST THAT ARE SENT, NEED TO GET REAL RANDOM NAME BY USING OFFSET
 
         for (radio in radios) {
             radios[radio].onclick = function () {
@@ -95,7 +112,7 @@ if (localStorage.length === 0) {
 
         // FAST VERSION FOR DEVELOPMENT
 
-        console.log("real version OFF");
+        console.log("Player's setup real version OFF");
 
         for (i = 0; i < 4; i++) {
 
@@ -121,7 +138,7 @@ const createPlayersContainers = () => {
             `<div id="player-${player.id}">
             <div id="player_name_${player.id}" class="player-name">${player.name}</div>
             <div id="player_wallet_${player.id}" class="player-wallet">$${player.wallet}</div>
-            <div id="player_jail_card_${player.id}" class="player-jail-card">Free Jail Card? ${player.jailCard}</div>
+            <div id="player_jail_card_${player.id}" class="player-jail-card">Has free Jail Card?</div>
             <div class="player-list-of-properties">List of properties</div>
             <ul id=player_properties_${player.id}>
             </ul>
@@ -142,6 +159,12 @@ const createPlayersContainers = () => {
             console.error("Something went wrong")
         }
 
+        if (player.jailCard) {
+            $(`#player_jail_card_${player.id}`).append(` Yes.`);
+        } else {
+            $(`#player_jail_card_${player.id}`).append(` No.`);
+        }
+        
         $(`#player-${player.id}`).append(`<button id="quit_player_${player.id}" class="player-quit-game">Quit game</button>`)
     });
 
@@ -155,12 +178,16 @@ const createPlayersContainers = () => {
             currentPlayer.endTurn();
             newTurn();
         }
-        console.log(`quit player id: ${quitPlayerId}`);
         $(`#player-${quitPlayerId}`).remove();
         updateAllBoard();
+        let playersRemaining = players.filter(player => player.stillPlaying === true);
+        console.log(playersRemaining.length);
+        if (playersRemaining.length === 1) {
+            endGame();
+            console.log("this workds")
+        }
     });
 }
 
 createPlayersContainers();
 // QUIT GAME
-

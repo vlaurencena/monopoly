@@ -1,5 +1,3 @@
-// TODO correct propertiesIdsOwn
-
 class Player {
     constructor(id, stillPlaying, name, color, position, wallet, throwDoubles, anotherTurn, inJail, jailCard) {
         this.id = id;
@@ -24,28 +22,17 @@ class Player {
             //  THROW DOUBLES
             this.throwDoubles++;
             this.anotherTurn = true;
-            document.getElementById(`extra-turn`).innerHTML = `EXTRA TURN`;
 
-            if (this.throwDoubles === 2) {
-                //  THROW DOUBLES X2
-                document.getElementById(`extra-turn-amount`).innerHTML = ` x2`;
-
-            } else if (this.throwDoubles === 3) {
+            if (this.throwDoubles === 3) {
                 //  THROW DOUBLES X3
                 message(`<span class="player-${this.color}-turn">${this.name}</span>throwDoubles for the third time, go to Jail!`);
                 this.goToJail();
                 this.throwDoubles = 0;
-                this.anotherTurn = false;
-                document.getElementById(`extra-turn`).delay(diceAnimationDuration).innerHTML = ``;
-                document.getElementById(`extra-turn-amount`).delay(diceAnimationDuration).innerHTML = ``;
+                this.anotherTurn = false; 
             }
 
         } else {
             //  NOT THROW DOUBLES
-
-            // TODO LEAVE ONLY this.things AND REMOVE EVERY ANIMATION AND INTERACTION WITH BOARD
-            document.getElementById(`extra-turn`).innerHTML = ``;
-            document.getElementById(`extra-turn-amount`).innerHTML = ``;
             this.throwDoubles = 0;
             this.anotherTurn = false;
         }
@@ -78,8 +65,7 @@ class Player {
 
             setTimeout(() => {
                 document.getElementById(`token-holder-${transition}`).appendChild(document.getElementById(`token-player-${this.id}`));
-            }, i * 100);
-
+            }, i * moveTokenAnimation);
         }
 
         // FINAL SETUP
@@ -110,12 +96,12 @@ class Player {
         this.wallet += signAndAmount;
         if (displayMessage) {
             if (signAndAmount < 0) {
-                message(`<span class="player-${this.color}-turn">${this.name}</span> paided ${-signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+                message(`<span class="player-${this.color}-turn">${this.name}</span> paid $${-signAndAmount}, and now has $${this.wallet} in his/her wallet`);
             } else {
-                message(`<span class="player-${this.color}-turn">${this.name}</span> received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
+                message(`<span class="player-${this.color}-turn">${this.name}</span> received $${signAndAmount}, and now has $${this.wallet} in his/her wallet`);
             }
         }
-        // TODO UPDATE createPlayersContainers();
+        updatePlayersContainers();
     }
 
     buyProperty(property) {
@@ -123,7 +109,7 @@ class Player {
         property.owner = this.id;
         message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span> have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
     }
-    
+
     goToJail() {
         document.getElementById(`token-player-${this.id}`).classList.add("token-in-jail");
         this.jump(10);
@@ -156,9 +142,6 @@ class Player {
 
         } else if (this.anotherTurn === false) { // PLAYER DIDN'T GET DOUBLES
 
-            document.getElementById(`extra-turn-amount`).innerHTML = ``;
-            document.getElementById(`extra-turn`).innerHTML = ``;
-
             if (this.id === allPlayersIds.length - 1) {
 
                 currentPlayerId = 0
@@ -185,5 +168,3 @@ class Player {
         document.getElementById(`dice_2`).src = `media/dice-0.png`;
     }
 }
-
-// TODO REMOVE ALL PLAYERS ID AS IT GENERATES A PROBLEM WHEN A PLAYERS QUITS, USE PLAYERS INDEX

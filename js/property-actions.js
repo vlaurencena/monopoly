@@ -1,4 +1,3 @@
-
 // EVENT LISTENER TO PROPERTY SQUARES
 
 for (let id of propertiesIds) {
@@ -105,12 +104,12 @@ let createDeedCard = (property) => { // OBJECT
             </div>
 
             <ul class="title-deed-options">
-                <li id="title-deed-close"><button>Close</button></li>
-                <li id="title-deed-set-mortage"><button>Set mortage</button></li>
-                <li id="title-deed-lift-mortage"><button>Lift mortage</button></li>
-                <li id="title-deed-sell-property"><button>Sell property</button></li>
-                <li id="title-deed-buy-house"><button>Buy House</button></li>
-                <li id="title-deed-sell-house"><button>Sell House</button></li>
+                <li><button id="title-deed-close">Close</button></li>
+                <li><button id="title-deed-set-mortage">Set mortage</button></li>
+                <li><button id="title-deed-lift-mortage">Lift mortage</button></li>
+                <li><button id="title-deed-sell-property">Sell property</button></li>
+                <li><button id="title-deed-buy-house">Buy House</button></li>
+                <li><button id="title-deed-sell-house">Sell House</button></li>
             </ul>
 
         </div>`
@@ -142,6 +141,7 @@ let createDeedCard = (property) => { // OBJECT
             });
 
         } else if (property.mortage === true) {
+            $(`#title-deed-sell-property`).hide();
             $("#title-deed-lift-mortage").show().click(function () {
                 liftMortage(property);
             });
@@ -193,24 +193,20 @@ let sellPropertyDisplay = (property) => {
 
     for (let player of filteredArray) {
         $(".sell-property-buyer").append(
-            `<input type="radio" id="player_${player.id}_wants_to_buy" name="buyer" value="${player.id}" required">
+            `<input type="radio" id="player_${player.id}_wants_to_buy" name="buyer" value="${player.id}" required>
              <label for="value-${player.id}">${player.name}</label><br>`
         )
     }
 
     $(".sell-property-buyer").append(`
         <label for="amount">How much will he or she pay?:</label>
-        <input type="text" id="sale_amount" name="sale-amount" required
-        size="10">
+        <input type="number" id="sale_amount" name="sale-amount" min="0" required>
         <input id="confirm_sale" type="submit" value="Sell property">`)
 
 
-       //TODO CHECK THAT THE AMOUNT IS A POSITIVE INTEGER
-    $("#confirm_sale").click(function (event) {
-        console.log(property.owner);
-        event.preventDefault();
+    $("#confirm_sale").click(function (event) {  
         let transactionInfo = $(".sell-property-buyer").serializeArray();
-        console.log(transactionInfo);
+        message(`Sorry, you need to set a value higher than $0.`)
         players[property.owner].transaction(parseInt(transactionInfo[1].value));
         console.log(transactionInfo[1].value);
         property.owner = parseInt(transactionInfo[0].value);
@@ -218,7 +214,6 @@ let sellPropertyDisplay = (property) => {
         console.log(property.owner);
         updateAllBoard();
         removeSellPropertyDisplay();
-        // CONFIRM SALE NOT WORKING
     })
 
     $(".sell-property-popup").append(`<div id="close-sell-property-container">Close</div>`);

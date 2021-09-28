@@ -449,7 +449,7 @@ input[type="radio"] {
 }
 
 #extra-turn-container {
-    grid-area: 10 / 5 / 11 / 7;
+    grid-area: 9 / 4 / 10 / 7;
 }
 
 /* GAMEPLAY STYLES */

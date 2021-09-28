@@ -28,22 +28,18 @@ random_chance_card = () => {
     chance_cards_order.push(card); // PUSH IT TO THE END
 }
 
-// TODO REMOVE ALL PROPERTIES OWNE IN CHANCE CARDS
-
 random_chest_card = () => {
     let card = chest_cards_order.shift();
     selectedCard = chanceCards[card];
     chest_cards_order.push(card);
 }
-// TODO CHANCECARD 0 TRADE JAIL CARD
-// TODO ADD FREE JAIL CARD CARD
 
 const chanceCards = [{
         "id": 0,
-        "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
+        "text": "GET OUT OF JAIL FREE. This card may be kept until needed.",
         "action": function () {
             currentPlayer.jailCard = true;
-           // TODO createPlayersContainers();
+            updatePlayersContainers();
         }
     },
     {
@@ -193,8 +189,6 @@ const chanceCards = [{
             comesFromCard = true;
             playerMoved();
         }
-
-        //TODO DOESNT ALLOW TO BUY IT
     },
     {
         "id": 14,
@@ -322,7 +316,7 @@ const communityChestCards = [{
         "id": 14,
         "text": "You are assessed for street repairs. $40 per house. $115 per hotel.",
         "action": function () {
-            currentPlayer.transaction(-checkTotalHousesAndHotel(currentPlayer));
+               currentPlayer.transaction(-checkTotalHousesAndHotel(currentPlayer));
         }
     }, {
         "id": 15,
@@ -333,4 +327,4 @@ const communityChestCards = [{
     }
 ]
 
-// TODO CHECK IF PLAYER CAN AFFORD TO COMPLETE ACION
+// TODO CHANCE AND CHEST NOT WORKING PROPERLY
