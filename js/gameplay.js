@@ -313,5 +313,3 @@ const playerCompletedTurn = () => {
     hideAllConsoleButtons();
     showElement(button_end_turn);
 }
-
-// TODO ROLL DICES BUTTON DOESN'T HIDE AFTER CLICK AND MOVE NEVER APPERAS

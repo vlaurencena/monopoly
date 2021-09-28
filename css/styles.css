@@ -344,7 +344,7 @@ ul li {
 }
 
 /* FORM PLAYER SETUP */
-#form_player_setup {
+#form_game_setup {
     width: 100vh;
     height: 100vh;
     padding: 3rem;
@@ -354,7 +354,7 @@ ul li {
     z-index: 1;
 }
 
-#form_player_setup h1 {
+#form_game_setup h1 {
     margin-bottom: 4rem;
 }
 

@@ -49,7 +49,7 @@ document.getElementById("button_restart_game").addEventListener("click", functio
 // } else {
 //     // IS NOT EMPTY
 //     console.log("Local Storage has something");
-//     $("#form_player_setup").hide();
+//     $("#form_game_setup").hide();
 //     retrieveLocalStorage();
 
 //     // CREATE PLAYER CONTAINER
@@ -107,7 +107,7 @@ document.getElementById("button_restart_game").addEventListener("click", functio
 //         player.jump(player.position);
 //     });
 
-//     $("#form_player_setup").hide();
+//     $("#form_game_setup").hide();
 //     //createPlayersContainers(); // MAIN
 
 //     /*------ CONTINUE CURRENT GAMEPLAY ------*/
@@ -142,3 +142,8 @@ document.getElementById("button_restart_game").addEventListener("click", functio
 // TODO -> CARD SENDING TO UTILITY OR RAILRAOD NOT WORKING OK
 
 // TODO -> CHECK IF THROW DOUBLES WORKS OK
+
+
+// TODO -> SET UP LOCAL STORAGE
+// TODO -> SET UP SURVIVAL, STANDARD AN MILLIONAIRE MODES
+// TODO -> SET UP THROW DICES TO SET PLAYERS ORDER
