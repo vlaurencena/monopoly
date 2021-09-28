@@ -5,3 +5,9 @@
 //     $(random_button_tester).trigger("click");
 
 // }
+
+
+
+
+
+// TODO CAN BUY HOUSE ON MORTAGED PROPERTY

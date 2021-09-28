@@ -437,13 +437,13 @@ input[type="radio"] {
 /* DICES */
 
 #dice_1 {
-    grid-area: 9 / 5 / 10 / 6;
+    grid-area: 8 / 5 / 9 / 6;
     width: 90%;
     height: 90%;
 }
 
 #dice_2 {
-    grid-area: 9 / 6 / 10 / 7;
+    grid-area: 8 / 6 / 9 / 7;
     width: 90%;
     height: 90%;
 }
@@ -629,10 +629,7 @@ input[type="radio"] {
     animation-duration: 5s;
 }
 
-.restart-game-container {
-    grid-area: 11 / 4 / 12 / 6;
-    margin: auto;
-}
+
 
 .sell-property-container {
     position: absolute;
@@ -676,9 +673,7 @@ input[type="radio"] {
     font-size: 1.5rem;
 }
 
-.open-rules-monopoly-board {
-    grid-area: 10 / 4 / 11 / 6;
-}
+
 
 .open-rules-monopoly-board {
     grid-area: 10 / 4 / 11 / 6;
@@ -716,4 +711,31 @@ input[type="radio"] {
     align-items: center;
     justify-content: space-between;
     text-align: center;
+}
+
+.end-rules-restart-container { 
+    grid-area: 10 / 4 / 12 / 7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.game-results-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: white;
+    z-index: 2;
+}
+
+.game-results {
+    padding: 5rem;
+}
+.partial-results-list li {
+    list-style: outside disc;
+}
+
+.partial-results-players-container {
+    margin: 1rem 0;
 }

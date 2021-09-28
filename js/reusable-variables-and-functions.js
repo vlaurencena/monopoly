@@ -1,7 +1,7 @@
 /*----- VARIABLES ------*/
 
-let arrayOfProperties = squares.filter(property => property.price !== undefined);
-let propertiesIds = arrayOfProperties.map(property => property.id);
+let arrayOfProperties = squares.filter(property => property.price !== undefined); // REMEMBER THEY DON'T UPDATE
+let propertiesIds = arrayOfProperties.map(property => property.id); // REMEMBER THEY DON'T UPDATE
 
 /*----- OPEN AND CLOSE RULES ------*/
 
@@ -47,86 +47,54 @@ const animateDices = (dice1, dice2) => {
 /*------ CONSOLE ------*/
 
 const message = (text) => {
-    $("#console-display").prepend(`<p>${text}</p>`);
-    consoleMessages.push(text);
+    if (text !== consoleMessages[consoleMessages.length - 1]) {
+        $("#console-display").prepend(`<p>${text}</p>`);
+        consoleMessages.push(text);
+    } else {
+        console.log("Didn't push it to the console because of repeated message.")
+    }
 }
 
-const show_element = (element) => {
+const showElement = (element) => {
     element.style.display = "block";
 }
 
-const hide_element = (element) => {
+const hideElement = (element) => {
     element.style.display = "none";
 }
 
-const hide_all_buttons = () => {
-    hide_element(button_roll_dice);
-    hide_element(button_roll_dice_in_jail);
-    hide_element(button_move);
-    hide_element(button_buy);
-    hide_element(button_end_turn);
-    hide_element(button_pay_50);
-    hide_element(button_pay_75);
-    hide_element(button_pay_200);
-    hide_element(button_use_jail_card);
-    hide_element(button_pick_up_chest_card);
-    hide_element(button_pick_up_chance_card);
-    hide_element(button_ok);
-    hide_element(button_pay_rent);
-    hide_element(button_roll_dice_utility);
-    hide_element(button_pay_rent_utility);
+const hideAllConsoleButtons = () => {
+    hideElement(button_roll_dice);
+    hideElement(button_roll_dice_in_jail);
+    hideElement(button_move);
+    hideElement(button_buy);
+    hideElement(button_end_turn);
+    hideElement(button_pay_50);
+    hideElement(button_pay_75);
+    hideElement(button_pay_200);
+    hideElement(button_use_jail_card);
+    hideElement(button_pick_up_chest_card);
+    hideElement(button_pick_up_chance_card);
+    hideElement(button_ok);
+    hideElement(button_pay_rent);
+    hideElement(button_roll_dice_utility);
+    hideElement(button_pay_rent_utility);
 }
-/*------ UPDATE SQUARES DISPLAY ------*/
 
-const updateSquaresDisplay = () => {
-    for (property of arrayOfProperties) {
+/*------ VALIDATE PLAYER CAN AFFORD ------*/
 
-        if (property.owner !== undefined) {
-            $(`#square-${property.id}`).addClass(`property-of-player-${players[property.owner].color}`);
-        } else if (property.owner === undefined) {
-            players.forEach(function (player) {
-                $(`#square-${property.id}`).removeClass(`property-of-player-${player.color}`);
-            });
-        }
+const playerCanAfford = (player, amount) => { // (OBJECT, NUMBER)
+    if (player.wallet >= amount) {
+        return true;
+    } else {
+        message(`Sorry, <span class="player-${player.color}-turn">${player.name}</span>, you can't afford this.`);
+        return false;
     }
-    updateAllHousesAndMortageDisplay();
 }
 
-/*------ UPDATE PLAYERS CONTAINERS ------*/
+/*------ VALIDATE HOUSE BUY & SELL ------*/
 
-const updatePlayersContainers = () => {
-    console.log(players);
-    players.forEach(player => {
-        //WALLET
-        document.getElementById(`player_wallet_${player.id}`).innerHTML = `$ ${player.wallet}`;
-        // LIST OF PROPERTIES
-        $(`#player_properties_${player.id}`).empty();
-        let propertiesOwnByThisPlayer = arrayOfProperties.filter(property => property.owner === player.id);
-        propertiesOwnByThisPlayer.forEach(property => {
-            $(`#player_properties_${property.owner}`).append(`<li>${property.name}</li>`);
-        })
-        // FREE JAIL CARD
-        $(`#player_jail_card_${player.id}`).html(`Free Jail Card? ${player.jailCard}`);
-    });
-    // COLOR IN NAME
-    document.getElementById(`player_name_${currentPlayer.id}`).classList.add(`player-${currentPlayer.color}-turn`);
-    let currentPlayersIds = players.map(player => player.id);
-    let notCurrentPlayersIds = currentPlayersIds.filter(playerId => playerId !== currentPlayerId);
-    notCurrentPlayersIds.forEach(playerId => {
-        document.getElementById(`player_name_${playerId}`).classList.remove(`player-${players[playerId].color}-turn`);
-    });
-}
-
-/*------ UPDATE ALL BOARD ------*/
-
-const updateAllBoard = () => {
-    updateSquaresDisplay();
-    updatePlayersContainers();
-}
-
-// VALIDATE HOUSE BUY & SELL
-
-let checkAllOwnersTheSame = (property) => { // OBJECT
+const checkAllOwnersTheSame = (property) => { // OBJECT
     let allOwnersTheSame = true;
     let groupPropertiesIds = property.groupIDs;
     let groupPropertiesOwners = [];
@@ -156,7 +124,7 @@ const checkPropertyCanBuyHouse = (property) => { // (OBJECT)
     return canBuy;
 }
 
-let checkPropertyCanSellHouse = (property) => { // (OBJECT)
+const checkPropertyCanSellHouse = (property) => { // (OBJECT)
     let canSell = true;
     let groupPropertiesIds = property.groupIDs;
     let groupProperties = [];
@@ -173,52 +141,17 @@ let checkPropertyCanSellHouse = (property) => { // (OBJECT)
 
 // PERFORM HOUSE BUY & SELL
 const buyHouse = (property) => { // (OBJECT)
-    property.house += 1;
-    players[property.owner].transaction(-property.housePrice);
-    updateHousesAndMortageDisplay(property);
+    if (playerCanAfford(players[property.owner], property.housePrice)) {
+        property.house += 1;
+        players[property.owner].transaction(-property.housePrice);
+        updateAllBoard();
+    }
 }
 
 const sellHouse = (property) => { // (OBJECT)
     property.house -= 1;
     players[property.owner].transaction(property.housePrice / 2);
-    updateHousesAndMortageDisplay(property);
-}
-
-const updateHousesAndMortageDisplay = (property) => { // (OBJECT)
-    if (property.mortage === true) {
-        if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
-            $(`#square-${property.id}`).prepend(`<p class="mortage-sign">M</p>`);
-        } else {
-            $(`#square-${property.id}`).children(".square-color").html(`<p class="mortage-sign">M</p>`);
-        }
-    } else if (property.mortage === false) {
-        if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
-            $(`#square-${property.id}`).find(".mortage-sign").remove();
-        } else {
-            $(`#square-${property.id}`).children(".square-color").html("");
-        }
-        let squareColor = $(`#square-${property.id}`).children(".square-color");
-        squareColor.empty();
-        if (property.house === 0) {
-            // DO NOTHING
-        } else if (property.house > 0 && property.house < 5) {
-            for (let i = 0; i < property.house; i++) {
-                squareColor.append(`<img class="house-icon" src="media/house-icon.svg" alt="">`);
-            }
-        } else if (property.house === 5) {
-            squareColor.append(`<img class="hotel-icon" src="media/hotel-icon.svg" alt="">`);
-        } else {
-            console.error("House doesn't have a correct number of houses");
-        }
-    } else {
-        console.error("Something went wrong");
-    }
-}
-
-const updateAllHousesAndMortageDisplay = () => {
-    for (property of arrayOfProperties) {
-        updateHousesAndMortageDisplay(property);
-    }
+    updateAllBoard();
 }
 
 // MORTAGE
@@ -226,13 +159,13 @@ const setMortage = (property) => {
     players[property.owner].transaction(property.mortageValue);
     property.mortage = true;
     createDeedCard(property);
-    updateHousesAndMortageDisplay(property);
+    updateAllBoard();
 }
 const liftMortage = (property) => {
     players[property.owner].transaction(-(Math.round(property.mortageValue * 1.10)));
     property.mortage = false;
     createDeedCard(property);
-    updateHousesAndMortageDisplay(property);
+    updateAllBoard();
 }
 
 const removeSellPropertyDisplay = () => {
@@ -307,6 +240,216 @@ const calculateRent = (property) => {
 };
 
 
+/*------ UPDATE BOARD ------*/
+
+const updateHousesAndMortageDisplay = () => {
+    for (property of arrayOfProperties) {
+        // (OBJECT)
+        if (property.mortage === true) {
+            if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
+                $(`#square-${property.id}`).prepend(`<p class="mortage-sign">M</p>`);
+            } else {
+                $(`#square-${property.id}`).children(".square-color").html(`<p class="mortage-sign">M</p>`);
+            }
+        } else if (property.mortage === false) {
+            if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
+                $(`#square-${property.id}`).find(".mortage-sign").remove();
+            } else {
+                $(`#square-${property.id}`).children(".square-color").html("");
+            }
+            let squareColor = $(`#square-${property.id}`).children(".square-color");
+            squareColor.empty();
+            if (property.house === 0) {
+                // DO NOTHING
+            } else if (property.house > 0 && property.house < 5) {
+                for (let i = 0; i < property.house; i++) {
+                    squareColor.append(`<img class="house-icon" src="media/house-icon.svg" alt="">`);
+                }
+            } else if (property.house === 5) {
+                squareColor.append(`<img class="hotel-icon" src="media/hotel-icon.svg" alt="">`);
+            } else {
+                console.error("House doesn't have a correct number of houses");
+            }
+        } else {
+            console.error("Something went wrong");
+        }
+    }
+}
+
+const updateSquaresDisplay = () => {
+    for (property of arrayOfProperties) {
+        for (player of players) {
+            $(`#square-${property.id}`).removeClass(`property-of-player-${player.color}`);
+        }
+        if (property.owner !== undefined) {
+            $(`#square-${property.id}`).addClass(`property-of-player-${players[property.owner].color}`);
+        } else if (property.owner === undefined) {}
+    }
+    updateHousesAndMortageDisplay();
+}
+
+const updatePlayersContainers = () => {
+    players.forEach(function (player) {
+        if (player.stillPlaying === true) {
+            $(`#player_wallet_${player.id}`).html(`$${players[player.id].wallet}`);
+            $(`#player_jail_card_${player.id}`).html(`Free Jail Card? ${players[player.id].jailCard}`);
+            $(`#player_name_${player.id}`).removeClass(`player-${player.color}-turn`);
+            $(`#player_properties_${player.id}`).empty();
+            let filteredProperties = arrayOfProperties.filter(property => property.owner === player.id);
+            for (let property of filteredProperties) {
+                $(`#player_properties_${property.owner}`).prepend(`<li>${property.name}</li>`);
+            }
+        }
+    });
+    $(`#player_name_${currentPlayer.id}`).addClass(`player-${currentPlayer.color}-turn`);
+};
+
+const updateAllBoard = () => {
+    updateSquaresDisplay();
+    updatePlayersContainers();
+}
+
+const continueTurn = () => {
+    if (currentTurnStatus.playerHasRolled === false) {
+        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
+        newTurn();
+    } else if (currentTurnStatus.playerHasRolled === true && currentTurnStatus.playerHasMoved === false) {
+        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
+        playerRolledDices();
+    } else if (currentTurnStatus.playerHasMoved === true && currentTurnStatus.playerHasFinished === false) {
+        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
+        playerMoved();
+    } else if (currentTurnStatus.playerHasFinished === true) {
+        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
+        playerCompletedTurn();
+    } else {
+        console.error("Something went wrong!");
+    }
+}
+
+/*------ END OF THE GAME ------*/
+
+$("#button_end_game").click(function () {
+    endGame();
+});
+
+const checkPlayerNoMoney = () => {
+    let AllPlayersPass = true;
+    players.forEach(function (player) {
+        if (player.wallet < 0) {
+            AllPlayersPass = false;
+            message(`<span class="player-${player.color}-turn">${player.name}</span> run out of money. Set mortages or sell properties, hotels or houses to continue the game. Or you can quit the game.`);
+        } else {
+            console.log(`${player.name} has money!`);
+        }
+    });
+    if (AllPlayersPass) {
+        console.log("Can continue");
+        continueTurn();
+    } else {
+        hideAllConsoleButtons();
+    }
+}
+
+const endGame = () => {
+
+    // DISPLAY PARTIAL RESULTS
+
+    $("body").prepend(`
+    <div class="game-results-container">
+        <div class="game-results">
+            <p>You've finished playing. This is how the game ended:</p>
+        </div>
+    </div>`);
+
+    players.forEach(function (player) {
+        $(".game-results").append(`<div class="partial-results-players-container" id="partial-result-player-${player.id}"></div>`)
+        if (player.stillPlaying === true) {
+            $(`#partial-result-player-${player.id}`).append(`<p><span class="player-${player.color}-turn">${player.name}</span> finished with:</p>
+            <ul id="partial-result-player-${player.id}-list" class="partial-results-list">
+                <li>$${player.wallet} in his/her wallet.</li>
+            </ul>
+            `);
+        } else {
+            $(`#partial-result-player-${player.id}`).append(`<p><span class="player-${player.color}-turn">${player.name}</span> has quitted the game.</p>`);
+        }
+    });
+
+    let arrayOfProperties = squares.filter(property => property.price !== undefined);
+
+    arrayOfProperties.forEach(function (property) {
+
+        if (property.owner !== undefined) {
+
+            $(`#partial-result-player-${property.owner}-list`).append(`<li id="property-${property.id}-final-display">${property.name}</li>`);
+
+            if (property.mortage == true) {
+                $(`#property-${property.id}-final-display`).append(`<span> (was mortaged).<span>`)
+            } else {
+                $(`#property-${property.id}-final-display`).append(`<span>.<span>`)
+            }
+
+            if (property.house === 0) {
+                // DO NOTHING
+            } else if (property.house > 0 && property.house < 5) {
+
+                $(`#property-${property.id}-final-display`).append(`<span> This property had ${property.house} houses.<span>`);
+
+            } else if (property.house === 5) {
+
+                $(`#property-${property.id}-final-display`).append(`<span> This property had 4 houses and a hotel.<span>`);
+
+            } else {
+
+                console.error("Something went wrong");
+
+            }
+        }
+    });
+
+    // DISPLAY FINAL RESULTS
+
+    $(".game-results").append(`
+    <div id="display_final_results">
+        <p>After lifting up the mortages and selling the houses, hotels and properties, the results are:</p>
+    </div>`);
+    arrayOfProperties.forEach(function (property) {
+        if (property.owner !== undefined) {
+
+            if (property.mortage == true) {
+                liftMortage(property);
+            }
+            
+            while (property.house > 0) {
+                sellHouse(property);
+            }
+            
+            players[property.owner].transaction(property.price);
+            property.owner = undefined;
+
+        }
+    })
+
+    players.sort((a, b) => {
+        return b.wallet - a.wallet;
+    });
+
+    players.forEach(function (player) {
+        if (player.stillPlaying === true) {
+            $("#display_final_results").append(`<p><span class="player-${player.color}-turn">${player.name}</span> finished with $${player.wallet}</p>`)
+        }
+    })
+
+    $(".game-results").append(`<button id="button_restart_game">Play again!</button>`);
+    document.getElementById("button_restart_game").addEventListener("click", function () {
+        localStorage.clear();
+        console.log("Local Storage is clear");
+        location.reload();
+    });
+}
 
 
+// TODO CHECK IF PLAYER CAN AFFORD
+// TODO CHECK IF ONLY REMAINS ONE PLAYER
+// TODO BUTTON END GAME
 // TODO If player owns ALL the Lots of any Color Group, the rent is Doubled on Uninproved Lots in that group.

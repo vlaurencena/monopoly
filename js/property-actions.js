@@ -105,12 +105,12 @@ let createDeedCard = (property) => { // OBJECT
             </div>
 
             <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-set-mortage">Set mortage</li>
-                <li id="title-deed-lift-mortage">Lift mortage</li>
-                <li id="title-deed-sell-property">Sell property</li>
-                <li id="title-deed-buy-house">Buy House</li>
-                <li id="title-deed-sell-house">Sell House</li>
+                <li id="title-deed-close"><button>Close</button></li>
+                <li id="title-deed-set-mortage"><button>Set mortage</button></li>
+                <li id="title-deed-lift-mortage"><button>Lift mortage</button></li>
+                <li id="title-deed-sell-property"><button>Sell property</button></li>
+                <li id="title-deed-buy-house"><button>Buy House</button></li>
+                <li id="title-deed-sell-house"><button>Sell House</button></li>
             </ul>
 
         </div>`
@@ -125,6 +125,9 @@ let createDeedCard = (property) => { // OBJECT
 
     $(`#title-deed-close`).click(function () {
         clearDeedContainer();
+    });
+    $(".title-deed-options").on("click", function () {
+        checkPlayerNoMoney();
     });
 
     if (property.owner !== undefined && property.house === 0) {

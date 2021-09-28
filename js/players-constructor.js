@@ -1,8 +1,9 @@
 // TODO correct propertiesIdsOwn
 
 class Player {
-    constructor(id, name, color, position, wallet, throwDoubles, anotherTurn, inJail, jailCard) {
+    constructor(id, stillPlaying, name, color, position, wallet, throwDoubles, anotherTurn, inJail, jailCard) {
         this.id = id;
+        this.stillPlaying = stillPlaying;
         this.name = name;
         this.color = color;
         this.position = position;
@@ -114,25 +115,37 @@ class Player {
                 message(`<span class="player-${this.color}-turn">${this.name}</span> received ${signAndAmount}, and now has ${this.wallet} in his/her wallet`);
             }
         }
-        updatePlayersContainers();
+        // TODO UPDATE createPlayersContainers();
     }
 
     buyProperty(property) {
         this.wallet -= property.price;
-        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span> have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
         property.owner = this.id;
+        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span> have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
     }
-
+    
     goToJail() {
         document.getElementById(`token-player-${this.id}`).classList.add("token-in-jail");
         this.jump(10);
         this.inJail = true;
-        player_completed_turn();
+        playerCompletedTurn();
     }
 
     getOutOfJail() {
         document.getElementById(`token-player-${this.id}`).classList.remove("token-in-jail");
         this.inJail = false;
+    }
+
+    quitGame() {
+        let arrayOfProperties = squares.filter(property => property.price !== undefined);
+        let propertiesOfThisOwner = arrayOfProperties.filter(property => property.owner === this.id);
+        for (let property of propertiesOfThisOwner) {
+            property.owner = undefined;
+        }
+        this.stillPlaying = false;
+        $(`#token-player-${this.id}`).remove();
+        this.wallet = 0;
+        message(`<p><span class="player-${this.color}-turn">${this.name}</span> quitted the game.</p>`)
     }
 
     endTurn() {
@@ -146,19 +159,21 @@ class Player {
             document.getElementById(`extra-turn-amount`).innerHTML = ``;
             document.getElementById(`extra-turn`).innerHTML = ``;
 
-            if (this.id === players.length - 1) {
+            if (this.id === allPlayersIds.length - 1) {
 
-                currentPlayerId = players[0].id;
+                currentPlayerId = 0
                 currentPlayer = players[currentPlayerId];
                 currentSquare = currentPlayer.position;
 
             } else {
-
                 currentPlayerId = currentPlayerId + 1;
                 currentPlayer = players[currentPlayerId];
                 currentSquare = currentPlayer.position;
             }
 
+            if (currentPlayer.stillPlaying === false) {
+                currentPlayer.endTurn();
+            }
 
         } else {
 

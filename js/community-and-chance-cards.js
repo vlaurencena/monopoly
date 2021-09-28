@@ -43,7 +43,7 @@ const chanceCards = [{
         "text": "GET OUT OF JAIL FREE. This card may be kept until needed or traded.",
         "action": function () {
             currentPlayer.jailCard = true;
-            updatePlayersContainers();
+           // TODO createPlayersContainers();
         }
     },
     {
@@ -101,7 +101,7 @@ const chanceCards = [{
                 currentPlayer.jump(28)
             }
             comesFromCard = true;
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -127,7 +127,7 @@ const chanceCards = [{
                 console.error("Something went wrong")
             }
             comesFromCard = true;
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -146,7 +146,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(5);
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -154,7 +154,7 @@ const chanceCards = [{
         "text": "ADVANCE to Boardwalk.",
         "action": function () {
             currentPlayer.jump(39);
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -165,7 +165,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(24);
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -191,7 +191,7 @@ const chanceCards = [{
                 console.error("Something went wrong")
             }
             comesFromCard = true;
-            player_moved();
+            playerMoved();
         }
 
         //TODO DOESNT ALLOW TO BUY IT
@@ -204,7 +204,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(11);
-            player_moved();
+            playerMoved();
         }
     },
     {
@@ -332,4 +332,5 @@ const communityChestCards = [{
         }
     }
 ]
-// TODO CHANGE ALL ARROW FUNCTIONS TO CONST, not let!
+
+// TODO CHECK IF PLAYER CAN AFFORD TO COMPLETE ACION

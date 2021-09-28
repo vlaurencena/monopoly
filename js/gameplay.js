@@ -13,13 +13,13 @@ let currentTurnStatus = {
 let players = [];
 let allPlayersIds = [];
 
-
 /*------ CONTROL PANNEL BUTTONS ------*/
 
 // GENERAL USAGE
 const all_buttons = document.getElementById("control_buttons");
 all_buttons.addEventListener("click", function () {
-    updatePlayersContainers();
+    updateAllBoard();
+    //    checkPlayerNoMoney();
 });
 
 const button_roll_dice = document.getElementById("button_roll_dice");
@@ -32,7 +32,7 @@ button_roll_dice.addEventListener("click", function () {
 const button_move = document.getElementById("button_move");
 button_move.addEventListener("click", function () {
     currentPlayer.move(diceResult[2]);
-    player_moved();
+    playerMoved();
 });
 
 const button_end_turn = document.getElementById("button_end_turn");
@@ -45,6 +45,7 @@ button_end_turn.addEventListener("click", function () {
     }
     newTurn();
     diceResult = [];
+    updateAllBoard();
 });
 
 // FOR JAIL
@@ -52,13 +53,14 @@ const button_use_jail_card = document.getElementById("button_use_jail_card");
 button_use_jail_card.addEventListener("click", function () {
     currentPlayer.getOutOfJail();
     message(`You used your jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
-    player_completed_turn();
+    playerCompletedTurn();
+    updateAllBoard();
 });
 
 const button_roll_dice_in_jail = document.getElementById("button_roll_dice_in_jail");
 button_roll_dice_in_jail.addEventListener("click", function () {
     currentPlayer.rollDices();
-    player_completed_turn();
+    playerCompletedTurn();
     /*------ ROLLED DOUBLES? ------*/
     if (currentPlayer.throwDoubles) {
         /*--- YES ---*/
@@ -73,53 +75,70 @@ button_roll_dice_in_jail.addEventListener("click", function () {
 
 const button_pay_50 = document.getElementById("button_pay_50");
 button_pay_50.addEventListener("click", function () {
-    currentPlayer.transaction(-50);
-    currentPlayer.getOutOfJail();
-    player_completed_turn();
+    if (playerCanAfford(currentPlayer, 50)) {
+        currentPlayer.transaction(-50);
+        currentPlayer.getOutOfJail();
+        playerCompletedTurn();
+        updateAllBoard();
+    }
 });
 
 // FOR TAX INCOME
 const button_pay_200 = document.getElementById("button_pay_200");
 button_pay_200.addEventListener("click", function () {
-    currentPlayer.transaction(-200);
-    player_completed_turn();
+    if (playerCanAfford(currentPlayer, 200)) {
+        currentPlayer.transaction(-200);
+        playerCompletedTurn();
+        updateAllBoard();
+    }
 });
 
 const button_pay_75 = document.getElementById("button_pay_75");
 button_pay_75.addEventListener("click", function () {
-    currentPlayer.transaction(-75);
-    player_completed_turn();
+    if (playerCanAfford(currentPlayer, 75)) {
+        currentPlayer.transaction(-75);
+        playerCompletedTurn();
+        updateAllBoard();
+    }
 });
 
 // FOR PROPERTIES
 const button_buy = document.getElementById("button_buy");
 button_buy.addEventListener("click", function () {
-    currentPlayer.buyProperty(currentSquare);
-    updateSquaresDisplay();
-    player_completed_turn();
+    if (playerCanAfford(currentPlayer, property.price)) {
+        currentPlayer.buyProperty(currentSquare);
+        playerCompletedTurn();
+        updateAllBoard();
+    }
 });
 
 const button_pay_rent = document.getElementById("button_pay_rent");
 button_pay_rent.addEventListener("click", function () {
     let rent = calculateRent(currentSquare);
-    currentPlayer.wallet -= rent;
-    players[currentSquare.owner].wallet += rent;
-    message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
-    comesFromCard = false;
-    player_completed_turn();
-});
-
-const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
-button_pay_rent_utility.addEventListener("click", function () {
-    let rent = calculateRent(currentSquare);
-    currentPlayer.wallet -= rent * multiplier;
-    players[currentSquare.owner].wallet += rent * multiplier;
-    message(`${currentPlayer.name}paid $${rent * multiplier} to ${players[currentSquare.owner].name}`);
-    comesFromCard = false;
-    player_completed_turn();
+    if (playerCanAfford(currentPlayer, rent)) {
+        currentPlayer.wallet -= rent;
+        players[currentSquare.owner].wallet += rent;
+        message(`${currentPlayer.name} paid $${rent} to ${players[currentSquare.owner].name}`);
+        comesFromCard = false;
+        playerCompletedTurn();
+        updateAllBoard();
+    }
 });
 
 let multiplier = undefined;
+
+const button_pay_rent_utility = document.getElementById("button_pay_rent_utility");
+button_pay_rent_utility.addEventListener("click", function () {
+    let rent = calculateRent(currentSquare) * multiplier;
+    if (playerCanAfford(currentPlayer, rent)) {
+        currentPlayer.wallet -= rent;
+        players[currentSquare.owner].wallet += rent;
+        message(`${currentPlayer.name}paid $${rent} to ${players[currentSquare.owner].name}`);
+        comesFromCard = false;
+        playerCompletedTurn();
+        updateAllBoard();
+    }
+});
 
 const button_roll_dice_utility = document.getElementById("button_roll_dice_utility");
 button_roll_dice_utility.addEventListener("click", function () {
@@ -128,24 +147,24 @@ button_roll_dice_utility.addEventListener("click", function () {
     multiplier = dice1 + dice2;
     animateDices(dice1, dice2);
     message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare) * multiplier} to ${players[currentSquare.owner].name}`);
-    hide_element(button_roll_dice_utility);
-    show_element(button_pay_rent_utility);
+    hideElement(button_roll_dice_utility);
+    showElement(button_pay_rent_utility);
 });
 
 // FOR CARDS
 const button_pick_up_chest_card = document.getElementById("button_pick_up_chest_card");
 button_pick_up_chest_card.addEventListener("click", function () {
     random_chest_card();
-    hide_element(button_pick_up_chest_card);
-    show_element(button_ok);
+    hideElement(button_pick_up_chest_card);
+    showElement(button_ok);
     message(selectedCard.text);
 });
 
 const button_pick_up_chance_card = document.getElementById("button_pick_up_chance_card");
 button_pick_up_chance_card.addEventListener("click", function () {
     random_chance_card();
-    hide_element(button_pick_up_chance_card);
-    show_element(button_ok);
+    hideElement(button_pick_up_chance_card);
+    showElement(button_ok);
     message(selectedCard.text);
 });
 
@@ -153,18 +172,17 @@ const button_ok = document.getElementById("button_ok");
 button_ok.addEventListener("click", function () {
     selectedCard.action();
     selectedCard = [];
-    player_completed_turn();
+    updateAllBoard();
+    playerCompletedTurn();
 });
-
-
 
 /*---------------------- GAME PLAY ----------------------*/
 
-hide_all_buttons();
+hideAllConsoleButtons();
 
 /*------ STEP 0 ------*/
 
-const start_new_game = () => {
+const startNewGame = () => {
     currentPlayerId = 0; // NEEDS CONSTANT UPDATE
     currentPlayer = players[currentPlayerId]; // NEEDS CONSTANT UPDATE
     currentSquare = squares[currentPlayer.position]; // NEEDS CONSTANT UPDATE
@@ -172,21 +190,22 @@ const start_new_game = () => {
 }
 
 const newTurn = () => {
-    $("#button_end_turn").html("End turn");
-    hide_all_buttons();
     updatePlayersContainers();
+    $("#button_end_turn").html("End turn");
+    hideAllConsoleButtons();
+    // TODO update createPlayersContainers();
     message(`It's <span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> turn.`);
 
     if (currentPlayer.inJail) {
         /*--- IS IN JAIL ---*/
         message(`You are in jail. (currentPlayer.inJail = ${currentPlayer.inJail}`);
-        show_element(button_pay_50);
-        show_element(button_roll_dice_in_jail);
+        showElement(button_pay_50);
+        showElement(button_roll_dice_in_jail);
 
         if (currentPlayer.jailCard) {
             /*--- YES JAIL CARD ---*/
             message(`You have jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
-            show_element(button_use_jail_card);
+            showElement(button_use_jail_card);
         } else {
             /*--- NO JAIL CARD ---*/
             message(`You don't have jail card`);
@@ -195,12 +214,12 @@ const newTurn = () => {
     } else {
         /*--- IS NOT IN JAIL ---*/
         console.log("not in jail");
-        show_element(button_roll_dice);
+        showElement(button_roll_dice);
 
         if (currentPlayer.position === 20) {
             /*--- IS ON FREE PARKING ---*/
             message(`${currentPlayer.name}} is in free parking, you can stay or roll dice and move`);
-            show_element(button_end_turn);
+            showElement(button_end_turn);
         }
     }
 }
@@ -209,9 +228,9 @@ const newTurn = () => {
 
 const playerRolledDices = () => {
     currentTurnStatus.playerHasRolled = true;
-    hide_all_buttons();
+    hideAllConsoleButtons();
     setTimeout(function () {
-        show_element(button_move)
+        showElement(button_move)
     }, diceAnimationDuration + 10);
 
 }
@@ -219,56 +238,61 @@ const playerRolledDices = () => {
 /*------ STEP 3 ------*/
 let comesFromCard = false;
 
-const player_moved = () => {
+const playerMoved = () => {
     currentTurnStatus.playerHasMoved = true;
     if (currentPlayer.anotherTurn) {
         $("#button_end_turn").html("Play again");
     }
-    hide_all_buttons();
+    hideAllConsoleButtons();
 
     if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
         /*------ IS IN CHEST ------*/
         message(`current player is in chest`);
-        show_element(button_pick_up_chest_card);
+        showElement(button_pick_up_chest_card);
 
 
     } else if (currentPlayer.position === 7 || currentPlayer.position === 22 || currentPlayer.position === 36) {
         /*------ IS IN CHANCE ------*/
         message(`current player is in chance`);
-        show_element(button_pick_up_chance_card);
+        showElement(button_pick_up_chance_card);
 
     } else if (currentPlayer.position === 10 || currentPlayer.position === 20) {
         /*------ IS IN JUST VISITIN OF FREE PARKING? ------*/
-        message(`${currentPlayer.name} is in just visiting or free parking`);
-        show_element(button_end_turn);
+        showElement(button_end_turn);
+
+        if (currentPlayer.position === 10) {
+            message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in just visiting`);
+        } else {
+            message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is on freeparking.`);
+        }
 
     } else if (currentPlayer.position === 4) {
         /*------ IS IN INCOME TAX ------*/
         message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in Income Tax and needs to pay $200.`);
-        show_element(button_pay_200);
+        showElement(button_pay_200);
     } else if (currentPlayer.position === 38) {
         message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in Luxury Tax and needs to pay $75.`);
-        show_element(button_pay_75);
+        showElement(button_pay_75);
     } else {
         /*------ IS ON PROPERTY ------*/
         // CHECK OWNER
         if (currentSquare.owner === undefined) {
             // NO OWNER
             console.log(`current player is in on property with NO owner`);
-            show_element(button_buy);
-            show_element(button_end_turn);
+            showElement(button_buy);
+            showElement(button_end_turn);
 
         } else {
             console.log(`current player is in on property with YES owner`);
             if (currentSquare.owner === currentPlayerId || currentSquare.mortage === true) {
                 // OWNER IS CURRENT PLAYER OR PROPERTY IS MORTAGE
                 console.log(`its your property`);
-                show_element(button_end_turn);
+                showElement(button_end_turn);
             } else {
                 // OWNER IS OTHER PLAYER AND PROPERTY IS NOT MORTAGE
                 if (currentPlayer.position === 12 || currentPlayer.position === 28) {
                     // UTILITY
-                    show_element(button_roll_dice_utility);
+                    showElement(button_roll_dice_utility);
                     if (calculateRent(currentSquare) === 4) {
 
                         message(`${players[currentSquare.owner].name} only owns this utility. To determine rent, roll dices and the result will be multiplied by 4.`);
@@ -282,7 +306,7 @@ const player_moved = () => {
 
                 } else {
                     // REGULAR PROPERTY
-                    show_element(button_pay_rent);
+                    showElement(button_pay_rent);
                     message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare)} to ${players[currentSquare.owner].name}`);
                 }
             }
@@ -291,15 +315,8 @@ const player_moved = () => {
 }
 
 /*------ STEP 4 ------*/
-const player_completed_turn = () => {
+const playerCompletedTurn = () => {
     currentTurnStatus.playerHasFinished = true;
-    hide_all_buttons();
-    show_element(button_end_turn);
+    hideAllConsoleButtons();
+    showElement(button_end_turn);
 }
-
-/*------ CHECK IF PLAYER RUN OUT OF MONEY ------*/
-
-
-
-
-// TODO CHECK IF PLAYER CAN AFFORD

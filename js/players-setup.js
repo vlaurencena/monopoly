@@ -73,34 +73,8 @@ if (localStorage.length === 0) {
 
             for (i = 0; i < arrayOfNames.length; i++) {
                 let playerName = arrayOfNames[i].value;
-                players.push(new Player(i, playerName, tokenColors[i], 0, initialMoney, 0, false, false, false));
+                players.push(new Player(i, true, playerName, tokenColors[i], 0, initialMoney, 0, false, false, false));
                 allPlayersIds.push(i);
-
-                if (i % 2 !== 0) {
-
-                    document.querySelector("#player-container-2").innerHTML =
-                        document.querySelector("#player-container-2").innerHTML +=
-                        `<div id="player-${i}">
-            <div id="player_name_${i}" class="player-name">${playerName}</div>
-            <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
-            <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-            <div class="player-list-of-properties">List of properties</div>
-            <ul id=player_properties_${i}>
-            </ul>
-            </div>`
-
-                } else {
-                    document.querySelector("#player-container-1").innerHTML =
-                        document.querySelector("#player-container-1").innerHTML +=
-                        `<div id="player-${i}">
-            <div id="player_name_${i}" class="player-name">${playerName}</div>
-            <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
-            <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-            <div class="player-list-of-properties">List of properties</div>
-            <ul id=player_properties_${i}>
-            </ul>
-            </div>`;
-                }
 
                 /*------ PLAYERS TOKENS ------*/
                 let token = document.createElement("span");
@@ -109,10 +83,10 @@ if (localStorage.length === 0) {
                 document.getElementById("token-holder-0").append(token);
 
             }
+
             $("#form_player_setup").hide();
-            start_new_game();
+            startNewGame();
             newTurn();
-            updatePlayersContainers();
             // update_local_storage();
         });
 
@@ -123,42 +97,10 @@ if (localStorage.length === 0) {
 
         console.log("real version OFF");
 
-
         for (i = 0; i < 4; i++) {
 
-            players.push(new Player(i, `Player ${tokenColors[i]}`, tokenColors[i], 0, initialMoney, 0, false, false, false));
+            players.push(new Player(i, true, `Player ${i}`, tokenColors[i], 0, initialMoney, 0, false, false, false));
             allPlayersIds.push(i);
-
-            /*------ PLAYERS CONTAINER ------*/
-
-            if (i % 2 !== 0) {
-
-                document.querySelector("#player-container-2").innerHTML =
-                    document.querySelector("#player-container-2").innerHTML +=
-                    `<div id="player-${i}">
-                                <div id="player_name_${i}" class="player-name">Player ${tokenColors[i]}</div>
-                                <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
-                                <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-                                <div class="player-list-of-properties">List of properties</div>
-                                <ul id=player_properties_${i}>
-                                </ul>
-                             </div>`
-
-            } else {
-                document.querySelector("#player-container-1").innerHTML =
-                    document.querySelector("#player-container-1").innerHTML +=
-                    `<div id="player-${i}">
-                    <div>
-                                    <div id="player_name_${i}" class="player-name">Player ${tokenColors[i]}</div>
-                                    <div id="player_wallet_${i}" class="player-wallet">$${initialMoney}</div>
-                                    <div id="player_jail_card_${i}" class="player-jail-card">Free Jail Card? ${false}</div>
-                                    </div>
-                                    <div class="player-list-of-properties">List of properties</div>
-                                    <ul id=player_properties_${i}>
-                                    </ul>
-                                </div>`;
-            }
-
             /*------ PLAYERS TOKENS ------*/
             let token = document.createElement("span");
             token.id = "token-player-" + i;
@@ -166,51 +108,59 @@ if (localStorage.length === 0) {
             document.getElementById("token-holder-0").append(token);
         }
 
+
         $("#form_player_setup").hide();
-        start_new_game();
+        startNewGame();
         newTurn();
-
     }
-
-    players.forEach(player =>
-        $(`#player-${player.id}`).append(`<button id="quit_player_${player.id}" class="player-quit-game">Quit game</button>`)
-    )
-
-
-
 }
 
+const createPlayersContainers = () => {
+    players.forEach(function (player) {
+        let playerContantainer =
+            `<div id="player-${player.id}">
+            <div id="player_name_${player.id}" class="player-name">${player.name}</div>
+            <div id="player_wallet_${player.id}" class="player-wallet">$${player.wallet}</div>
+            <div id="player_jail_card_${player.id}" class="player-jail-card">Free Jail Card? ${player.jailCard}</div>
+            <div class="player-list-of-properties">List of properties</div>
+            <ul id=player_properties_${player.id}>
+            </ul>
+         </div>`;
+
+        if (player.stillPlaying === true && player.id % 2 !== 0) {
+            document.querySelector("#player-container-2").innerHTML =
+                document.querySelector("#player-container-2").innerHTML +=
+                playerContantainer;
+
+        } else if (player.stillPlaying === true && player.id % 2 === 0) {
+            document.querySelector("#player-container-1").innerHTML =
+                document.querySelector("#player-container-1").innerHTML +=
+                playerContantainer;
+        } else if (player.stillPlaying === false) {
+            console.log(`${player.name} is no longer playing.`);
+        } else {
+            console.error("Something went wrong")
+        }
+
+        $(`#player-${player.id}`).append(`<button id="quit_player_${player.id}" class="player-quit-game">Quit game</button>`)
+    });
+
+    $(`#player_name_${currentPlayer.id}`).addClass(`player-${currentPlayer.color}-turn`);
+
+    // BUTTON QUIT GAME
+    $(".player-quit-game").click(function (event) {
+        let quitPlayerId = parseInt(event.target.id.slice(12, 13));
+        players[quitPlayerId].quitGame();
+        if (currentPlayer.id === quitPlayerId) {
+            currentPlayer.endTurn();
+            newTurn();
+        }
+        console.log(`quit player id: ${quitPlayerId}`);
+        $(`#player-${quitPlayerId}`).remove();
+        updateAllBoard();
+    });
+}
+
+createPlayersContainers();
 // QUIT GAME
 
-const checkPlayerNoMoney = () => {
-    players.forEach(function (player) {
-        if (player.wallet < 0) {
-            message(`${player.name} run out of money. Set mortages or sell properties, hotels or houses. Or you can quit the game.`);
-            hide_all_buttons();
-        }
-    })
-}
-
-players[2].buyProperty(squares[1]);
-players[2].buyProperty(squares[9]);
-players[2].buyProperty(squares[12]);
-players[2].buyProperty(squares[19]);
-updateAllBoard();
-
-$(".player-quit-game").click(function (event) {
-    let playerId = parseInt(event.target.id.slice(12, 13));
-    let arrayOfProperties = squares.filter(property => property.price !== undefined);
-    let propertiesOfThisOwner = arrayOfProperties.filter(property => property.owner === playerId);
-    for (let property of propertiesOfThisOwner) {
-        property.owner = undefined;
-    }
-    updateAllBoard();
-    players.splice(playerId, 1);
-
-});
-
-const createPlayerContainer = (players) => {
-
-}
-
-// TODO ROLL DICES TO SEE WHO STARTS (IDEA USE FOR SETS OF DICES)

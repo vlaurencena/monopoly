@@ -346,16 +346,13 @@
                 <span id="extra-turn-amount"></span>
             </div>
             <!-- DEED CARD -->
-
             <div id="title-deed-container">
             </div>
-            <!-- CLEAR LS -->
-            <div class="restart-game-container">
-                <button id="button_restart_game">Restart Game</button>
-            </div>
-            <!-- SEE RULES MONOPOLY -->
-            <div class="open-rules-monopoly-board">
+            <!-- SEE RULES, RESTART & END GAME CONTAINER -->
+            <div class="end-rules-restart-container">
                 <button class="open-rules-monopoly">See rules of Monopoly</button>
+                <button id="button_restart_game">Restart Game</button>
+                <button id="button_end_game">End Game</button>
             </div>
         </div>
         <div id="player-container-2">
@@ -363,7 +360,6 @@
         </div>
 
         <!-- RULES OF MONOPOLY-->
-
         <div class="rules-container">
             <p class="rules-title">Monopoly Rules: How Do You Play Monopoly?</p>
             <p>The rules of Monopoly are not difficult, but they are specific. Monopoly can be played by 2+ players,
@@ -426,7 +422,6 @@
                 Monopoly, the last player in the game, or the player with the most money, wins.</p>
             <button id="button_close_rules">CLOSE</button>
         </div>
-
     </main>
     <!---- JQUERY CDN ---->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -438,7 +433,7 @@
     <script src="js/players-constructor.js"></script>
     <script src="js/gameplay.js"></script>
     <script src="js/players-setup.js"></script>
-    <!-- <script src="js/local-storage.js"></script> -->
+    <script src="js/local-storage.js"></script>
     <!-- THIS IS JUST FOR DEVELOPMENT -->
     <script src="js/tester.js"></script>
 </body>
