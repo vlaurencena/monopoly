@@ -40,6 +40,7 @@ const chanceCards = [{
         "action": function () {
             currentPlayer.jailCard = true;
             updatePlayersContainers();
+            playerCompletedTurn();
         }
     },
     {
@@ -58,8 +59,8 @@ const chanceCards = [{
                     totalHotels += 100;
                 }
             }
-            console.log(totalHotels)
             currentPlayer.transaction(-(totalHouses + totalHotels));
+            playerCompletedTurn();
         }
     },
     {
@@ -67,6 +68,7 @@ const chanceCards = [{
         "text": "Speeding fine $15.",
         "action": function () {
             currentPlayer.transaction(-15);
+            playerCompletedTurn();
         }
     },
     {
@@ -78,13 +80,15 @@ const chanceCards = [{
             });
             filteredArray.forEach(player => player.transaction(50));
             currentPlayer.transaction(filteredArray.length * -50);
+            playerCompletedTurn();
         }
     },
     {
         "id": 4,
         "text": "Go back three spaces.",
         "action": function () {
-            currentPlayer.move(-3);
+            currentPlayer.jump(-3);
+            playerCompletedTurn();
         }
     },
     {
@@ -105,6 +109,7 @@ const chanceCards = [{
         "text": "Bank pays you dividend of $50.",
         "action": function () {
             currentPlayer.transaction(50);
+            playerCompletedTurn();
         }
     },
     {
@@ -130,8 +135,8 @@ const chanceCards = [{
         "id": 8,
         "text": "Pay poor tax of $15.",
         "action": function () {
-
             currentPlayer.transaction(-15);
+            playerCompletedTurn();
         }
     },
     {
@@ -142,7 +147,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(5);
-            playerMoved();
+            playerCompletedTurn();
         }
     },
     {
@@ -150,7 +155,7 @@ const chanceCards = [{
         "text": "ADVANCE to Boardwalk.",
         "action": function () {
             currentPlayer.jump(39);
-            playerMoved();
+            playerCompletedTurn();
         }
     },
     {
@@ -161,7 +166,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(24);
-            playerMoved();
+            playerCompletedTurn();
         }
     },
     {
@@ -169,6 +174,7 @@ const chanceCards = [{
         "text": "Your building loan matures. Collect $150.",
         "action": function () {
             currentPlayer.transaction(150);
+            playerCompletedTurn();
         }
     },
     {
@@ -198,7 +204,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(11);
-            playerMoved();
+            playerCompletedTurn();
         }
     },
     {
@@ -206,6 +212,7 @@ const chanceCards = [{
         "text": "Go to Jail. Go Directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
             currentPlayer.goToJail();
+            playerCompletedTurn();
         }
     }
 ]
@@ -215,6 +222,7 @@ const communityChestCards = [{
         "text": "Get out of Jail, for free. This card may be kept until needed or sold.",
         "action": function () {
             currentPlayer.jailCard = true;
+            playerCompletedTurn();
         }
     },
     {
@@ -222,6 +230,7 @@ const communityChestCards = [{
         "text": "You have won second prize in a beauty contest. Collect $10.",
         "action": function () {
             currentPlayer.transaction(10);
+            playerCompletedTurn();
         }
     },
     {
@@ -229,6 +238,7 @@ const communityChestCards = [{
         "text": "From sale of stock, you get $50.",
         "action": function () {
             currentPlayer.transaction(50);
+            playerCompletedTurn();
         }
     },
     {
@@ -236,6 +246,7 @@ const communityChestCards = [{
         "text": "Life insurance matures. Collect $100.",
         "action": function () {
             currentPlayer.transaction(100);
+            playerCompletedTurn();
         }
     },
     {
@@ -243,6 +254,7 @@ const communityChestCards = [{
         "text": "Income tax refund. Collect $20.",
         "action": function () {
             currentPlayer.transaction(20);
+            playerCompletedTurn();
         }
     },
     {
@@ -250,6 +262,7 @@ const communityChestCards = [{
         "text": "Holiday fund matures. Receive $100.",
         "action": function () {
             currentPlayer.transaction(100);
+            playerCompletedTurn();
         }
     },
     {
@@ -257,6 +270,7 @@ const communityChestCards = [{
         "text": "You inherit $100.",
         "action": function () {
             currentPlayer.transaction(100);
+            playerCompletedTurn();
         }
     },
     {
@@ -264,6 +278,7 @@ const communityChestCards = [{
         "text": "Receive $25 consultancy fee.",
         "action": function () {
             currentPlayer.transaction(25);
+            playerCompletedTurn();
         }
     },
     {
@@ -271,6 +286,7 @@ const communityChestCards = [{
         "text": "Pay hospital fees of $100.",
         "action": function () {
             currentPlayer.transaction(100);
+            playerCompletedTurn();
         }
     },
     {
@@ -278,6 +294,7 @@ const communityChestCards = [{
         "text": "Bank error in your favor. Collect $200.",
         "action": function () {
             currentPlayer.transaction(200);
+            playerCompletedTurn();
         }
     },
     {
@@ -285,6 +302,7 @@ const communityChestCards = [{
         "text": "Pay school fees of $50.",
         "action": function () {
             currentPlayer.transaction(-50);
+            playerCompletedTurn();
         }
     },
     {
@@ -292,6 +310,7 @@ const communityChestCards = [{
         "text": "Doctor's fee. Pay $50.",
         "action": function () {
             currentPlayer.transaction(-50);
+            playerCompletedTurn();
         }
     },
     {
@@ -303,6 +322,7 @@ const communityChestCards = [{
             });
             filteredArray.forEach(player => player.transaction(-10));
             currentPlayer.transaction(filteredArray.length * 10);
+            playerCompletedTurn();
         }
     },
     {
@@ -311,20 +331,21 @@ const communityChestCards = [{
         "action": function () {
             currentPlayer.jump(0);
             currentPlayer.transaction(200);
+            playerCompletedTurn();
         }
     }, {
         "id": 14,
         "text": "You are assessed for street repairs. $40 per house. $115 per hotel.",
         "action": function () {
-               currentPlayer.transaction(-checkTotalHousesAndHotel(currentPlayer));
+            currentPlayer.transaction(-checkTotalHousesAndHotel(currentPlayer));
+            playerCompletedTurn();
         }
     }, {
         "id": 15,
         "text": "Go to Jail. Go directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
-            currentPlayer.jump(10);
+            goToJail();
+            playerCompletedTurn();
         }
     }
 ]
-
-// TODO CHANCE AND CHEST NOT WORKING PROPERLY

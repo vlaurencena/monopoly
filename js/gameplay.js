@@ -169,6 +169,7 @@ button_pick_up_chest_card.addEventListener("click", function () {
 
 const button_pick_up_chance_card = document.getElementById("button_pick_up_chance_card");
 button_pick_up_chance_card.addEventListener("click", function () {
+    console.log("HERE")
     random_chance_card();
     hideElement(button_pick_up_chance_card);
     showElement(button_ok);
@@ -180,7 +181,6 @@ button_ok.addEventListener("click", function () {
     selectedCard.action();
     selectedCard = [];
     updateAllBoard();
-    playerCompletedTurn();
 });
 
 /*---------------------- GAME PLAY ----------------------*/

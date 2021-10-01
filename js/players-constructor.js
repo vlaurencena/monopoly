@@ -107,14 +107,13 @@ class Player {
     buyProperty(property) {
         this.wallet -= property.price;
         property.owner = this.id;
-        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span> have just bought ${property.name}. Now you have $${this.wallet} on your wallet`);
+        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span>, you  just bought ${property.name} and now you have $${this.wallet} in your wallet`);
     }
 
     goToJail() {
         document.getElementById(`token-player-${this.id}`).classList.add("token-in-jail");
         this.jump(10);
         this.inJail = true;
-        playerCompletedTurn();
     }
 
     getOutOfJail() {

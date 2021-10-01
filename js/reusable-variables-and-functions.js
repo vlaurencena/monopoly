@@ -359,20 +359,12 @@ $("#button_end_game").click(function () {
 });
 
 const checkPlayerNoMoney = () => {
-    let AllPlayersPass = true;
     players.forEach(function (player) {
         if (player.wallet < 0) {
-            AllPlayersPass = false;
+            hideAllConsoleButtons();
             message(`<span class="player-${player.color}-turn">${player.name}</span> run out of money. Set mortages or sell properties, hotels or houses to continue the game. Or you can quit the game.`);
-        } else {
-            // DO NOTHING
         }
-    });
-    if (AllPlayersPass) {
-        continueTurn();
-    } else {
-        hideAllConsoleButtons();
-    }
+    })
 }
 
 const endGame = () => {
@@ -488,7 +480,7 @@ const checkTotalHousesAndHotel = (player) => {
     console.log(counterHouses * 40 + counterHotels * 125);
     return counterHouses * 40 + counterHotels * 125;
 }
-// TODO CHECK IF PLAYER CAN AFFORD
+
 
 const rules = ` <div class="rules-container">
 <p class="rules-title">Monopoly Rules: How Do You Play Monopoly?</p>

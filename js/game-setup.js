@@ -2,7 +2,7 @@
 
 let initialMoney = 1500;
 const tokenColors = ["red", "blue", "skin", "orange"];
-const realVersion = true;
+const realVersion = false;
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
