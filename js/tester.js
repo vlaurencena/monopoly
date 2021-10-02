@@ -1,4 +1,1 @@
-
-// currentPlayer.goToJail();
-// updateAllBoard();
-// updateLocalStorage();
+// TODO -> CHECK IF PLAYER CAN AFFORD

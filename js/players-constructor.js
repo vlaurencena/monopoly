@@ -17,12 +17,10 @@ class Player {
         let dice1 = randomDice[0];
         let dice2 = randomDice[1];
         animateDices(dice1, dice2);
-
         if (dice1 === dice2) {
             //  THROW DOUBLES
             this.throwDoubles++;
             this.anotherTurn = true;
-
             if (this.throwDoubles === 3) {
                 //  THROW DOUBLES X3
                 message(`<span class="player-${this.color}-turn">${this.name}</span>throwDoubles for the third time, go to Jail!`);
@@ -30,7 +28,6 @@ class Player {
                 this.throwDoubles = 0;
                 this.anotherTurn = false; 
             }
-
         } else {
             //  NOT THROW DOUBLES
             this.throwDoubles = 0;
@@ -40,29 +37,20 @@ class Player {
     }
 
     move(positions) {
-
-        // INITIAL SETUP
-
         let completedRound = false;
-
         // ANIMATION
-
         let oldPosition = this.position;
         let newPosition = this.position + positions;
         let positionsMoved = newPosition - oldPosition;
-
         for (let i = 0; i <= positionsMoved; i++) {
             let transition = i + oldPosition;
-
             // CHECK IF ROUND IS FINISHED
             if (transition >= 40) {
                 transition -= 40;
-
                 if (completedRound === false) {
                     completedRound = true;
                 }
             }
-
             setTimeout(() => {
                 document.getElementById(`token-holder-${transition}`).appendChild(document.getElementById(`token-player-${this.id}`));
             }, i * moveTokenAnimation);
@@ -71,7 +59,6 @@ class Player {
         // FINAL SETUP
 
         this.position = newPosition;
-
         if (completedRound) {
             this.position -= 40;
             currentSquare = squares[this.position];
@@ -133,13 +120,10 @@ class Player {
     endTurn() {
 
         if (this.anotherTurn === true) { // PLAYER GOT DOUBLES
-
             this.anotherTurn = false;
-
         } else if (this.anotherTurn === false) { // PLAYER DIDN'T GET DOUBLES
 
             if (this.id === allPlayersIds.length - 1) {
-
                 currentPlayerId = 0
                 currentPlayer = players[currentPlayerId];
                 currentSquare = squares[currentPlayer.position];
@@ -155,12 +139,8 @@ class Player {
             }
 
         } else {
-
             console.error(`Something went wrong`);
-
         }
-
-        document.getElementById(`dice_1`).src = `media/dice-0.png`;
-        document.getElementById(`dice_2`).src = `media/dice-0.png`;
+        updateDiceDisplay();
     }
 }

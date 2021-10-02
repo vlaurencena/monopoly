@@ -1,6 +1,6 @@
 /*---------------------- INITIAL SETUP ----------------------*/
 
-let initialMoney = 110;
+let initialMoney = 1500;
 const tokenColors = ["red", "blue", "skin", "orange"];
 const realVersion = true;
 
@@ -64,7 +64,9 @@ if (localStorage.length === 0) {
                         $.get(URL, function (respuesta, estado) {
                             if (estado === "success") {
                                 let randomIndex = Math.floor(Math.random() * respuesta.data.results.length);
-                                $(`#name_${playerID}`).val(respuesta.data.results[randomIndex].name);
+                                let superHeroName = respuesta.data.results[randomIndex].name;
+                                let superHeroNameRemoveParenthesis = superHeroName.replace(/ *\([^)]*\) */g, "");
+                                $(`#name_${playerID}`).val(superHeroNameRemoveParenthesis);
                                 $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
                             }
                         });

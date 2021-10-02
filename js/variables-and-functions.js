@@ -673,6 +673,9 @@ const updateDiceDisplay = () => {
     if (diceResult.length !== 0) {
         document.getElementById(`dice_1`).src = `media/dice-${diceResult[0]}.svg`;
         document.getElementById(`dice_2`).src = `media/dice-${diceResult[1]}.svg`;
+    } else {
+        document.getElementById(`dice_1`).src = `media/dice-0.png`;
+        document.getElementById(`dice_2`).src = `media/dice-0.png`;
     }
 }
 

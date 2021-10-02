@@ -31,6 +31,3 @@ if (localStorage.length !== 0) {
 } else {
     console.log("Local Storage is empty.");
 }
-
-// TODO -> SET UP THROW DICES TO SET PLAYERS ORDER
-// TODO -> CHECK IF PLAYER CAN AFFORD
