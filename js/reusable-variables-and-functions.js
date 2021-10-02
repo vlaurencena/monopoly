@@ -107,7 +107,7 @@ const createPlayersContainers = () => {
                 document.querySelector("#player-container-1").innerHTML +=
                 playerContantainer;
         } else if (player.stillPlaying === false) {
-            console.log(`${player.name} is no longer playing.`);
+           // DO NOTHING
         } else {
             console.error("Something went wrong")
         }
@@ -126,7 +126,6 @@ const createPlayersContainers = () => {
     // BUTTON QUIT GAME
     $(".player-quit-game").click(function (event) {
         let quitPlayerId = parseInt(event.target.id.slice(12, 13));
-        console.log(`player ${quitPlayerId} quitted.`);
         players[quitPlayerId].quitGame();
         // CURRENT PLAYER QUITTED
         if (currentPlayer.id === quitPlayerId) {
@@ -141,10 +140,10 @@ const createPlayersContainers = () => {
         $(`#player-${quitPlayerId}`).remove();
         updateAllBoard();
         let playersRemaining = players.filter(player => player.stillPlaying === true);
-        console.log(playersRemaining.length);
         if (playersRemaining.length === 1) {
             endGame();
         }
+        updateLocalStorage();
     });
 }
 

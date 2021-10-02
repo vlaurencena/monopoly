@@ -5,8 +5,9 @@ document.getElementById("button_restart_game").addEventListener("click", functio
     location.reload();
 });
 
-
-
+$("#control_buttons").click(function () {
+    updateLocalStorage();
+})
 
 /*------ CHECK LOCAL STORAGE ------*/
 if (localStorage.length !== 0) {
@@ -29,9 +30,6 @@ if (localStorage.length !== 0) {
     continueTurn();
 } else {
     console.log("Local Storage is empty.");
-    startNewGame();
-    newTurn();
-    updateAllBoard();
 }
 
 // TODO -> SET UP THROW DICES TO SET PLAYERS ORDER

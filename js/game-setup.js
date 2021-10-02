@@ -2,7 +2,7 @@
 
 let initialMoney = 110;
 const tokenColors = ["red", "blue", "skin", "orange"];
-const realVersion = false;
+const realVersion = true;
 
 /*---------------------- PLAYER'S SETUP ----------------------*/
 
@@ -41,7 +41,6 @@ if (localStorage.length === 0) {
         for (mode in gameModes) {
             gameModes[mode].onclick = function () {
                 initialMoney = this.value;
-                console.log(this.value);
             }
         }
 
@@ -49,7 +48,6 @@ if (localStorage.length === 0) {
 
         for (radio in radios) {
             radios[radio].onclick = function () {
-                console.log(this.value);
                 $("#form_player_info").show();
                 $("#form_player_info").html(``);
                 createPlayerForm(this.value);
@@ -62,13 +60,10 @@ if (localStorage.length === 0) {
                         const hash = "9fec144e8c5f068531d1ce7c701987f5";
                         const alphabet = "abcdefghijklmnopqrstuvwxyz";
                         let randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        console.log(randomCharacter);
                         let URL = `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${randomCharacter}&ts=1&apikey=${publicKey}&hash=${hash}`;
                         $.get(URL, function (respuesta, estado) {
                             if (estado === "success") {
-                                console.log(respuesta);
                                 let randomIndex = Math.floor(Math.random() * respuesta.data.results.length);
-                                console.log(randomIndex);
                                 $(`#name_${playerID}`).val(respuesta.data.results[randomIndex].name);
                                 $(`#superhero-${playerID}`).val("I want another Marvel superhero name!");
                             }
@@ -96,7 +91,6 @@ if (localStorage.length === 0) {
 
         document.getElementById("form_player_info").addEventListener("submit", function (e) {
             let arrayOfNames = $(this).serializeArray()
-            console.log(arrayOfNames);
             e.preventDefault();
 
             for (i = 0; i < arrayOfNames.length; i++) {
@@ -109,6 +103,9 @@ if (localStorage.length === 0) {
             $("#form_game_setup").hide();
             createPlayersContainers();
             createTokens();
+            startNewGame();
+            newTurn();
+            updateLocalStorage();
         });
     } else {
         // FAST VERSION FOR DEVELOPMENT
