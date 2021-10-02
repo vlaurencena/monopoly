@@ -1,7 +1,7 @@
 let selectedCard = [];
 
-const chest_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-const chance_cards_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+let chestCardsOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+let chanceCardsOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 // FUNCTION TO SHUFFLE ARRAYS
 const shuffle = (array) => {
@@ -18,20 +18,26 @@ const shuffle = (array) => {
 }
 
 // SHUFFLE CARDS ARRAYS
-shuffle(chest_cards_order);
-shuffle(chance_cards_order);
+shuffle(chestCardsOrder);
+shuffle(chanceCardsOrder);
 
 // PICK UP CARD
 random_chance_card = () => {
-    let card = chance_cards_order.shift(); // TAKE THE FIRST CARD ID
-    selectedCard = chanceCards[card]; // SELECT THE CARD
-    chance_cards_order.push(card); // PUSH IT TO THE END
+    let card = chanceCardsOrder.shift(); // TAKE THE FIRST CARD ID
+    selectedCard = {
+        type: "chance",
+        id: card
+    } // SELECT THE CARD
+    chanceCardsOrder.push(card); // PUSH IT TO THE END
 }
 
 random_chest_card = () => {
-    let card = chest_cards_order.shift();
-    selectedCard = chanceCards[card];
-    chest_cards_order.push(card);
+    let card = chestCardsOrder.shift();
+    selectedCard = {
+        type: "chest",
+        id: card
+    }
+    chestCardsOrder.push(card);
 }
 
 const chanceCards = [{

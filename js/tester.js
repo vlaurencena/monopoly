@@ -1,2 +1,4 @@
-currentPlayer.move(7);
-playerMoved();
+
+// currentPlayer.goToJail();
+// updateAllBoard();
+// updateLocalStorage();

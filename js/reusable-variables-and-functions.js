@@ -1,7 +1,12 @@
 /*----- VARIABLES ------*/
 
-let arrayOfProperties = squares.filter(property => property.price !== undefined); // REMEMBER THEY DON'T UPDATE
-let propertiesIds = arrayOfProperties.map(property => property.id); // REMEMBER THEY DON'T UPDATE
+const arrayOfProperties = () => {
+    return squares.filter(property => property.price !== undefined);
+}
+
+const propertiesIds = () => {
+    return arrayOfProperties().map(property => property.id);
+}
 
 /*----- OPEN AND CLOSE RULES ------*/
 
@@ -79,6 +84,80 @@ const hideAllConsoleButtons = () => {
     hideElement(button_pay_rent);
     hideElement(button_roll_dice_utility);
     hideElement(button_pay_rent_utility);
+}
+
+const createPlayersContainers = () => {
+    players.forEach(function (player) {
+        let playerContantainer =
+            `<div id="player-${player.id}">
+                <div id="player_name_${player.id}" class="player-name">${player.name}</div>
+                <div id="player_wallet_${player.id}" class="player-wallet">$${player.wallet}</div>
+                <div id="player_jail_card_${player.id}" class="player-jail-card">Has free Jail Card?</div>
+                <div class="player-list-of-properties">List of properties</div>
+                <ul id=player_properties_${player.id}></ul>
+            </div>`;
+
+        if (player.stillPlaying === true && player.id % 2 !== 0) {
+            document.querySelector("#player-container-2").innerHTML =
+                document.querySelector("#player-container-2").innerHTML +=
+                playerContantainer;
+
+        } else if (player.stillPlaying === true && player.id % 2 === 0) {
+            document.querySelector("#player-container-1").innerHTML =
+                document.querySelector("#player-container-1").innerHTML +=
+                playerContantainer;
+        } else if (player.stillPlaying === false) {
+            console.log(`${player.name} is no longer playing.`);
+        } else {
+            console.error("Something went wrong")
+        }
+
+        if (player.jailCard) {
+            $(`#player_jail_card_${player.id}`).append(` Yes.`);
+        } else {
+            $(`#player_jail_card_${player.id}`).append(` No.`);
+        }
+
+        $(`#player-${player.id}`).append(`<button id="quit_player_${player.id}" class="player-quit-game">Quit game</button>`)
+    });
+
+    $(`#player_name_${currentPlayer.id}`).addClass(`player-${currentPlayer.color}-turn`);
+
+    // BUTTON QUIT GAME
+    $(".player-quit-game").click(function (event) {
+        let quitPlayerId = parseInt(event.target.id.slice(12, 13));
+        console.log(`player ${quitPlayerId} quitted.`);
+        players[quitPlayerId].quitGame();
+        // CURRENT PLAYER QUITTED
+        if (currentPlayer.id === quitPlayerId) {
+            currentPlayer.endTurn();
+            diceResult = [];
+            updateDiceDisplay();
+            currentTurnStatus.playerHasRolled = false;
+            currentTurnStatus.playerHasMoved = false;
+            currentTurnStatus.playerHasFinished = false;
+            newTurn();
+        }
+        $(`#player-${quitPlayerId}`).remove();
+        updateAllBoard();
+        let playersRemaining = players.filter(player => player.stillPlaying === true);
+        console.log(playersRemaining.length);
+        if (playersRemaining.length === 1) {
+            endGame();
+        }
+    });
+}
+
+const createTokens = () => {
+    for (let player of players.filter(player => player.stillPlaying === true)) {
+        let token = document.createElement("span");
+        token.id = "token-player-" + player.id;
+        token.classList.add("token", "token-color-player-" + tokenColors[player.id]);
+        if (player.inJail === true) {
+            token.classList.add("token-in-jail");
+        }
+        document.getElementById("token-holder-0").append(token);
+    }
 }
 
 /*------ VALIDATE PLAYER CAN AFFORD ------*/
@@ -252,7 +331,6 @@ const calculateRent = (property) => {
 
 const updateExtraTurn = () => {
     if (currentPlayer.throwDoubles === 1) {
-        console.log("Im here")
         $(`#extra-turn`).html(`EXTRA TURN`);
     } else if (currentPlayer.throwDoubles === 2) {
         $(`#extra-turn`).html(`EXTRA TURN x2`);
@@ -262,7 +340,7 @@ const updateExtraTurn = () => {
 }
 
 const updateHousesAndMortageDisplay = () => {
-    for (property of arrayOfProperties) {
+    for (property of arrayOfProperties()) {
         // (OBJECT)
         if (property.mortage === true) {
             if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
@@ -296,7 +374,7 @@ const updateHousesAndMortageDisplay = () => {
 }
 
 const updateSquaresDisplay = () => {
-    for (property of arrayOfProperties) {
+    for (property of arrayOfProperties()) {
         for (player of players) {
             $(`#square-${property.id}`).removeClass(`property-of-player-${player.color}`);
         }
@@ -319,7 +397,7 @@ const updatePlayersContainers = () => {
             }
             $(`#player_name_${player.id}`).removeClass(`player-${player.color}-turn`);
             $(`#player_properties_${player.id}`).empty();
-            let filteredProperties = arrayOfProperties.filter(property => property.owner === player.id);
+            let filteredProperties = arrayOfProperties().filter(property => property.owner === player.id);
             for (let property of filteredProperties) {
                 $(`#player_properties_${property.owner}`).prepend(`<li>${property.name}</li>`);
             }
@@ -332,23 +410,27 @@ const updateAllBoard = () => {
     updateSquaresDisplay();
     updatePlayersContainers();
     updateExtraTurn();
+    updateDiceDisplay();
 }
 
 const continueTurn = () => {
+    if (currentPlayer.stillPlaying === false) {
+        currentPlayer.endTurn();
+    }
     if (currentTurnStatus.playerHasRolled === false) {
-        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         newTurn();
     } else if (currentTurnStatus.playerHasRolled === true && currentTurnStatus.playerHasMoved === false) {
-        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         playerRolledDices();
     } else if (currentTurnStatus.playerHasMoved === true && currentTurnStatus.playerHasFinished === false) {
-        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         playerMoved();
     } else if (currentTurnStatus.playerHasFinished === true) {
-        // currentSquare = squares[currentPlayer.position]; // SOLVED CURRENTSQUARE MYSTERY
         playerCompletedTurn();
     } else {
         console.error("Something went wrong!");
+    }
+
+    if (currentTurnStatus.gameEnded === true) {
+        endGame();
     }
 }
 
@@ -368,6 +450,9 @@ const checkPlayerNoMoney = () => {
 }
 
 const endGame = () => {
+
+    currentTurnStatus.gameEnded = true;
+    updateLocalStorage();
 
     // DISPLAY PARTIAL RESULTS
 
@@ -391,9 +476,7 @@ const endGame = () => {
         }
     });
 
-    let arrayOfProperties = squares.filter(property => property.price !== undefined);
-
-    arrayOfProperties.forEach(function (property) {
+    arrayOfProperties().forEach(function (property) {
 
         if (property.owner !== undefined) {
 
@@ -429,7 +512,8 @@ const endGame = () => {
     <div id="display_final_results">
         <p>After lifting up the mortages and selling the houses, hotels and properties, the results are:</p>
     </div>`);
-    arrayOfProperties.forEach(function (property) {
+
+    arrayOfProperties().forEach(function (property) {
         if (property.owner !== undefined) {
 
             if (property.mortage == true) {
@@ -543,3 +627,58 @@ const rules = ` <div class="rules-container">
     Monopoly, the last player in the game, or the player with the most money, wins.</p>
 <button id="button_close_rules">CLOSE</button>
 </div>`;
+
+/*------ UPDATE LOCAL STORAGE ------*/
+
+
+const updateLocalStorage = () => {
+    localStorage.setItem("allPlayersIds", JSON.stringify(allPlayersIds));
+    localStorage.setItem("currentPlayerId", JSON.stringify(currentPlayerId));
+    localStorage.setItem("players", JSON.stringify(players));
+    localStorage.setItem("currentPlayer", JSON.stringify(currentPlayer));
+    localStorage.setItem("currentSquareId", JSON.stringify(currentSquare.id));
+    localStorage.setItem("diceResult", JSON.stringify(diceResult));
+    localStorage.setItem("consoleMessages", JSON.stringify(consoleMessages));
+    localStorage.setItem("squares", JSON.stringify(squares));
+    localStorage.setItem("currentTurnStatus", JSON.stringify(currentTurnStatus));
+    localStorage.setItem("chestCardsOrder", JSON.stringify(chestCardsOrder));
+    localStorage.setItem("chanceCardsOrder", JSON.stringify(chanceCardsOrder));
+    localStorage.setItem("selectedCard", JSON.stringify(selectedCard));
+    localStorage.setItem("comesFromCard", JSON.stringify(comesFromCard));
+    console.log("Local Storage was updated.");
+}
+
+const retrieveLocalStorage = () => {
+    console.log("Local Storage was retrieved.")
+    // PLAYERS ARRAY
+    players = [];
+    let string_of_players = JSON.parse(localStorage.getItem("players"));
+    string_of_players.forEach(player => {
+        players.push(new Player(player.id, player.stillPlaying, player.name, player.color, player.position, player.wallet, player.throwDoubles, player.anotherTurn, player.inJail, player.jailCard));
+    });
+    squares = JSON.parse(localStorage.getItem("squares"));
+    // INITIAL GAMEPLAY
+    currentPlayerId = JSON.parse(localStorage.getItem("currentPlayerId"));
+    currentPlayer = players[currentPlayerId];
+    currentSquare = squares[JSON.parse(localStorage.getItem("currentSquareId"))];
+    diceResult = JSON.parse(localStorage.getItem("diceResult"));
+    currentTurnStatus = JSON.parse(localStorage.getItem("currentTurnStatus"));
+    allPlayersIds = JSON.parse(localStorage.getItem("allPlayersIds"));
+    chestCardsOrder = JSON.parse(localStorage.getItem("chestCardsOrder"));
+    chanceCardsOrder = JSON.parse(localStorage.getItem("chanceCardsOrder"));
+    selectedCard = JSON.parse(localStorage.getItem("selectedCard"));
+    comesFromCard = JSON.parse(localStorage.getItem("comesFromCard"));
+}
+
+const updateDiceDisplay = () => {
+    if (diceResult.length !== 0) {
+        document.getElementById(`dice_1`).src = `media/dice-${diceResult[0]}.svg`;
+        document.getElementById(`dice_2`).src = `media/dice-${diceResult[1]}.svg`;
+    }
+}
+
+const updateTokens = (player) => {
+    let token = $(`#token-player-${player.id}`);
+    token.remove();
+    $(`#token-holder-${player.position}`).append(token);
+}

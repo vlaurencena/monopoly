@@ -1,6 +1,6 @@
 // EVENT LISTENER TO PROPERTY SQUARES
 
-for (let id of propertiesIds) {
+for (let id of propertiesIds()) {
     $(`#square-${id}`).click(function () {
         let getId = this.id.split("-")[1];
         let selectedProperty = squares[getId];
@@ -171,6 +171,10 @@ let createDeedCard = (property) => { // OBJECT
     } else if (property.house === 5) {
         $(`#title-deed-sell-house`).html("Sell hotel");
     }
+    
+    $(".title-deed-options").click(function () {
+        updateLocalStorage();
+    });
 }
 
 // SELL PROPERTY
