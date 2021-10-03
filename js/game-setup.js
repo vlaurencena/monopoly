@@ -35,7 +35,7 @@ if (localStorage.length === 0) {
                 </form>
                 <button class="open-rules-monopoly open-rules-monopoly-player-setup">See rules of Monopoly</button>
         </div>
-    `);
+        `);
 
         let gameModes = document.forms["form-number-players"].elements["game-mode"];
         for (mode in gameModes) {
@@ -90,9 +90,8 @@ if (localStorage.length === 0) {
                 `);
         }
 
-
         document.getElementById("form_player_info").addEventListener("submit", function (e) {
-            let arrayOfNames = $(this).serializeArray()
+            let arrayOfNames = $(this).serializeArray();
             e.preventDefault();
 
             for (i = 0; i < arrayOfNames.length; i++) {
@@ -109,6 +108,7 @@ if (localStorage.length === 0) {
             newTurn();
             updateLocalStorage();
         });
+
     } else {
         // FAST VERSION FOR DEVELOPMENT
         console.log("Player's setup real version OFF");
@@ -119,7 +119,7 @@ if (localStorage.length === 0) {
         $("#form_game_setup").hide();
         createPlayersContainers();
         createTokens();
+        startNewGame();
+        newTurn();
     }
 }
-
-

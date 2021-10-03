@@ -1,29 +1,19 @@
-/*----- VARIABLES ------*/
-
 const arrayOfProperties = () => {
     return squares.filter(property => property.price !== undefined);
 }
 
-const propertiesIds = () => {
-    return arrayOfProperties().map(property => property.id);
+const propertiesIds = arrayOfProperties().map(property => property.id);
+
+for (id of propertiesIds) {
+    document.getElementById(`square-${id}`).style.cursor = "pointer";
 }
-
-/*----- OPEN AND CLOSE RULES ------*/
-
-$(".open-rules-monopoly ").click(function () {
-    $("main").append(rules);
-    $(".rules-container").show();
-    $("#button_close_rules").click(function () {
-        $(".rules-container").remove();
-    });
-});
 
 /*----- ROLL DICE ------*/
 
 const getDicesResult = () => {
     let dice1 = Math.ceil(Math.random() * 6);
     let dice2 = Math.ceil(Math.random() * 6);
-    console.log([dice1, dice2, dice1 + dice2]);
+    console.log(`Dice result is: ${[dice1, dice2, dice1 + dice2]}`);
     return [dice1, dice2, dice1 + dice2];
 }
 
@@ -87,6 +77,11 @@ const hideAllConsoleButtons = () => {
 }
 
 const createPlayersContainers = () => {
+
+    players.forEach(function (player) {
+        $(`#player-${player.id}`).remove();
+    })
+
     players.forEach(function (player) {
         let playerContantainer =
             `<div id="player-${player.id}">
@@ -107,7 +102,7 @@ const createPlayersContainers = () => {
                 document.querySelector("#player-container-1").innerHTML +=
                 playerContantainer;
         } else if (player.stillPlaying === false) {
-           // DO NOTHING
+            // DO NOTHING
         } else {
             console.error("Something went wrong")
         }
@@ -148,6 +143,7 @@ const createPlayersContainers = () => {
 }
 
 const createTokens = () => {
+    $(".token").remove();
     for (let player of players.filter(player => player.stillPlaying === true)) {
         let token = document.createElement("span");
         token.id = "token-player-" + player.id;
@@ -458,12 +454,13 @@ const endGame = () => {
     $("body").prepend(`
     <div class="game-results-container">
         <div class="game-results">
-            <p>You've finished playing. This is how the game ended:</p>
+            <p class="game-results__title">The game ended. Thanks for playing Virtual Monopoly!</p>
+            <p class="game-results__paragraph">When the game finished, players had:</p>
         </div>
     </div>`);
 
     players.forEach(function (player) {
-        $(".game-results").append(`<div class="partial-results-players-container" id="partial-result-player-${player.id}"></div>`)
+        $(".game-results").append(`<div class="results-players-container" id="partial-result-player-${player.id}"></div>`)
         if (player.stillPlaying === true) {
             $(`#partial-result-player-${player.id}`).append(`<p><span class="player-${player.color}-turn">${player.name}</span> finished with:</p>
             <ul id="partial-result-player-${player.id}-list" class="partial-results-list">
@@ -471,7 +468,7 @@ const endGame = () => {
             </ul>
             `);
         } else {
-            $(`#partial-result-player-${player.id}`).append(`<p><span class="player-${player.color}-turn">${player.name}</span> has quitted the game.</p>`);
+            $(`#partial-result-player-${player.id}`).append(`<p><span class="player-${player.color}-turn">${player.name}</span> had quitted the game.</p>`);
         }
     });
 
@@ -491,7 +488,7 @@ const endGame = () => {
                 // DO NOTHING
             } else if (property.house > 0 && property.house < 5) {
 
-                $(`#property-${property.id}-final-display`).append(`<span> This property had ${property.house} houses.<span>`);
+                $(`#property-${property.id}-final-display`).append(`<span> This property had ${property.house} house/s.<span>`);
 
             } else if (property.house === 5) {
 
@@ -509,7 +506,7 @@ const endGame = () => {
 
     $(".game-results").append(`
     <div id="display_final_results">
-        <p>After lifting up the mortages and selling the houses, hotels and properties, the results are:</p>
+        <p class="game-results__paragraph">After lifting up the mortages and selling the houses, hotels and properties, the results are:</p>
     </div>`);
 
     arrayOfProperties().forEach(function (property) {
@@ -535,11 +532,11 @@ const endGame = () => {
 
     players.forEach(function (player) {
         if (player.stillPlaying === true) {
-            $("#display_final_results").append(`<p><span class="player-${player.color}-turn">${player.name}</span> finished with $${player.wallet}</p>`)
+            $("#display_final_results").append(`<p class="results-players-container"><span class="player-${player.color}-turn">${player.name}</span> finished with a total of $${player.wallet}.</p>`)
         }
     })
 
-    $(".game-results").append(`<button id="button_restart_game">Play again!</button>`);
+    $(".game-results").append(`<button class="button-play-again" id="button_restart_game">Play again!</button>`);
     document.getElementById("button_restart_game").addEventListener("click", function () {
         localStorage.clear();
         console.log("Local Storage is clear");
@@ -565,67 +562,7 @@ const checkTotalHousesAndHotel = (player) => {
 }
 
 
-const rules = ` <div class="rules-container">
-<p class="rules-title">Monopoly Rules: How Do You Play Monopoly?</p>
-<p>The rules of Monopoly are not difficult, but they are specific. Monopoly can be played by 2+ players,
-    depending on the number of player tokens available.</p>
-<p>Each player chooses a token and places it on ‘Go’, and is provided with $1500.</p>
-<p class="rules-subtitle">Game Play</p>
-<p>According to the rules of Monopoly, the player that roles the highest total on both dice goes first.</p>
-<p>There are 4 main parts to a turn.</p>
-<ol>
-    <li>Roll the dice. Move the number of squares indicated. If you throw doubles, you take another turn
-        after your turn is completed. Each time you pass ‘Go’, collect $200 from the Bank.</li>
-    <li>Buy properties. You may buy any property from the Bank that you land on if it is not already owned.
-    </li>
-    <li>Building. You may only build when you own all properties in a color group. Building must be equal on
-        all properties in a group. You may place a single building on a single property, but you may not
-        place two buildings on one property unless all other properties in the group have one building
-        present (even build rule). Any property can have a total of 4 houses, except Utilities and
-        Railroads, which cannot be devloped. To place a hotel on a property, 4 houses must be present on all
-        properties in the group. Houses are removed from the property when a hotel is placed. All buildings
-        are purchased from the Bank.</li>
-    <li>Complete necessary actions. Pay rent as determined by the Title Deed for the property you are on.
-        Pay Income Tax to the Bank ($200 or 10% of your total assets). Draw a Community Chest or Chance card
-        and follow the instructions. These cards are returned to the bottom of the pile when the action is
-        completed.</li>
-</ol>
-<p class="rules-subtitle">Going to Jail</p>
-<p>In the rules of Monopoly, there are 3 ways to be sent to ‘Jail’:</p>
-<ul>
-    <li>Land on a space marked ‘Go to Jail’</li>
-    <li>Draw a card marked ‘Go to Jail’</li>
-    <li>Roll doubles three times in a row</li>
-</ul>
-<p>There are 4 ways to get out of ‘Jail’</p>
-<ul>
-    <li>Pay the $50 fine before rolling the dice</li>
-    <li>Use a ‘Get Out Of Jail Free Card’ before rolling the dice</li>
-    <li>Roll doubles</li>
-</ul>
-<p>When you get out of ‘Jail’, move the number of spaces indicated by the dice. Even while in ‘Jail’, you
-    may buy and sell property and collect any rent owed to you. You are not sent to ‘Jail’ if you land on
-    the ‘Jail’ square during normal game play, and you do not incur a fine.</p>
-<p class="rules-subtitle">Money to Pay Rent, etc</p>
-<p>The rules of Monopoly state, if you do not have enough money to pay Rent or other obligations during your
-    turn, you may chose to sell houses, hotels, or property. Buildings may be sold to the Bank for one-half
-    of the purchase price. Buildings may not be sold to other players. Unimproved properties (including
-    railroad and utilities) can be sold to any player for any amount.</p>
-<p>Unimproved properties can also be mortgaged to the Bank for the value mortgage value printed on the Title
-    Deed. No rent is collected on mortgaged properties. To lift a mortgage, the player must pay the Bank the
-    mortgage amount plus 10% interest. Players retain possession of mortgaged properties. If that player
-    chooses, he or she may sell the mortgaged property to another player for any price. The property would
-    remain mortgaged, and the new owner would have to pay the Bank the same mortgage + 10% to lift the
-    mortgage.</p>
-<p class="rules-subtitle">Winning the Game</p>
-<p>You may chose to end the game at any time and tally the total worth of each player (including buildings
-    and all property worth). You may also chose to play until all but one player has been declared Bankrupt.
-    Bankruptcy occurs when a player owes more than he or she can pay. You must turn over all that you have
-    including money and Title Deeds to the Bank or another player, depending on who the current debt is owed
-    to. Any player who has declared Bankruptcy is no longer part of the game. According to the rules of
-    Monopoly, the last player in the game, or the player with the most money, wins.</p>
-<button id="button_close_rules">CLOSE</button>
-</div>`;
+
 
 /*------ UPDATE LOCAL STORAGE ------*/
 

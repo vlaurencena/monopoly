@@ -4,17 +4,10 @@
     box-sizing: border-box;
 }
 
-/* GENERAL DISPLAY */
-/* body {
-    padding: 1rem 0;
-} */
-
 main {
     display: flex;
     justify-content: center;
 }
-
-/* BOARD */
 
 .board {
     min-width: 100vh;
@@ -31,11 +24,18 @@ ul li {
     list-style: inside none;
 }
 
-.rules-container ul li {
-    list-style: circle;
+.rules-container ol li {
+    list-style-position: inside;
 }
 
-/* SQUARES' POSITIONS */
+.rules-container ul li {
+    list-style: circle;
+    list-style-position: inside;
+}
+
+button:hover {
+    cursor: pointer;
+}
 
 #square-0 {
     grid-area: 12 / 12 / 14 / 14;
@@ -217,7 +217,6 @@ ul li {
     grid-area: 11 / 12 / 12 / 14;
 }
 
-/* SQUARES' STYLES*/
 .square {
     display: flex;
     flex-direction: column;
@@ -232,8 +231,6 @@ ul li {
     border-top: solid 4px black;
 }
 
-/* .square-left {} */
-
 .square-top {
     border-bottom: solid 4px black;
 }
@@ -241,8 +238,6 @@ ul li {
 .square-right {
     border-left: solid 4px black;
 }
-
-/* .square-corner {} */
 
 .square-left,
 .square-right {
@@ -306,13 +301,6 @@ ul li {
     height: 50px;
 }
 
-/* .square-special {
-    padding: 1rem .5rem;
-} */
-
-
-
-/* CONSOLE */
 #control-panel {
     grid-area: 4 / 5 / 7 / 10;
     display: grid;
@@ -338,12 +326,12 @@ ul li {
 
 .button {
     min-width: 25%;
+    padding: .5rem 0;
     text-align: center;
     border: solid 1px black;
     border-radius: 8px;
 }
 
-/* FORM PLAYER SETUP */
 #form_game_setup {
     width: 100vh;
     height: 100vh;
@@ -375,15 +363,12 @@ input[type="radio"] {
     display: none;
 }
 
-/* PLAYER CONTAINER */
-
 #player-container-1,
 #player-container-2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
-    /* background-color: lightblue; */
 }
 
 #player-container-1>div,
@@ -408,7 +393,6 @@ input[type="radio"] {
     text-align: center;
 }
 
-/* TOKENS */
 .token-holder {
     display: flex;
     justify-content: space-around;
@@ -417,13 +401,13 @@ input[type="radio"] {
 .square-bottom .token-holder,
 .square-top .token-holder {
     width: 100%;
-    height: 25px;
+    min-height: 25px;
 }
 
 .square-left .token-holder,
 .square-right .token-holder {
     flex-direction: column;
-    width: 25px;
+    min-width: 25px;
     height: 100%;
 }
 
@@ -433,8 +417,6 @@ input[type="radio"] {
     background-image: url(../media/token-icon.svg);
     background-size: cover;
 }
-
-/* DICES */
 
 #dice_1 {
     grid-area: 8 / 5 / 9 / 6;
@@ -451,8 +433,6 @@ input[type="radio"] {
 #extra-turn-container {
     grid-area: 9 / 4 / 10 / 7;
 }
-
-/* GAMEPLAY STYLES */
 
 .token-color-player-red {
     filter: invert(33%) sepia(77%) saturate(6162%) hue-rotate(339deg) brightness(102%) contrast(101%);
@@ -527,14 +507,12 @@ input[type="radio"] {
     left: 2rem;
 }
 
-/* DEED CARD CONTAINER */
 #title-deed-container {
     grid-area: 7 / 8 / 11 / 11;
     border: solid 1px black;
 }
 
 .title-deed {
-    /* CHANGE TO FLEX */
     display: flex;
     min-height: 100%;
     flex-direction: column;
@@ -571,8 +549,8 @@ input[type="radio"] {
     display: flex;
 }
 
-.title-deed-options li {
-    background-color: pink;
+.title-deed-options button {
+    height: 100%;
     margin: .3rem;
 }
 
@@ -614,7 +592,6 @@ input[type="radio"] {
     margin: auto;
 }
 
-
 @keyframes rollDices {
     from {}
 
@@ -623,13 +600,10 @@ input[type="radio"] {
     }
 }
 
-/* The element to apply the animation to */
 .animation-roll-dices {
     animation-name: rollDices;
     animation-duration: 5s;
 }
-
-
 
 .sell-property-container {
     position: absolute;
@@ -665,15 +639,20 @@ input[type="radio"] {
     display: none;
 }
 
+.rules-container p {
+    margin-top: .5rem;
+}
+
 .rules-title {
     font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .rules-subtitle {
     font-size: 1.5rem;
+    margin: 1rem 0;
 }
-
-
 
 .open-rules-monopoly-board {
     grid-area: 10 / 4 / 11 / 6;
@@ -713,12 +692,18 @@ input[type="radio"] {
     text-align: center;
 }
 
-.end-rules-restart-container { 
+.end-rules-restart-container {
     grid-area: 10 / 4 / 12 / 7;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+.end-rules-restart-container button {
+    padding: .4rem;
+    border-radius: 8px;
+    border: solid 1px black;
 }
 
 .game-results-container {
@@ -727,15 +712,49 @@ input[type="radio"] {
     position: absolute;
     background-color: white;
     z-index: 2;
+    text-align: center;
+}
+
+.game-results__paragraph {
+    font-size: 1.5rem;
 }
 
 .game-results {
     padding: 5rem;
 }
+
+.game-results__title {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
 .partial-results-list li {
     list-style: outside disc;
 }
 
-.partial-results-players-container {
+.partial-results-list {
+    display: table;
+    margin: auto;
+    text-align: left;
+}
+
+.results-players-container {
     margin: 1rem 0;
+}
+
+#button_close_rules {
+    display: block;
+    font-size: 1.5rem;
+    margin: 1rem auto 0 auto;
+    padding: .5rem;
+}
+
+.button-play-again {
+    margin-top: 3rem;
+    padding: .4rem;
+    border-radius: 8px;
+    border: solid 1px black;
+    font-size: 2rem;
+    background-color:#CDE6D0; 
 }

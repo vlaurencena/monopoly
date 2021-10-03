@@ -93,8 +93,12 @@ const chanceCards = [{
         "id": 4,
         "text": "Go back three spaces.",
         "action": function () {
-            currentPlayer.jump(-3);
-            playerCompletedTurn();
+            if (currentPlayer.position === 7) {
+                currentPlayer.jump(4);
+            } else if (currentPlayer.position === 22) {
+                currentPlayer.jump(19);
+            }
+            playerMoved();
         }
     },
     {

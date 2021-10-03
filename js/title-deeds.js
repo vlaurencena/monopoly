@@ -1,6 +1,6 @@
 // EVENT LISTENER TO PROPERTY SQUARES
 
-for (let id of propertiesIds()) {
+for (let id of propertiesIds) {
     $(`#square-${id}`).click(function () {
         let getId = this.id.split("-")[1];
         let selectedProperty = squares[getId];
@@ -30,10 +30,10 @@ let createDeedCard = (property) => { // OBJECT
                 </div>
             </div>
             <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-set-mortage">Set mortage</li>
-                <li id="title-deed-lift-mortage">Lift mortage</li>
-                <li id="title-deed-sell-property">Sell property</li>
+                <li id="title-deed-close"><button>Close</button></li>
+                <li id="title-deed-set-mortage"><button>Set mortage</button></li>
+                <li id="title-deed-lift-mortage"><button>Lift mortage</button></li>
+                <li id="title-deed-sell-property"><button>Sell property</button></li>
             </ul>
         </div>`
         $("#title-deed-buy-house").hide();
@@ -42,7 +42,7 @@ let createDeedCard = (property) => { // OBJECT
         // RAIL ROAD
         document.getElementById(`title-deed-container`).innerHTML =
 
-            `<div id="property_${property}" 
+            `<div id="property_${property.id}" 
         
             <div class="title-deed">
             <img class="title-deed-img" src="media/train-icon.svg">
@@ -62,10 +62,10 @@ let createDeedCard = (property) => { // OBJECT
             </div>
 
             <ul class="title-deed-options">
-                <li id="title-deed-close">Close</li>
-                <li id="title-deed-set-mortage">Set mortage</li>
-                <li id="title-deed-lift-mortage">Lift mortage</li>
-                <li id="title-deed-sell-property">Sell property</li>
+                <li id="title-deed-close"><button>Close</button></li>
+                <li id="title-deed-set-mortage"><button>Set mortage</button></li>
+                <li id="title-deed-lift-mortage"><button>Lift mortage</button></li>
+                <li id="title-deed-sell-property"><button>Sell property</button></li>
             </ul>
 
         </div>`
@@ -171,7 +171,7 @@ let createDeedCard = (property) => { // OBJECT
     } else if (property.house === 5) {
         $(`#title-deed-sell-house`).html("Sell hotel");
     }
-    
+
     $(".title-deed-options").click(function () {
         updateLocalStorage();
     });
@@ -208,14 +208,16 @@ let sellPropertyDisplay = (property) => {
         <input id="confirm_sale" type="submit" value="Sell property">`)
 
 
-    $("#confirm_sale").click(function (event) {  
+    $("#confirm_sale").click(function (event) {
         let transactionInfo = $(".sell-property-buyer").serializeArray();
-        message(`Sorry, you need to set a value higher than $0.`)
-        players[property.owner].transaction(parseInt(transactionInfo[1].value));
-        console.log(transactionInfo[1].value);
-        property.owner = parseInt(transactionInfo[0].value);
-        players[property.owner].transaction(parseInt(-transactionInfo[1].value));
-        console.log(property.owner);
+        message(`Sorry, you need to set a value higher than $0.`);
+        let amount = parseInt(transactionInfo[1].value);
+        let buyer = parseInt(transactionInfo[0].value);
+        if (amount > 0 && buyer !== undefined) {
+            players[property.owner].transaction(amount);
+            players[buyer].transaction(-amount);
+            property.owner = buyer;
+        }
         updateAllBoard();
         removeSellPropertyDisplay();
     })

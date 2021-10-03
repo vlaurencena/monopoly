@@ -80,9 +80,9 @@ class Player {
     transaction(signAndAmount, displayMessage = true) {
         this.wallet += signAndAmount;
         if (displayMessage) {
-            if (signAndAmount <= 0) {
+            if (signAndAmount < 0) {
                 message(`<span class="player-${this.color}-turn">${this.name}</span> paid $${-signAndAmount}, and now has $${this.wallet} in his/her wallet.`);
-            } else if (signAndAmount >= 0){
+            } else if (signAndAmount > 0){
                 message(`<span class="player-${this.color}-turn">${this.name}</span> received $${signAndAmount}, and now has $${this.wallet} in his/her wallet`);
             }
         }

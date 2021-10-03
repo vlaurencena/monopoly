@@ -9,7 +9,7 @@
     <!---- CSS ---->
     <link rel="stylesheet" href="css/styles.css">
     <!---- PAGE TITLE ---->
-    <title>Monopoly</title>
+    <title>Virtual Monopoly</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
             <div id="control-panel">
                 <!-- CONSOLE -->
                 <div id="console-display">
-                    <div id="console-title">WELCOME!</div>
+                    <div id="console-title">Welcome to VIRTUAL MONOPOLY!</div>
                 </div>
                 <!-- CONTROL BUTTONS -->
                 <div id="control_buttons">
@@ -287,12 +287,12 @@
                 <div id="token-holder-34" class="token-holder"></div>
             </div>
             <div id="square-35" class="square square-right">
-                <div id="token-holder-35" class="token-holder"></div>
                 <img class="special-square-icon" src="media/train-icon.svg" alt="">
                 <div>
                     <div class="square-title">SHORT LINE</div>
                     <div>$200</div>
                 </div>
+                <div id="token-holder-35" class="token-holder"></div>
             </div>
             <div id="square-36" class="square square-right">
                 <div>
@@ -332,7 +332,7 @@
             </div>
             <!-- SEE RULES, RESTART & END GAME CONTAINER -->
             <div class="end-rules-restart-container">
-                <button class="open-rules-monopoly">See rules of Monopoly</button>
+                <button class="open-rules-monopoly">Rules of Virtual Monopoly</button>
                 <button id="button_restart_game">Restart Game</button>
                 <button id="button_end_game">End Game</button>
             </div>
@@ -346,14 +346,15 @@
     <!---- JS FILES ---->
     <script src="js/squares-basic-info.js"></script>
     <script src="js/community-and-chance-cards.js"></script>
-    <script src="js/variables-and-functions.js"></script>
-    <script src="js/property-actions.js"></script>
+    <script src="js/rules.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/title-deeds.js"></script>
     <script src="js/players-constructor.js"></script>
     <script src="js/gameplay.js"></script>
     <script src="js/game-setup.js"></script>
     <script src="js/local-storage.js"></script>
     <!-- THIS IS JUST FOR DEVELOPMENT -->
-    <!-- <script src="js/tester.js"></script> -->
+    <script src="js/tester.js"></script>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
-const diceAnimationDuration = 50;
-const moveTokenAnimation = 50;
+const diceAnimationDuration = 4000;
+const moveTokenAnimation = 200;
 let currentPlayerId = undefined;
 let currentPlayer = [];
 let currentSquare = [];
@@ -203,7 +203,7 @@ const startNewGame = () => {
 const newTurn = () => {
     $("#button_end_turn").html("End turn");
     hideAllConsoleButtons();
-    message(`It's <span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> turn.`);
+    message(`It's <span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span>'s turn.`);
 
     if (currentPlayer.inJail) {
         /*--- IS IN JAIL ---*/

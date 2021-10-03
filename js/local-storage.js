@@ -1,8 +1,8 @@
 /*------ RESTART GAME ------*/
 document.getElementById("button_restart_game").addEventListener("click", function () {
     localStorage.clear();
-    console.log("Local Storage is clear.");
     location.reload();
+    console.log("Local Storage is clear.");
 });
 
 $("#control_buttons").click(function () {
