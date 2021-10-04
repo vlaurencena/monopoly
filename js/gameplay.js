@@ -202,6 +202,7 @@ const startNewGame = () => {
 
 const newTurn = () => {
     $("#button_end_turn").html("End turn");
+    updatePlayersContainers();
     hideAllConsoleButtons();
     message(`It's <span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span>'s turn.`);
 
