@@ -56,9 +56,7 @@ const chanceCards = [{
             let totalHouses = 0;
             let totalHotels = 0;
             let propoertiesOfCurrentPlayer = squares.filter(property => property.owner === currentPlayer.id);
-            console.log(propoertiesOfCurrentPlayer)
             for (property of propoertiesOfCurrentPlayer) {
-                console.log(property.house);
                 if (property.house > 0 && property.house < 5) {
                     totalHouses += 25 * property.house;
                 } else if (property.house === 5) {
