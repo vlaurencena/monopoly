@@ -14,7 +14,7 @@ if (localStorage.length === 0) {
         // FORM PLAYER SETUP 
         $("main").append(`
         <div id="form_game_setup">
-            <h1>Welcome to virtual Monopoly</h1>
+            <h1>Welcome to Virtual Monopoly</h1>
             <form name="form-number-players" action="">
                 <h2>Select game mode (initial money)</h2>
                 <input type="radio" id="mode_survival" name="game-mode" value="250">
