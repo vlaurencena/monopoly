@@ -1,5 +1,4 @@
-// EVENT LISTENER TO PROPERTY SQUARES
-
+/*------ EVENT LISTENER TO PROPERTY SQUARES ------*/
 for (let id of propertiesIds) {
     $(`#square-${id}`).click(function () {
         let getId = this.id.split("-")[1];
@@ -7,12 +6,13 @@ for (let id of propertiesIds) {
         createDeedCard(selectedProperty);
     });
 }
-// CREATE DEED CARD
+
+/*------ CREATE DEED CARD ------*/
 const clearDeedContainer = () => {
     document.getElementById(`title-deed-container`).innerHTML = ``;
 }
 
-let createDeedCard = (property) => { // OBJECT
+const createDeedCard = (property) => { // OBJECT
     clearDeedContainer();
 
     if (property.id === 12 || property.id === 28) {
@@ -128,18 +128,15 @@ let createDeedCard = (property) => { // OBJECT
     $(".title-deed-options").on("click", function () {
         checkPlayerNoMoney();
     });
-
+    
     if (property.owner !== undefined && property.house === 0) {
         $(`#title-deed-sell-property`).show().click(function () {
             sellPropertyDisplay(property);
         });
-
         if (property.mortage === false) {
             $("#title-deed-set-mortage").show().click(function () {
                 setMortage(property);
-                console.log("aquí")
             });
-
         } else if (property.mortage === true) {
             $(`#title-deed-sell-property`).hide();
             $("#title-deed-lift-mortage").show().click(function () {
@@ -148,7 +145,6 @@ let createDeedCard = (property) => { // OBJECT
         } else {
             console.error("Something wen wrong with property.mortage");
         }
-
     }
 
     if (checkAllOwnersTheSame(property)) {
@@ -158,7 +154,6 @@ let createDeedCard = (property) => { // OBJECT
                 createDeedCard(property);
             });
         }
-
         if (checkPropertyCanSellHouse(property)) {
             $(`#title-deed-sell-house`).show().click(function () {
                 sellHouse(property);
@@ -177,9 +172,8 @@ let createDeedCard = (property) => { // OBJECT
     });
 }
 
-// SELL PROPERTY
-
-let sellPropertyDisplay = (property) => {
+/*------ SELL PROPERTY ------*/
+const sellPropertyDisplay = (property) => {
     let filteredArray = players.filter(function (player) {
         return player.id !== property.owner;
     });
@@ -222,7 +216,7 @@ let sellPropertyDisplay = (property) => {
         removeSellPropertyDisplay();
     })
 
-    $(".sell-property-popup").append(`<div id="close-sell-property-container">Close</div>`);
+    $(".sell-property-popup").append(`<button id="close-sell-property-container">Close</button>`);
 
     $("#close-sell-property-container").click(function () {
         removeSellPropertyDisplay();

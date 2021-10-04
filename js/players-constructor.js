@@ -17,10 +17,17 @@ class Player {
         let dice1 = randomDice[0];
         let dice2 = randomDice[1];
         animateDices(dice1, dice2);
+        
         if (dice1 === dice2) {
             //  THROW DOUBLES
             this.throwDoubles++;
             this.anotherTurn = true;
+
+            if (this.inJail === true) {
+                this.throwDoubles = 0;
+                this.anotherTurn = false;
+            }
+
             if (this.throwDoubles === 3) {
                 //  THROW DOUBLES X3
                 message(`<span class="player-${this.color}-turn">${this.name}</span>throwDoubles for the third time, go to Jail!`);
@@ -92,7 +99,7 @@ class Player {
     buyProperty(property) {
         this.wallet -= property.price;
         property.owner = this.id;
-        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span>, you  just bought ${property.name} for $${property.price} and now you have $${this.wallet} in your wallet.`);
+        message(`Congratulations, <span class="player-${this.color}-turn">${this.name}</span>, you  just bought ${property.name} for $${property.price}. Now you have $${this.wallet} in your wallet.`);
     }
 
     goToJail() {

@@ -9,7 +9,6 @@ for (id of propertiesIds) {
 }
 
 /*----- ROLL DICE ------*/
-
 const getDicesResult = () => {
     let dice1 = Math.ceil(Math.random() * 6);
     let dice2 = Math.ceil(Math.random() * 6);
@@ -18,7 +17,6 @@ const getDicesResult = () => {
 }
 
 /*----- ANIMATE ROLL DICE ------*/
-
 const animateDices = (dice1, dice2) => {
     document.getElementById(`dice_1`).classList.add("animation-roll-dices");
     document.getElementById(`dice_2`).classList.add("animation-roll-dices");
@@ -40,7 +38,6 @@ const animateDices = (dice1, dice2) => {
 }
 
 /*------ CONSOLE ------*/
-
 const message = (text) => {
     if (text !== consoleMessages[consoleMessages.length - 1]) {
         $("#console-display").prepend(`<p>${text}</p>`);
@@ -76,6 +73,7 @@ const hideAllConsoleButtons = () => {
     hideElement(button_pay_rent_utility);
 }
 
+/*------ PLAYERS' CONTAINERS ------*/
 const createPlayersContainers = () => {
 
     players.forEach(function (player) {
@@ -156,7 +154,6 @@ const createTokens = () => {
 }
 
 /*------ VALIDATE PLAYER CAN AFFORD ------*/
-
 const playerCanAfford = (player, amount) => { // (OBJECT, NUMBER)
     if (player.wallet >= amount) {
         return true;
@@ -167,7 +164,6 @@ const playerCanAfford = (player, amount) => { // (OBJECT, NUMBER)
 }
 
 /*------ VALIDATE HOUSE BUY & SELL ------*/
-
 const checkAllOwnersTheSame = (property) => { // OBJECT
     let allOwnersTheSame = true;
     let groupPropertiesIds = property.groupIDs;
@@ -193,7 +189,6 @@ const checkPropertyCanBuyHouse = (property) => { // (OBJECT)
     for (let i = 0; i < groupProperties.length; i++) {
         if (property.house >= 5 || property.house > groupProperties[i].house) {
             canBuy = false;
-            console.log(property.house)
         }
         if (property.mortage === true) {
             canBuy = false;
@@ -217,8 +212,8 @@ const checkPropertyCanSellHouse = (property) => { // (OBJECT)
     return canSell;
 }
 
-// PERFORM HOUSE BUY & SELL
-const buyHouse = (property) => { // (OBJECT)
+/*------ PERFORM HOUSE BUY & SELL ------*/
+const buyHouse = (property) => {
     if (playerCanAfford(players[property.owner], property.housePrice)) {
         property.house += 1;
         players[property.owner].transaction(-property.housePrice);
@@ -226,13 +221,13 @@ const buyHouse = (property) => { // (OBJECT)
     }
 }
 
-const sellHouse = (property) => { // (OBJECT)
+const sellHouse = (property) => {
     property.house -= 1;
     players[property.owner].transaction(property.housePrice / 2);
     updateAllBoard();
 }
 
-// MORTAGE
+/*------ MORTAGE ------*/
 const setMortage = (property) => {
     players[property.owner].transaction(property.mortageValue);
     property.mortage = true;
@@ -250,6 +245,7 @@ const removeSellPropertyDisplay = () => {
     $(".sell-property-container").remove();
 }
 
+/*------ CALCULATE RENT ------*/
 const calculateRent = (property) => {
     if (property.id === 12 || property.id === 28) {
         // UTILITY
@@ -294,7 +290,7 @@ const calculateRent = (property) => {
         }
 
     } else {
-
+        // REGULAR PROPERTY
         switch (property.house) {
             case 1:
                 return property.rent1;
@@ -323,7 +319,6 @@ const calculateRent = (property) => {
 
 
 /*------ UPDATE BOARD ------*/
-
 const updateExtraTurn = () => {
     if (currentPlayer.throwDoubles === 1) {
         $(`#extra-turn`).html(`EXTRA TURN`);
@@ -336,11 +331,12 @@ const updateExtraTurn = () => {
 
 const updateHousesAndMortageDisplay = () => {
     for (property of arrayOfProperties()) {
-        // (OBJECT)
         if (property.mortage === true) {
             if (property.id === 5 || property.id === 12 || property.id === 15 || property.id === 25 || property.id === 28 || property.id === 35) {
+                $(`#square-${property.id}`).find(".mortage-sign").remove();
                 $(`#square-${property.id}`).prepend(`<p class="mortage-sign">M</p>`);
             } else {
+                $(`#square-${property.id}`).find(".mortage-sign").remove();
                 $(`#square-${property.id}`).children(".square-color").html(`<p class="mortage-sign">M</p>`);
             }
         } else if (property.mortage === false) {
@@ -401,6 +397,22 @@ const updatePlayersContainers = () => {
     $(`#player_name_${currentPlayer.id}`).addClass(`player-${currentPlayer.color}-turn`);
 };
 
+const updateDiceDisplay = () => {
+    if (diceResult.length !== 0) {
+        document.getElementById(`dice_1`).src = `media/dice-${diceResult[0]}.svg`;
+        document.getElementById(`dice_2`).src = `media/dice-${diceResult[1]}.svg`;
+    } else {
+        document.getElementById(`dice_1`).src = `media/dice-0.png`;
+        document.getElementById(`dice_2`).src = `media/dice-0.png`;
+    }
+}
+
+const updateTokens = (player) => {
+    let token = $(`#token-player-${player.id}`);
+    token.remove();
+    $(`#token-holder-${player.position}`).append(token);
+}
+
 const updateAllBoard = () => {
     updateSquaresDisplay();
     updatePlayersContainers();
@@ -408,6 +420,7 @@ const updateAllBoard = () => {
     updateDiceDisplay();
 }
 
+/*------ CONTINUE CURRENT TURN ------*/
 const continueTurn = () => {
     if (currentPlayer.stillPlaying === false) {
         currentPlayer.endTurn();
@@ -445,12 +458,9 @@ const checkPlayerNoMoney = () => {
 }
 
 const endGame = () => {
-
     currentTurnStatus.gameEnded = true;
     updateLocalStorage();
-
     // DISPLAY PARTIAL RESULTS
-
     $("body").prepend(`
     <div class="game-results-container">
         <div class="game-results">
@@ -473,9 +483,7 @@ const endGame = () => {
     });
 
     arrayOfProperties().forEach(function (property) {
-
         if (property.owner !== undefined) {
-
             $(`#partial-result-player-${property.owner}-list`).append(`<li id="property-${property.id}-final-display">${property.name}</li>`);
 
             if (property.mortage == true) {
@@ -487,23 +495,16 @@ const endGame = () => {
             if (property.house === 0) {
                 // DO NOTHING
             } else if (property.house > 0 && property.house < 5) {
-
                 $(`#property-${property.id}-final-display`).append(`<span> This property had ${property.house} house/s.<span>`);
-
             } else if (property.house === 5) {
-
                 $(`#property-${property.id}-final-display`).append(`<span> This property had 4 houses and a hotel.<span>`);
-
             } else {
-
                 console.error("Something went wrong");
-
             }
         }
     });
 
     // DISPLAY FINAL RESULTS
-
     $(".game-results").append(`
     <div id="display_final_results">
         <p class="game-results__paragraph">After lifting up the mortages and selling the houses, hotels and properties, the results are:</p>
@@ -522,7 +523,6 @@ const endGame = () => {
 
             players[property.owner].transaction(property.price);
             property.owner = undefined;
-
         }
     })
 
@@ -546,7 +546,6 @@ const endGame = () => {
 
 const checkTotalHousesAndHotel = (player) => {
     let propertiesOfPlayer = squares.filter(property => property.owner === player.id);
-    console.log(propertiesOfPlayer)
     let counterHouses = 0;
     let counterHotels = 0;
     for (property of propertiesOfPlayer) {
@@ -556,17 +555,10 @@ const checkTotalHousesAndHotel = (player) => {
             counterHotels += 1;
         }
     }
-    console.log([counterHouses, counterHotels]);
-    console.log(counterHouses * 40 + counterHotels * 125);
     return counterHouses * 40 + counterHotels * 125;
 }
 
-
-
-
-/*------ UPDATE LOCAL STORAGE ------*/
-
-
+/*------ LOCAL STORAGE ------*/
 const updateLocalStorage = () => {
     localStorage.setItem("allPlayersIds", JSON.stringify(allPlayersIds));
     localStorage.setItem("currentPlayerId", JSON.stringify(currentPlayerId));
@@ -585,7 +577,6 @@ const updateLocalStorage = () => {
 }
 
 const retrieveLocalStorage = () => {
-    console.log("Local Storage was retrieved.")
     // PLAYERS ARRAY
     players = [];
     let string_of_players = JSON.parse(localStorage.getItem("players"));
@@ -604,20 +595,5 @@ const retrieveLocalStorage = () => {
     chanceCardsOrder = JSON.parse(localStorage.getItem("chanceCardsOrder"));
     selectedCard = JSON.parse(localStorage.getItem("selectedCard"));
     comesFromCard = JSON.parse(localStorage.getItem("comesFromCard"));
-}
-
-const updateDiceDisplay = () => {
-    if (diceResult.length !== 0) {
-        document.getElementById(`dice_1`).src = `media/dice-${diceResult[0]}.svg`;
-        document.getElementById(`dice_2`).src = `media/dice-${diceResult[1]}.svg`;
-    } else {
-        document.getElementById(`dice_1`).src = `media/dice-0.png`;
-        document.getElementById(`dice_2`).src = `media/dice-0.png`;
-    }
-}
-
-const updateTokens = (player) => {
-    let token = $(`#token-player-${player.id}`);
-    token.remove();
-    $(`#token-holder-${player.position}`).append(token);
+    console.log("Local Storage was retrieved.");
 }

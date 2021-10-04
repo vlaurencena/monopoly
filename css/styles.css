@@ -350,6 +350,10 @@ input[type="radio"] {
     margin-bottom: 1rem;
 }
 
+input[type="submit"] {
+    cursor: pointer;
+}
+
 #form_player_info {
     margin-top: 5rem;
 }
@@ -756,5 +760,5 @@ input[type="radio"] {
     border-radius: 8px;
     border: solid 1px black;
     font-size: 2rem;
-    background-color:#CDE6D0; 
+    background-color: #CDE6D0;
 }

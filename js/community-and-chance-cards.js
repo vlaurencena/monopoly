@@ -165,7 +165,7 @@ const chanceCards = [{
         "text": "ADVANCE to Boardwalk.",
         "action": function () {
             currentPlayer.jump(39);
-            playerCompletedTurn();
+            playerMoved();
         }
     },
     {
@@ -176,7 +176,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(24);
-            playerCompletedTurn();
+            playerMoved();
         }
     },
     {
@@ -214,7 +214,7 @@ const chanceCards = [{
                 currentPlayer.transaction(200);
             }
             currentPlayer.jump(11);
-            playerCompletedTurn();
+            playerMoved();
         }
     },
     {
@@ -229,7 +229,7 @@ const chanceCards = [{
 
 const communityChestCards = [{
         "id": 0,
-        "text": "Get out of Jail, for free. This card may be kept until needed or sold.",
+        "text": "Get out of Jail, for free. This card may be kept until needed.",
         "action": function () {
             currentPlayer.jailCard = true;
             playerCompletedTurn();
@@ -295,7 +295,7 @@ const communityChestCards = [{
         "id": 8,
         "text": "Pay hospital fees of $100.",
         "action": function () {
-            currentPlayer.transaction(100);
+            currentPlayer.transaction(-100);
             playerCompletedTurn();
         }
     },
@@ -354,7 +354,8 @@ const communityChestCards = [{
         "id": 15,
         "text": "Go to Jail. Go directly to Jail. Do not pass \"GO\". Do not collect $200.",
         "action": function () {
-            goToJail();
+            currentPlayer.goToJail();
+            currentPlayer.jailCard = false;
             playerCompletedTurn();
         }
     }

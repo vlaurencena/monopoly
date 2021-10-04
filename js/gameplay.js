@@ -1,6 +1,6 @@
 /*---------------------- INITIAL GAMEPLAY SETUP ----------------------*/
-const diceAnimationDuration = 4000;
-const moveTokenAnimation = 200;
+const diceAnimationDuration = 4000; // DEFAULT = 4000
+const moveTokenAnimation = 200; // DEFAULT = 200
 let currentPlayerId = undefined;
 let currentPlayer = [];
 let currentSquare = [];
@@ -20,7 +20,7 @@ let allPlayersIds = [];
 // GENERAL USAGE
 const all_buttons = document.getElementById("control_buttons");
 all_buttons.addEventListener("click", function () {
-    updateAllBoard();
+    // updateAllBoard();
     checkPlayerNoMoney();
 });
 
@@ -31,7 +31,6 @@ button_roll_dice.addEventListener("click", function () {
     animateDices(diceResult[0], diceResult[1]);
     setTimeout(function () {
         playerRolledDices();
-
     }, diceAnimationDuration);
 });
 
@@ -59,7 +58,7 @@ button_end_turn.addEventListener("click", function () {
 const button_use_jail_card = document.getElementById("button_use_jail_card");
 button_use_jail_card.addEventListener("click", function () {
     currentPlayer.getOutOfJail();
-    message(`You used your jail card. (currentPlayer.JailCard = ${currentPlayer.jailCard}`);
+    message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> used his/her jail card and now it's frew!`);
     playerCompletedTurn();
     updateAllBoard();
 });
@@ -67,7 +66,6 @@ button_use_jail_card.addEventListener("click", function () {
 const button_roll_dice_in_jail = document.getElementById("button_roll_dice_in_jail");
 button_roll_dice_in_jail.addEventListener("click", function () {
     currentPlayer.rollDices();
-    playerCompletedTurn();
     /*------ ROLLED DOUBLES? ------*/
     if (currentPlayer.throwDoubles) {
         /*--- YES ---*/
@@ -75,8 +73,9 @@ button_roll_dice_in_jail.addEventListener("click", function () {
         currentPlayer.getOutOfJail();
     } else {
         /*--- NO ---*/
-        message(`$<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> didn't throw doubles and lost his/her turn.`);
+        message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> didn't throw doubles and lost his/her turn.`);
     }
+    playerCompletedTurn();
 });
 
 const button_pay_50 = document.getElementById("button_pay_50");
@@ -139,11 +138,12 @@ button_pay_rent_utility.addEventListener("click", function () {
     if (playerCanAfford(currentPlayer, rent)) {
         currentPlayer.wallet -= rent;
         players[currentSquare.owner].wallet += rent;
-        message(`${currentPlayer.name}paid $${rent} to ${players[currentSquare.owner].name}`);
+        message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> paid $${rent} to <span class="player-${players[currentSquare.owner].color}-turn">${players[currentSquare.owner].name}</span>`);
         comesFromCard = false;
         playerCompletedTurn();
         updateAllBoard();
     }
+
 });
 
 const button_roll_dice_utility = document.getElementById("button_roll_dice_utility");
@@ -152,7 +152,7 @@ button_roll_dice_utility.addEventListener("click", function () {
     let dice2 = Math.ceil(Math.random() * 6);
     multiplier = dice1 + dice2;
     animateDices(dice1, dice2);
-    message(`${currentPlayer.name} needs to pay $${calculateRent(currentSquare) * multiplier} to ${players[currentSquare.owner].name}`);
+    message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> needs to pay $${calculateRent(currentSquare) * multiplier} to <span class="player-${players[currentSquare.owner].color}-turn">${players[currentSquare.owner].name}</span>`);
     hideElement(button_roll_dice_utility);
     showElement(button_pay_rent_utility);
 });
@@ -239,6 +239,7 @@ const playerRolledDices = () => {
     hideAllConsoleButtons();
     showElement(button_move);
     currentTurnStatus.playerHasRolled = true;
+    updateExtraTurn();
     updateLocalStorage();
 }
 
@@ -249,12 +250,14 @@ const playerMoved = () => {
     hideAllConsoleButtons();
     currentTurnStatus.playerHasMoved = true;
     updateLocalStorage();
-
     if (currentPlayer.anotherTurn) {
         $("#button_end_turn").html("Play again");
     }
 
-    if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
+    if (currentPlayer.position === 0) {
+        /*------ IS IN GO ------*/
+        showElement(button_end_turn);
+    } else if (currentPlayer.position === 2 || currentPlayer.position === 17 || currentPlayer.position === 33) {
         /*------ IS IN CHEST ------*/
         if (selectedCard.id === undefined) {
             message(`<span class="player-${currentPlayer.color}-turn">${currentPlayer.name}</span> is in Community Chest. Pick a card!`);
@@ -306,8 +309,7 @@ const playerMoved = () => {
         } else {
             // HAS OWNER
             if (currentSquare.owner === currentPlayerId || currentSquare.mortage === true) {
-                // OWNER IS CURRENT PLAYER OR PROPERTY IS MORTAGE
-                console.log(`Its his/her own property or property has mortage`);
+                // OWNER IS CURRENT PLAYER OR PROPERTY IS MORTAGED
                 showElement(button_end_turn);
             } else {
                 // OWNER IS OTHER PLAYER AND PROPERTY IS NOT MORTAGE
@@ -334,7 +336,8 @@ const playerMoved = () => {
 /*------ STEP 4 ------*/
 const playerCompletedTurn = () => {
     currentTurnStatus.playerHasFinished = true;
-    updateLocalStorage();
     hideAllConsoleButtons();
     showElement(button_end_turn);
+    updateLocalStorage();
+    comesFromCard = false;
 }
